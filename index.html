@@ -12,6 +12,7 @@
             --dark: #0a0a1a;
             --light: #f8f9fa;
             --accent: #6a4cff;
+            --critical: #ff3366;
         }
         
         * {
@@ -22,13 +23,13 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: url('https://i.imgur.com/G1Bc7yV.jpg') center/cover fixed;
+            background: linear-gradient(135deg, #1a0a2e, #0a0420);
             color: white;
             text-align: center;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
-            padding: 0;
+            padding: 20px;
             margin: 0;
         }
         
@@ -39,20 +40,23 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 10, 26, 0.85);
+            background: url('https://i.imgur.com/7QZ4nQb.png') center/cover;
+            opacity: 0.15;
             z-index: -1;
         }
         
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: rgba(20, 20, 40, 0.9);
+            background: rgba(20, 20, 40, 0.92);
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 0 4px rgba(255, 215, 0, 0.3);
             border: 2px solid var(--primary);
             min-height: 90vh;
             position: relative;
+            backdrop-filter: blur(5px);
+            border-image: linear-gradient(45deg, var(--primary), var(--secondary)) 1;
         }
         
         /* Навигация */
@@ -64,6 +68,7 @@
             border-radius: 50px;
             padding: 5px;
             flex-wrap: wrap;
+            gap: 5px;
         }
         
         .tab {
@@ -75,10 +80,11 @@
             font-weight: bold;
             min-width: 120px;
             margin: 2px;
+            background: rgba(50, 50, 90, 0.5);
         }
         
         .tab.active {
-            background: var(--accent);
+            background: linear-gradient(45deg, var(--accent), #8E2DE2);
             color: white;
             box-shadow: 0 0 15px rgba(106, 76, 255, 0.5);
         }
@@ -111,6 +117,7 @@
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 2px solid var(--primary);
+            position: relative;
         }
         
         h1 {
@@ -118,6 +125,11 @@
             font-size: 2.5rem;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
             margin-bottom: 10px;
+            background: linear-gradient(to right, #ffd700, #ffaa00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
         }
         
         .stats {
@@ -134,6 +146,12 @@
             padding: 12px 20px;
             min-width: 150px;
             border: 1px solid var(--primary);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
         
         .stat-value {
@@ -141,25 +159,40 @@
             font-weight: bold;
             color: var(--primary);
             margin-top: 5px;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
         
         /* Страница кликера */
         #coin-container {
             position: relative;
-            width: 220px;
-            height: 220px;
+            width: 240px;
+            height: 240px;
             margin: 0 auto 30px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .coin-frame {
+            position: absolute;
+            width: 110%;
+            height: 110%;
+            background: url('https://i.imgur.com/XHZvFQf.png') center/contain no-repeat;
+            pointer-events: none;
+            z-index: 5;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
         }
         
         #coin {
-            width: 100%;
-            height: 100%;
+            width: 80%;
+            height: 80%;
             background: url('https://i.imgur.com/cQ5i4PB.png') center/contain no-repeat;
             transition: all 0.3s;
             transform: scale(1);
             filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
             border-radius: 50%;
+            z-index: 2;
         }
         
         #coin:hover {
@@ -203,12 +236,19 @@
             position: absolute;
             color: var(--primary);
             font-weight: bold;
-            font-size: 1.8rem; /* Увеличен размер шрифта */
+            font-size: 1.8rem;
             pointer-events: none;
             animation: float-up 1.5s forwards;
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
             z-index: 10;
             user-select: none;
+            font-family: 'Arial Black', sans-serif;
+        }
+        
+        .critical {
+            color: var(--critical);
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.7);
+            font-size: 2.2rem;
         }
         
         @keyframes float-up {
@@ -244,6 +284,8 @@
             position: relative;
             overflow: hidden;
             border: 1px solid var(--primary);
+            display: flex;
+            flex-direction: column;
         }
         
         .upgrade:hover {
@@ -271,6 +313,7 @@
             padding: 2px 8px;
             border-radius: 10px;
             font-size: 0.9rem;
+            font-weight: bold;
         }
         
         .upgrade-cost {
@@ -302,6 +345,7 @@
             background: rgba(40, 30, 80, 0.5);
             border-radius: 15px;
             margin-top: 20px;
+            border: 1px solid var(--primary);
         }
         
         .prestige-card {
@@ -322,6 +366,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
+            color: white;
         }
         
         #prestige-btn:hover {
@@ -334,6 +379,37 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+        }
+        
+        .prestige-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .prestige-level {
+            background: rgba(60, 50, 100, 0.6);
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #444;
+            transition: all 0.3s;
+        }
+        
+        .prestige-level.active {
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            background: rgba(106, 76, 255, 0.3);
+        }
+        
+        .prestige-level i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .prestige-level h4 {
+            margin-bottom: 5px;
         }
         
         /* Страница достижений */
@@ -411,6 +487,7 @@
             transition: opacity 0.3s;
             max-width: 90%;
             font-size: 1.1rem;
+            backdrop-filter: blur(5px);
         }
         
         .save-notice {
@@ -441,12 +518,14 @@
             width: 60px;
             border: 2px solid #444;
             margin: 5px;
+            transition: all 0.3s;
         }
         
         .reward-day.active {
             border-color: var(--accent);
             background: rgba(106, 76, 255, 0.3);
             cursor: pointer;
+            transform: translateY(-5px);
         }
         
         .reward-day.claimed {
@@ -504,13 +583,75 @@
                 flex: 0 0 48%;
                 margin-bottom: 5px;
             }
+            
+            .upgrades {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Кнопки */
+        .btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        /* Анимации */
+        @keyframes sparkle {
+            0% { transform: scale(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkle 0.8s forwards;
+            z-index: 20;
+        }
+        
+        /* Прогресс престижа */
+        .prestige-progress {
+            height: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .prestige-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            width: 0%;
+            transition: width 0.5s;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-coins"></i> Золотой Кликер</h1>
+            <h1><i class="fas fa-coins"></i> Golden Coin Clicker</h1>
+            <div class="btn" id="reset-btn"><i class="fas fa-redo"></i> Сбросить игру</div>
         </header>
         
         <!-- Навигация -->
@@ -548,6 +689,7 @@
         <!-- Вкладка Кликер -->
         <div id="clicker" class="tab-content active">
             <div id="coin-container">
+                <div class="coin-frame"></div>
                 <div id="coin" class="pulse"></div>
                 <div id="coin-shadow"></div>
             </div>
@@ -604,7 +746,7 @@
                     <div>Автоматически кликает каждую секунду</div>
                     <div class="upgrade-cost">
                         <span>Стоимость:</span>
-                        <span id="auto-cost">50,000</span>
+                        <span id="auto-cost">30,000</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="auto-progress"></div>
@@ -619,7 +761,7 @@
                     <div>Умножает весь доход х2</div>
                     <div class="upgrade-cost">
                         <span>Стоимость:</span>
-                        <span id="multiplier-cost">200,000</span>
+                        <span id="multiplier-cost">50,000</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="multiplier-progress"></div>
@@ -652,25 +794,52 @@
                 <div class="prestige-card">
                     <h4>Текущий престиж: <span id="prestige-value">0</span></h4>
                     <p>Бонус престижа: <span id="prestige-bonus">0</span>% к доходу</p>
+                    <p>Всего заработано: <span id="total-coins">0</span> монет</p>
                 </div>
                 
                 <div class="prestige-card">
                     <h4>Следующий престиж</h4>
                     <p>Требуется: 100,000 монет</p>
                     <p>Бонус: +10% к доходу</p>
-                    <button class="upgrade prestige" id="prestige-btn" onclick="doPrestige()">
-                        Получить Престиж
+                    
+                    <div class="prestige-progress">
+                        <div class="prestige-progress-fill" id="prestige-progress"></div>
+                    </div>
+                    
+                    <button class="btn" id="prestige-btn" onclick="doPrestige()">
+                        <i class="fas fa-crown"></i> Получить Престиж
                     </button>
                 </div>
                 
                 <div class="prestige-card">
                     <h4>Преимущества престижа</h4>
-                    <ul style="text-align: left; padding-left: 20px; margin-top: 10px;">
-                        <li>Постоянный бонус к доходу</li>
-                        <li>Эксклюзивные улучшения</li>
-                        <li>Особые достижения</li>
-                        <li>Новые функции игры</li>
-                    </ul>
+                    <div class="prestige-grid">
+                        <div class="prestige-level">
+                            <i class="fas fa-crown"></i>
+                            <h4>Уровень 1</h4>
+                            <p>+10% доход</p>
+                        </div>
+                        <div class="prestige-level">
+                            <i class="fas fa-crown"></i>
+                            <h4>Уровень 2</h4>
+                            <p>+20% доход</p>
+                        </div>
+                        <div class="prestige-level">
+                            <i class="fas fa-crown"></i>
+                            <h4>Уровень 3</h4>
+                            <p>+30% доход</p>
+                        </div>
+                        <div class="prestige-level">
+                            <i class="fas fa-crown"></i>
+                            <h4>Уровень 4</h4>
+                            <p>+40% доход</p>
+                        </div>
+                        <div class="prestige-level">
+                            <i class="fas fa-crown"></i>
+                            <h4>Уровень 5</h4>
+                            <p>+50% доход</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -726,13 +895,14 @@
         let lastDailyReward = 0;
         let currentDay = 0;
         let criticalHits = 0;
+        let totalCoins = 0;
         
         // Улучшения
         let upgrades = {
             click: { level: 1, cost: 50, effect: 1 },
-            auto: { level: 0, cost: 50000, effect: 0 }, // Повышенная стоимость
-            multiplier: { level: 1, cost: 200000, effect: 1 }, // Повышенная стоимость
-            critical: { level: 1, cost: 10000, chance: 0.02, multiplier: 3 } // Редкие критические удары
+            auto: { level: 0, cost: 30000, effect: 0 },
+            multiplier: { level: 1, cost: 50000, effect: 1 },
+            critical: { level: 1, cost: 10000, chance: 0.02, multiplier: 3 }
         };
         
         let autoClicker = 0;
@@ -758,6 +928,8 @@
         const notificationEl = document.getElementById('notification');
         const saveNoticeEl = document.getElementById('save-notice');
         const statsContainer = document.getElementById('stats-container');
+        const totalCoinsEl = document.getElementById('total-coins');
+        const prestigeProgressEl = document.getElementById('prestige-progress');
         
         // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
         
@@ -774,14 +946,15 @@
                 prestigeBonus = gameData.prestigeBonus || 0;
                 upgrades = gameData.upgrades || {
                     click: { level: 1, cost: 50, effect: 1 },
-                    auto: { level: 0, cost: 50000, effect: 0 },
-                    multiplier: { level: 1, cost: 200000, effect: 1 },
+                    auto: { level: 0, cost: 30000, effect: 0 },
+                    multiplier: { level: 1, cost: 50000, effect: 1 },
                     critical: { level: 1, cost: 10000, chance: 0.02, multiplier: 3 }
                 };
                 autoClicker = gameData.autoClicker || 0;
                 lastDailyReward = gameData.lastDailyReward || 0;
                 currentDay = gameData.currentDay || 0;
                 criticalHits = gameData.criticalHits || 0;
+                totalCoins = gameData.totalCoins || 0;
                 
                 // Обновить достижения
                 if (gameData.achievements) {
@@ -811,14 +984,15 @@
         
         // Обработчик клика по монете
         coinEl.addEventListener('click', (e) => {
+            const rect = coinEl.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
             // Рассчитать базовые монеты
             let baseCoins = perClick;
             
             // Применить бонус престижа
             baseCoins *= (1 + prestigeBonus/100);
-            
-            // Применить множитель
-            baseCoins *= upgrades.multiplier.effect;
             
             // Проверить критический удар
             let isCritical = false;
@@ -830,18 +1004,25 @@
                 setTimeout(() => coinEl.classList.remove('coin-spin'), 1000);
             }
             
+            // Применить множитель
+            baseCoins *= upgrades.multiplier.effect;
+            
             // Добавить монеты
             coins += baseCoins;
+            totalCoins += baseCoins;
             updateUI();
             
             // Создать анимацию
-            createClickAnimation(e.clientX, e.clientY, Math.floor(baseCoins), isCritical);
+            createClickAnimation(centerX, centerY, Math.floor(baseCoins), isCritical);
             
             // Анимация монеты
             coinEl.style.transform = 'scale(0.95) rotate(15deg)';
             setTimeout(() => {
                 coinEl.style.transform = 'scale(1) rotate(0)';
             }, 100);
+            
+            // Создать эффект искр
+            createSparkleEffect(centerX, centerY);
             
             // Автосохранение каждые 30 секунд
             if (Date.now() - lastSave > 30000) {
@@ -875,6 +1056,7 @@
                         if (!autoClickerInterval) {
                             autoClickerInterval = setInterval(() => {
                                 coins += autoClicker;
+                                totalCoins += autoClicker;
                                 updateUI();
                             }, 1000);
                         }
@@ -884,14 +1066,14 @@
                         
                     case 'multiplier':
                         upgrade.level++;
-                        upgrade.effect += 2; // Увеличенный множитель
+                        upgrade.effect *= 2; // Правильное умножение
                         upgrade.cost = Math.floor(upgrade.cost * 2.5);
                         showNotification("Множитель дохода увеличен!");
                         break;
                         
                     case 'critical':
                         upgrade.level++;
-                        upgrade.chance += 0.01; // Меньший прирост шанса
+                        upgrade.chance += 0.01;
                         upgrade.multiplier += 0.5;
                         upgrade.cost = Math.floor(upgrade.cost * 3);
                         showNotification("Шанс критического удара увеличен!");
@@ -908,9 +1090,9 @@
         
         // Престиж
         function doPrestige() {
-            if (coins >= 100000) { // Повышенные требования
+            if (coins >= 100000) {
                 prestige++;
-                prestigeBonus = prestige * 10; // 10% за престиж
+                prestigeBonus = prestige * 10;
                 
                 // Сбросить состояние игры
                 coins = 0;
@@ -922,8 +1104,8 @@
                 // Сбросить улучшения
                 upgrades = {
                     click: { level: 1, cost: 50, effect: 1 },
-                    auto: { level: 0, cost: 50000, effect: 0 },
-                    multiplier: { level: 1, cost: 200000, effect: 1 },
+                    auto: { level: 0, cost: 30000, effect: 0 },
+                    multiplier: { level: 1, cost: 50000, effect: 1 },
                     critical: { level: 1, cost: 10000, chance: 0.02, multiplier: 3 }
                 };
                 
@@ -964,6 +1146,7 @@
                 const reward = rewards[day - 1];
                 
                 coins += reward;
+                totalCoins += reward;
                 lastDailyReward = Date.now();
                 
                 showNotification(`Получена ежедневная награда: ${reward} монет!`);
@@ -1005,6 +1188,7 @@
             perClickEl.textContent = perClick.toFixed(1);
             prestigeEl.textContent = prestige;
             prestigeBonusEl.textContent = prestigeBonus;
+            totalCoinsEl.textContent = Math.floor(totalCoins).toLocaleString();
             
             // Обновить информацию об улучшениях
             document.getElementById('click-level').textContent = upgrades.click.level;
@@ -1029,6 +1213,9 @@
             document.getElementById('critical-progress').style.width = 
                 Math.min(100, (coins / upgrades.critical.cost) * 100) + '%';
             
+            // Прогресс престижа
+            prestigeProgressEl.style.width = Math.min(100, (coins / 100000) * 100) + '%';
+            
             // Включить/отключить кнопки
             document.getElementById('click-upgrade').disabled = coins < upgrades.click.cost;
             document.getElementById('auto-upgrade').disabled = coins < upgrades.auto.cost;
@@ -1047,23 +1234,41 @@
         // Анимация клика
         function createClickAnimation(x, y, amount, isCritical) {
             const anim = document.createElement('div');
-            anim.className = 'coin-click';
+            anim.className = 'coin-click' + (isCritical ? ' critical' : '');
             anim.textContent = `+${Math.floor(amount)}`;
             anim.style.left = `${x - 40}px`;
             anim.style.top = `${y - 40}px`;
-            
-            if (isCritical) {
-                anim.style.color = '#ff0000';
-                anim.style.fontSize = '2.2rem';
-                anim.style.fontWeight = 'bold';
-                anim.textContent = `КРИТ! +${Math.floor(amount)}`;
-            }
             
             document.body.appendChild(anim);
             
             setTimeout(() => {
                 anim.remove();
             }, 1500);
+        }
+        
+        // Эффект искр
+        function createSparkleEffect(x, y) {
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    
+                    // Позиция искры вокруг центра
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 50 + 20;
+                    const sparkleX = x + Math.cos(angle) * distance;
+                    const sparkleY = y + Math.sin(angle) * distance;
+                    
+                    sparkle.style.left = `${sparkleX}px`;
+                    sparkle.style.top = `${sparkleY}px`;
+                    
+                    document.body.appendChild(sparkle);
+                    
+                    setTimeout(() => {
+                        sparkle.remove();
+                    }, 800);
+                }, i * 50);
+            }
         }
         
         // Показать уведомление
@@ -1097,6 +1302,14 @@
             });
         }
         
+        // Сброс игры
+        function resetGame() {
+            if (confirm("Вы уверены, что хотите сбросить игру? Весь прогресс будет потерян!")) {
+                localStorage.removeItem('coinClickerSave');
+                location.reload();
+            }
+        }
+        
         // Сохранить игру
         function saveGame() {
             const gameData = {
@@ -1109,6 +1322,7 @@
                 lastDailyReward,
                 currentDay,
                 criticalHits,
+                totalCoins,
                 achievements: {}
             };
             
@@ -1139,6 +1353,9 @@
                 }
             });
         });
+        
+        // Кнопка сброса
+        document.getElementById('reset-btn').addEventListener('click', resetGame);
         
         // Загрузка игры при старте
         window.addEventListener('DOMContentLoaded', () => {
