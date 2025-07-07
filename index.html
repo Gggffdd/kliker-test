@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NFT Tap Game</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        #nft {
+            width: 200px;
+            cursor: pointer;
+            margin: 20px auto;
+            border-radius: 10px;
+            transition: transform 0.1s;
+        }
+        #nft:active {
+            transform: scale(0.95);
+        }
+        #coins {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        button {
+            background: #6a4cff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>✨ NFT Tap Game</h1>
+    <div id="coins">0 coins</div>
+    <img id="nft" src="https://i.imgur.com/a/0F6Wxee.png" alt="NFT">
+    <button onclick="buyUpgrade()">Улучшить (+1 за клик | 10 coins)</button>
+
+    <script>
+        let coins = 0;
+        let perClick = 1;
+
+        // Клик по NFT
+        document.getElementById("nft").onclick = () => {
+            coins += perClick;
+            updateCoins();
+        };
+
+        // Покупка улучшения
+        function buyUpgrade() {
+            if (coins >= 10) {
+                coins -= 10;
+                perClick += 1;
+                updateCoins();
+                alert("Улучшено! Теперь +" + perClick + " за клик");
+            } else {
+                alert("Недостаточно монет!");
+            }
+        }
+
+        // Обновление счёта
+        function updateCoins() {
+            document.getElementById("coins").textContent = coins + " coins";
+        }
+    </script>
+</body>
+</html>
