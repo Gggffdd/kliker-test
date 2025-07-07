@@ -1,73 +1,180 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>NFT Tap Game</title>
+    <title>Coin Clicker</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background: #1a1a1a;
             color: white;
             text-align: center;
             padding: 20px;
+            user-select: none;
+            overflow: hidden;
         }
-        #nft {
-            width: 200px;
+        
+        #coin {
+            width: 150px;
+            height: 150px;
             cursor: pointer;
-            margin: 20px auto;
-            border-radius: 10px;
+            margin: 30px auto;
             transition: transform 0.1s;
+            background: url('https://i.imgur.com/1HDp2PO.png') center/contain no-repeat;
         }
-        #nft:active {
-            transform: scale(0.95);
+        
+        #coin:active {
+            transform: scale(0.95) rotate(15deg);
         }
-        #coins {
-            font-size: 24px;
+        
+        .coin-click {
+            position: absolute;
+            color: gold;
             font-weight: bold;
+            pointer-events: none;
+            animation: float-up 1s forwards;
         }
-        button {
-            background: #6a4cff;
+        
+        @keyframes float-up {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+        
+        #stats {
+            font-size: 24px;
+            margin: 20px;
+        }
+        
+        .upgrade {
+            background: linear-gradient(135deg, #6a4cff, #4c6bff);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             margin: 10px;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .upgrade:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        
+        .upgrade:disabled {
+            background: #555;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
-    <h1>✨ NFT Tap Game</h1>
-    <div id="coins">0 coins</div>
-    <img id="nft" src="https://i.imgur.com/a/0F6Wxee.png" alt="NFT">
-    <button onclick="buyUpgrade()">Улучшить (+1 за клик | 10 coins)</button>
+    <div class="container">
+        <h1>Coin Clicker</h1>
+        <div id="stats">
+            <div>Coins: <span id="coins">0</span></div>
+            <div>Per Click: <span id="per-click">1</span></div>
+        </div>
+        
+        <div id="coin"></div>
+        
+        <div class="upgrades">
+            <button class="upgrade" onclick="buyUpgrade('click')" id="click-upgrade">
+                Upgrade Click (+1) - Cost: <span id="click-cost">50</span>
+            </button>
+            <button class="upgrade" onclick="buyUpgrade('auto')" id="auto-upgrade" disabled>
+                Auto-Clicker (Locked) - Cost: <span id="auto-cost">500</span>
+            </button>
+        </div>
+    </div>
 
     <script>
+        // Game state
         let coins = 0;
         let perClick = 1;
-
-        // Клик по NFT
-        document.getElementById("nft").onclick = () => {
+        let clickUpgradeCost = 50;
+        let autoUpgradeCost = 500;
+        let autoClicker = 0;
+        let autoClickerInterval;
+        
+        // DOM elements
+        const coinEl = document.getElementById('coin');
+        const coinsEl = document.getElementById('coins');
+        const perClickEl = document.getElementById('per-click');
+        
+        // Click handler
+        coinEl.addEventListener('click', (e) => {
+            // Add coins
             coins += perClick;
-            updateCoins();
-        };
-
-        // Покупка улучшения
-        function buyUpgrade() {
-            if (coins >= 10) {
-                coins -= 10;
+            updateUI();
+            
+            // Create +1 animation
+            createClickAnimation(e.clientX, e.clientY);
+            
+            // Coin animation
+            coinEl.style.transform = 'scale(0.95) rotate(15deg)';
+            setTimeout(() => {
+                coinEl.style.transform = 'scale(1) rotate(0)';
+            }, 100);
+        });
+        
+        // Upgrade functions
+        function buyUpgrade(type) {
+            if (type === 'click' && coins >= clickUpgradeCost) {
+                coins -= clickUpgradeCost;
                 perClick += 1;
-                updateCoins();
-                alert("Улучшено! Теперь +" + perClick + " за клик");
-            } else {
-                alert("Недостаточно монет!");
+                clickUpgradeCost = Math.floor(clickUpgradeCost * 1.5);
+                updateUI();
+            } else if (type === 'auto' && coins >= autoUpgradeCost) {
+                coins -= autoUpgradeCost;
+                autoClicker += 1;
+                autoUpgradeCost = Math.floor(autoUpgradeCost * 2);
+                
+                if (!autoClickerInterval) {
+                    autoClickerInterval = setInterval(() => {
+                        coins += autoClicker;
+                        updateUI();
+                    }, 1000);
+                }
+                
+                updateUI();
             }
         }
-
-        // Обновление счёта
-        function updateCoins() {
-            document.getElementById("coins").textContent = coins + " coins";
+        
+        // UI update
+        function updateUI() {
+            coinsEl.textContent = coins;
+            perClickEl.textContent = perClick;
+            
+            document.getElementById('click-cost').textContent = clickUpgradeCost;
+            document.getElementById('auto-cost').textContent = autoUpgradeCost;
+            
+            document.getElementById('click-upgrade').disabled = coins < clickUpgradeCost;
+            
+            if (coins >= 300) {
+                document.getElementById('auto-upgrade').disabled = coins < autoUpgradeCost;
+                document.getElementById('auto-upgrade').textContent = `Auto-Clicker (${autoClicker}) - Cost: `;
+            }
         }
+        
+        // Click animation
+        function createClickAnimation(x, y) {
+            const anim = document.createElement('div');
+            anim.className = 'coin-click';
+            anim.textContent = `+${perClick}`;
+            anim.style.left = `${x - 20}px`;
+            anim.style.top = `${y - 20}px`;
+            document.body.appendChild(anim);
+            
+            setTimeout(() => {
+                anim.remove();
+            }, 1000);
+        }
+        
+        // Initialize
+        updateUI();
     </script>
 </body>
 </html>
