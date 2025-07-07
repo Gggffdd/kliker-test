@@ -63,6 +63,7 @@
             background: rgba(30, 30, 60, 0.8);
             border-radius: 50px;
             padding: 5px;
+            flex-wrap: wrap;
         }
         
         .tab {
@@ -72,6 +73,8 @@
             border-radius: 50px;
             transition: all 0.3s;
             font-weight: bold;
+            min-width: 120px;
+            margin: 2px;
         }
         
         .tab.active {
@@ -200,11 +203,12 @@
             position: absolute;
             color: var(--primary);
             font-weight: bold;
-            font-size: 1.5rem;
+            font-size: 1.8rem; /* Увеличен размер шрифта */
             pointer-events: none;
             animation: float-up 1.5s forwards;
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
             z-index: 10;
+            user-select: none;
         }
         
         @keyframes float-up {
@@ -357,6 +361,13 @@
             background: linear-gradient(135deg, #3a2e6d, #2a2350);
             border: 2px solid var(--primary);
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            animation: achievement-unlock 0.8s ease-in-out;
+        }
+        
+        @keyframes achievement-unlock {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
         
         .achievement-icon {
@@ -383,54 +394,6 @@
             color: #fff;
         }
         
-        /* Магазин скинов */
-        .skins {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .skin {
-            background: rgba(40, 30, 80, 0.5);
-            border-radius: 10px;
-            padding: 15px;
-            border: 2px solid #444;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .skin:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-        }
-        
-        .skin.active {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-        }
-        
-        .skin-image {
-            width: 100px;
-            height: 100px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            margin: 0 auto 10px;
-            border-radius: 50%;
-            border: 2px solid #555;
-        }
-        
-        .skin-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .skin-cost {
-            color: var(--primary);
-            font-weight: bold;
-        }
-        
         /* Уведомления */
         .notification {
             position: fixed;
@@ -447,6 +410,7 @@
             opacity: 0;
             transition: opacity 0.3s;
             max-width: 90%;
+            font-size: 1.1rem;
         }
         
         .save-notice {
@@ -467,6 +431,7 @@
             display: flex;
             justify-content: space-around;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
         
         .reward-day {
@@ -475,11 +440,13 @@
             padding: 15px 10px;
             width: 60px;
             border: 2px solid #444;
+            margin: 5px;
         }
         
         .reward-day.active {
             border-color: var(--accent);
             background: rgba(106, 76, 255, 0.3);
+            cursor: pointer;
         }
         
         .reward-day.claimed {
@@ -560,13 +527,10 @@
             <div class="tab" data-tab="achievements">
                 <i class="fas fa-trophy"></i> Достижения
             </div>
-            <div class="tab" data-tab="shop">
-                <i class="fas fa-shopping-cart"></i> Магазин
-            </div>
         </div>
         
-        <!-- Статистика -->
-        <div class="stats">
+        <!-- Статистика (только на вкладке Кликер) -->
+        <div class="stats" id="stats-container">
             <div class="stat-card">
                 <div><i class="fas fa-coins"></i> Монеты</div>
                 <div class="stat-value" id="coins">0</div>
@@ -640,7 +604,7 @@
                     <div>Автоматически кликает каждую секунду</div>
                     <div class="upgrade-cost">
                         <span>Стоимость:</span>
-                        <span id="auto-cost">500</span>
+                        <span id="auto-cost">50,000</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="auto-progress"></div>
@@ -652,10 +616,10 @@
                         <span>Множитель</span>
                         <span class="upgrade-level" id="multiplier-level">1</span>
                     </div>
-                    <div>Умножает весь доход</div>
+                    <div>Умножает весь доход х2</div>
                     <div class="upgrade-cost">
                         <span>Стоимость:</span>
-                        <span id="multiplier-cost">1000</span>
+                        <span id="multiplier-cost">200,000</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="multiplier-progress"></div>
@@ -670,7 +634,7 @@
                     <div>Шанс критического удара</div>
                     <div class="upgrade-cost">
                         <span>Стоимость:</span>
-                        <span id="critical-cost">2000</span>
+                        <span id="critical-cost">10,000</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="critical-progress"></div>
@@ -692,8 +656,8 @@
                 
                 <div class="prestige-card">
                     <h4>Следующий престиж</h4>
-                    <p>Требуется: 10,000 монет</p>
-                    <p>Бонус: +5% к доходу</p>
+                    <p>Требуется: 100,000 монет</p>
+                    <p>Бонус: +10% к доходу</p>
                     <button class="upgrade prestige" id="prestige-btn" onclick="doPrestige()">
                         Получить Престиж
                     </button>
@@ -703,7 +667,7 @@
                     <h4>Преимущества престижа</h4>
                     <ul style="text-align: left; padding-left: 20px; margin-top: 10px;">
                         <li>Постоянный бонус к доходу</li>
-                        <li>Эксклюзивные скины для монеты</li>
+                        <li>Эксклюзивные улучшения</li>
                         <li>Особые достижения</li>
                         <li>Новые функции игры</li>
                     </ul>
@@ -735,53 +699,14 @@
                     <div class="achievement-desc">Заработайте 100,000 монет</div>
                 </div>
                 <div class="achievement" id="ach5">
-                    <div class="achievement-icon">💎</div>
-                    <div class="achievement-title">Коллекционер</div>
-                    <div class="achievement-desc">Купите все скины</div>
-                </div>
-                <div class="achievement" id="ach6">
                     <div class="achievement-icon">🎯</div>
                     <div class="achievement-title">Снайпер</div>
                     <div class="achievement-desc">Сделайте 100 критических ударов</div>
                 </div>
-            </div>
-        </div>
-        
-        <!-- Вкладка Магазин -->
-        <div id="shop" class="tab-content">
-            <h3><i class="fas fa-store"></i> Магазин скинов</h3>
-            <p>Покупайте уникальные скины для своей монеты</p>
-            
-            <div class="skins">
-                <div class="skin active" data-skin="default" onclick="selectSkin('default')">
-                    <div class="skin-image" style="background-image: url('https://i.imgur.com/cQ5i4PB.png')"></div>
-                    <div class="skin-title">Золотая монета</div>
-                    <div class="skin-cost">Бесплатно</div>
-                </div>
-                <div class="skin" data-skin="bitcoin" onclick="selectSkin('bitcoin')">
-                    <div class="skin-image" style="background-image: url('https://i.imgur.com/5dJNl9C.png')"></div>
-                    <div class="skin-title">Биткоин</div>
-                    <div class="skin-cost">5,000 монет</div>
-                </div>
-                <div class="skin" data-skin="diamond" onclick="selectSkin('diamond')">
-                    <div class="skin-image" style="background-image: url('https://i.imgur.com/8dJ4X7f.png')"></div>
-                    <div class="skin-title">Алмазная</div>
-                    <div class="skin-cost">10,000 монет</div>
-                </div>
-                <div class="skin" data-skin="emerald" onclick="selectSkin('emerald')">
-                    <div class="skin-image" style="background-image: url('https://i.imgur.com/3dJk7hG.png')"></div>
-                    <div class="skin-title">Изумрудная</div>
-                    <div class="skin-cost">15,000 монет</div>
-                </div>
-                <div class="skin" data-skin="galaxy" onclick="selectSkin('galaxy')">
-                    <div class="skin-image" style="background-image: url('https://i.imgur.com/2fJm9Ld.png')"></div>
-                    <div class="skin-title">Галактическая</div>
-                    <div class="skin-cost">25,000 монет</div>
-                </div>
-                <div class="skin" data-skin="prestige" onclick="selectSkin('prestige')">
-                    <div class="skin-image" style="background-image: url('https://i.imgur.com/7gJn8Fc.png')"></div>
-                    <div class="skin-title">Престижная</div>
-                    <div class="skin-cost">50,000 монет</div>
+                <div class="achievement" id="ach6">
+                    <div class="achievement-icon">💎</div>
+                    <div class="achievement-title">Легенда</div>
+                    <div class="achievement-desc">Достигните 5 уровня престижа</div>
                 </div>
             </div>
         </div>
@@ -798,7 +723,6 @@
         let perClick = 1;
         let prestige = 0;
         let prestigeBonus = 0;
-        let selectedSkin = 'default';
         let lastDailyReward = 0;
         let currentDay = 0;
         let criticalHits = 0;
@@ -806,24 +730,14 @@
         // Улучшения
         let upgrades = {
             click: { level: 1, cost: 50, effect: 1 },
-            auto: { level: 0, cost: 500, effect: 0 },
-            multiplier: { level: 1, cost: 1000, effect: 1 },
-            critical: { level: 1, cost: 2000, chance: 0.05, multiplier: 2 }
+            auto: { level: 0, cost: 50000, effect: 0 }, // Повышенная стоимость
+            multiplier: { level: 1, cost: 200000, effect: 1 }, // Повышенная стоимость
+            critical: { level: 1, cost: 10000, chance: 0.02, multiplier: 3 } // Редкие критические удары
         };
         
         let autoClicker = 0;
         let autoClickerInterval;
         let lastSave = Date.now();
-        
-        // Скины
-        const skins = {
-            default: { name: "Золотая монета", price: 0, image: 'https://i.imgur.com/cQ5i4PB.png' },
-            bitcoin: { name: "Биткоин", price: 5000, image: 'https://i.imgur.com/5dJNl9C.png' },
-            diamond: { name: "Алмазная", price: 10000, image: 'https://i.imgur.com/8dJ4X7f.png' },
-            emerald: { name: "Изумрудная", price: 15000, image: 'https://i.imgur.com/3dJk7hG.png' },
-            galaxy: { name: "Галактическая", price: 25000, image: 'https://i.imgur.com/2fJm9Ld.png' },
-            prestige: { name: "Престижная", price: 50000, image: 'https://i.imgur.com/7gJn8Fc.png' }
-        };
         
         // Достижения
         const achievements = [
@@ -831,8 +745,8 @@
             { id: 'ach2', unlocked: false, condition: () => upgrades.auto.level >= 5 },
             { id: 'ach3', unlocked: false, condition: () => prestige >= 1 },
             { id: 'ach4', unlocked: false, condition: coins => coins >= 100000 },
-            { id: 'ach5', unlocked: false, condition: () => Object.keys(skins).every(skin => skin === 'default' || skins[skin].owned) },
-            { id: 'ach6', unlocked: false, condition: () => criticalHits >= 100 }
+            { id: 'ach5', unlocked: false, condition: () => criticalHits >= 100 },
+            { id: 'ach6', unlocked: false, condition: () => prestige >= 5 }
         ];
         
         // Элементы DOM
@@ -843,6 +757,7 @@
         const prestigeBonusEl = document.getElementById('prestige-bonus');
         const notificationEl = document.getElementById('notification');
         const saveNoticeEl = document.getElementById('save-notice');
+        const statsContainer = document.getElementById('stats-container');
         
         // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
         
@@ -859,25 +774,14 @@
                 prestigeBonus = gameData.prestigeBonus || 0;
                 upgrades = gameData.upgrades || {
                     click: { level: 1, cost: 50, effect: 1 },
-                    auto: { level: 0, cost: 500, effect: 0 },
-                    multiplier: { level: 1, cost: 1000, effect: 1 },
-                    critical: { level: 1, cost: 2000, chance: 0.05, multiplier: 2 }
+                    auto: { level: 0, cost: 50000, effect: 0 },
+                    multiplier: { level: 1, cost: 200000, effect: 1 },
+                    critical: { level: 1, cost: 10000, chance: 0.02, multiplier: 3 }
                 };
                 autoClicker = gameData.autoClicker || 0;
-                selectedSkin = gameData.selectedSkin || 'default';
                 lastDailyReward = gameData.lastDailyReward || 0;
                 currentDay = gameData.currentDay || 0;
                 criticalHits = gameData.criticalHits || 0;
-                
-                // Обновить скины
-                if (gameData.skins) {
-                    for (const skin in gameData.skins) {
-                        if (skins[skin]) skins[skin].owned = gameData.skins[skin];
-                    }
-                } else {
-                    // Первая загрузка
-                    skins.default.owned = true;
-                }
                 
                 // Обновить достижения
                 if (gameData.achievements) {
@@ -898,12 +802,9 @@
                 }
                 
                 updateUI();
-                applySkin(selectedSkin);
                 checkDailyReward();
                 showNotification('Игра загружена!');
             } else {
-                // Первый запуск
-                skins.default.owned = true;
                 saveGame();
             }
         }
@@ -983,14 +884,14 @@
                         
                     case 'multiplier':
                         upgrade.level++;
-                        upgrade.effect += 0.5;
+                        upgrade.effect += 2; // Увеличенный множитель
                         upgrade.cost = Math.floor(upgrade.cost * 2.5);
                         showNotification("Множитель дохода увеличен!");
                         break;
                         
                     case 'critical':
                         upgrade.level++;
-                        upgrade.chance += 0.02;
+                        upgrade.chance += 0.01; // Меньший прирост шанса
                         upgrade.multiplier += 0.5;
                         upgrade.cost = Math.floor(upgrade.cost * 3);
                         showNotification("Шанс критического удара увеличен!");
@@ -1007,9 +908,9 @@
         
         // Престиж
         function doPrestige() {
-            if (coins >= 10000) {
+            if (coins >= 100000) { // Повышенные требования
                 prestige++;
-                prestigeBonus = prestige * 5; // 5% за престиж
+                prestigeBonus = prestige * 10; // 10% за престиж
                 
                 // Сбросить состояние игры
                 coins = 0;
@@ -1021,56 +922,15 @@
                 // Сбросить улучшения
                 upgrades = {
                     click: { level: 1, cost: 50, effect: 1 },
-                    auto: { level: 0, cost: 500, effect: 0 },
-                    multiplier: { level: 1, cost: 1000, effect: 1 },
-                    critical: { level: 1, cost: 2000, chance: 0.05, multiplier: 2 }
+                    auto: { level: 0, cost: 50000, effect: 0 },
+                    multiplier: { level: 1, cost: 200000, effect: 1 },
+                    critical: { level: 1, cost: 10000, chance: 0.02, multiplier: 3 }
                 };
-                
-                // Разблокировать престижный скин
-                if (prestige === 1) {
-                    skins.prestige.owned = true;
-                    selectSkin('prestige');
-                    showNotification("Разблокирован эксклюзивный престижный скин!");
-                }
                 
                 showNotification(`Достигнут Престиж ${prestige}! +${prestigeBonus}% бонус`);
                 updateUI();
                 saveGame();
             }
-        }
-        
-        // Выбор скина
-        function selectSkin(skin) {
-            if (skins[skin].owned || skin === 'default') {
-                selectedSkin = skin;
-                applySkin(skin);
-                saveGame();
-                showNotification(`Скин "${skins[skin].name}" выбран!`);
-            } else if (coins >= skins[skin].price) {
-                coins -= skins[skin].price;
-                skins[skin].owned = true;
-                selectedSkin = skin;
-                applySkin(skin);
-                updateUI();
-                saveGame();
-                showNotification(`Скин "${skins[skin].name}" куплен!`);
-                checkAchievements();
-            } else {
-                showNotification(`Недостаточно монет для скина "${skins[skin].name}"!`);
-            }
-        }
-        
-        // Применение скина
-        function applySkin(skin) {
-            coinEl.style.backgroundImage = `url('${skins[skin].image}')`;
-            
-            // Обновить активный скин в магазине
-            document.querySelectorAll('.skin').forEach(el => {
-                el.classList.remove('active');
-                if (el.dataset.skin === skin) {
-                    el.classList.add('active');
-                }
-            });
         }
         
         // Проверка ежедневной награды
@@ -1174,7 +1034,7 @@
             document.getElementById('auto-upgrade').disabled = coins < upgrades.auto.cost;
             document.getElementById('multiplier-upgrade').disabled = coins < upgrades.multiplier.cost;
             document.getElementById('critical-upgrade').disabled = coins < upgrades.critical.cost;
-            document.getElementById('prestige-btn').disabled = coins < 10000;
+            document.getElementById('prestige-btn').disabled = coins < 100000;
             
             // Обновить информацию о престиже
             document.getElementById('prestige-value').textContent = prestige;
@@ -1189,12 +1049,12 @@
             const anim = document.createElement('div');
             anim.className = 'coin-click';
             anim.textContent = `+${Math.floor(amount)}`;
-            anim.style.left = `${x - 20}px`;
-            anim.style.top = `${y - 20}px`;
+            anim.style.left = `${x - 40}px`;
+            anim.style.top = `${y - 40}px`;
             
             if (isCritical) {
                 anim.style.color = '#ff0000';
-                anim.style.fontSize = '2rem';
+                anim.style.fontSize = '2.2rem';
                 anim.style.fontWeight = 'bold';
                 anim.textContent = `КРИТ! +${Math.floor(amount)}`;
             }
@@ -1246,18 +1106,11 @@
                 prestigeBonus,
                 upgrades,
                 autoClicker,
-                selectedSkin,
                 lastDailyReward,
                 currentDay,
                 criticalHits,
-                skins: {},
                 achievements: {}
             };
-            
-            // Сохранить информацию о скинах
-            for (const skin in skins) {
-                gameData.skins[skin] = skins[skin].owned || false;
-            }
             
             // Сохранить информацию о достижениях
             achievements.forEach(ach => {
@@ -1277,6 +1130,13 @@
                 
                 tab.classList.add('active');
                 document.getElementById(tab.dataset.tab).classList.add('active');
+                
+                // Показать статистику только на вкладке Кликер
+                if (tab.dataset.tab === 'clicker') {
+                    statsContainer.style.display = 'flex';
+                } else {
+                    statsContainer.style.display = 'none';
+                }
             });
         });
         
