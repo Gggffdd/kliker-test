@@ -5,175 +5,743 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        :root {
+            --primary: #FFD700;
+            --secondary: #B8860B;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: white;
             text-align: center;
             padding: 20px;
-            user-select: none;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 20%);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--primary);
+        }
+        
+        header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            margin-bottom: 10px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+        
+        .stat-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 12px 20px;
+            min-width: 150px;
+            border: 1px solid var(--primary);
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-top: 5px;
+        }
+        
+        #coin-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            cursor: pointer;
         }
         
         #coin {
-            width: 150px;
-            height: 150px;
-            cursor: pointer;
-            margin: 30px auto;
-            transition: transform 0.1s;
+            width: 100%;
+            height: 100%;
             background: url('https://i.imgur.com/1HDp2PO.png') center/contain no-repeat;
+            transition: transform 0.3s;
         }
         
         #coin:active {
             transform: scale(0.95) rotate(15deg);
         }
         
+        #coin-shadow {
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            filter: blur(10px);
+            z-index: -1;
+            transition: all 0.3s;
+        }
+        
+        #coin-container:active #coin-shadow {
+            transform: scale(0.9);
+            filter: blur(8px);
+        }
+        
         .coin-click {
             position: absolute;
-            color: gold;
+            color: var(--primary);
             font-weight: bold;
+            font-size: 1.5rem;
             pointer-events: none;
-            animation: float-up 1s forwards;
+            animation: float-up 1.5s forwards;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+            z-index: 10;
         }
         
         @keyframes float-up {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-100px); opacity: 0; }
+            0% { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(-100px) scale(0.5); 
+                opacity: 0; 
+            }
         }
         
-        #stats {
-            font-size: 24px;
-            margin: 20px;
+        .upgrades {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
         
         .upgrade {
-            background: linear-gradient(135deg, #6a4cff, #4c6bff);
+            background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
             color: white;
             border: none;
-            padding: 12px 20px;
-            margin: 10px;
-            border-radius: 10px;
+            padding: 15px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
             transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--primary);
         }
         
         .upgrade:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
         
         .upgrade:disabled {
             background: #555;
             cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .upgrade-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .upgrade-level {
+            background: var(--primary);
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .upgrade-cost {
+            margin-top: 8px;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .prestige-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--primary);
+        }
+        
+        #prestige-btn {
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+            font-size: 1.2rem;
+            padding: 12px 25px;
+            margin-top: 15px;
+            border-radius: 50px;
+            border: 2px solid var(--primary);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--primary);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 1px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .achievements {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .achievement {
+            width: 50px;
+            height: 50px;
+            background: #444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            opacity: 0.3;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .achievement.unlocked {
+            opacity: 1;
+            background: linear-gradient(135deg, #FFD700, #B8860B);
+            color: #000;
+            border-color: #FFF;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .save-notice {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #0f0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .stat-card {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Coin Clicker</h1>
-        <div id="stats">
-            <div>Coins: <span id="coins">0</span></div>
-            <div>Per Click: <span id="per-click">1</span></div>
+        <header>
+            <h1>Coin Clicker</h1>
+        </header>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div>Coins</div>
+                <div class="stat-value" id="coins">0</div>
+            </div>
+            <div class="stat-card">
+                <div>Per Click</div>
+                <div class="stat-value" id="per-click">1</div>
+            </div>
+            <div class="stat-card">
+                <div>Prestige</div>
+                <div class="stat-value" id="prestige">0</div>
+            </div>
         </div>
         
-        <div id="coin"></div>
+        <div id="coin-container">
+            <div id="coin"></div>
+            <div id="coin-shadow"></div>
+        </div>
         
         <div class="upgrades">
             <button class="upgrade" onclick="buyUpgrade('click')" id="click-upgrade">
-                Upgrade Click (+1) - Cost: <span id="click-cost">50</span>
+                <div class="upgrade-title">
+                    <span>Stronger Fingers</span>
+                    <span class="upgrade-level" id="click-level">1</span>
+                </div>
+                <div>Increase coins per click</div>
+                <div class="upgrade-cost">
+                    <span>Cost:</span>
+                    <span id="click-cost">50</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="click-progress"></div>
+                </div>
             </button>
-            <button class="upgrade" onclick="buyUpgrade('auto')" id="auto-upgrade" disabled>
-                Auto-Clicker (Locked) - Cost: <span id="auto-cost">500</span>
+            
+            <button class="upgrade" onclick="buyUpgrade('auto')" id="auto-upgrade">
+                <div class="upgrade-title">
+                    <span>Auto-Clicker</span>
+                    <span class="upgrade-level" id="auto-level">0</span>
+                </div>
+                <div>Automatically click every second</div>
+                <div class="upgrade-cost">
+                    <span>Cost:</span>
+                    <span id="auto-cost">500</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="auto-progress"></div>
+                </div>
+            </button>
+            
+            <button class="upgrade" onclick="buyUpgrade('multiplier')" id="multiplier-upgrade">
+                <div class="upgrade-title">
+                    <span>Coin Multiplier</span>
+                    <span class="upgrade-level" id="multiplier-level">1</span>
+                </div>
+                <div>Multiply all income</div>
+                <div class="upgrade-cost">
+                    <span>Cost:</span>
+                    <span id="multiplier-cost">1000</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="multiplier-progress"></div>
+                </div>
+            </button>
+            
+            <button class="upgrade" onclick="buyUpgrade('critical')" id="critical-upgrade">
+                <div class="upgrade-title">
+                    <span>Critical Hits</span>
+                    <span class="upgrade-level" id="critical-level">1</span>
+                </div>
+                <div>Chance for critical click</div>
+                <div class="upgrade-cost">
+                    <span>Cost:</span>
+                    <span id="critical-cost">2000</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="critical-progress"></div>
+                </div>
             </button>
         </div>
+        
+        <div class="prestige-section">
+            <h2>Prestige System</h2>
+            <p>Reset your progress to gain permanent bonuses</p>
+            <div>Prestige bonus: <span id="prestige-bonus">0</span>%</div>
+            <button class="upgrade prestige" id="prestige-btn" onclick="doPrestige()">
+                Prestige (Requires 10,000 coins)
+            </button>
+        </div>
+        
+        <div class="achievements">
+            <div class="achievement" id="ach1">💰</div>
+            <div class="achievement" id="ach2">⚡</div>
+            <div class="achievement" id="ach3">🌟</div>
+            <div class="achievement" id="ach4">🏆</div>
+        </div>
     </div>
+    
+    <div class="notification" id="notification"></div>
+    <div class="save-notice" id="save-notice">Game saved!</div>
 
     <script>
         // Game state
         let coins = 0;
         let perClick = 1;
-        let clickUpgradeCost = 50;
-        let autoUpgradeCost = 500;
+        let prestige = 0;
+        let prestigeBonus = 0;
+        
+        // Upgrades
+        let upgrades = {
+            click: { level: 1, cost: 50, effect: 1 },
+            auto: { level: 0, cost: 500, effect: 0 },
+            multiplier: { level: 1, cost: 1000, effect: 1 },
+            critical: { level: 1, cost: 2000, chance: 0.05, multiplier: 2 }
+        };
+        
         let autoClicker = 0;
         let autoClickerInterval;
+        let lastSave = Date.now();
         
         // DOM elements
         const coinEl = document.getElementById('coin');
         const coinsEl = document.getElementById('coins');
         const perClickEl = document.getElementById('per-click');
+        const prestigeEl = document.getElementById('prestige');
+        const prestigeBonusEl = document.getElementById('prestige-bonus');
+        const notificationEl = document.getElementById('notification');
+        const saveNoticeEl = document.getElementById('save-notice');
+        
+        // Initialize
+        loadGame();
         
         // Click handler
         coinEl.addEventListener('click', (e) => {
+            // Calculate base coins
+            let baseCoins = perClick;
+            
+            // Apply prestige bonus
+            baseCoins *= (1 + prestigeBonus/100);
+            
+            // Apply multiplier
+            baseCoins *= upgrades.multiplier.effect;
+            
+            // Check for critical hit
+            let isCritical = false;
+            if (Math.random() < upgrades.critical.chance) {
+                baseCoins *= upgrades.critical.multiplier;
+                isCritical = true;
+            }
+            
             // Add coins
-            coins += perClick;
+            coins += baseCoins;
             updateUI();
             
-            // Create +1 animation
-            createClickAnimation(e.clientX, e.clientY);
+            // Create animation
+            createClickAnimation(e.clientX, e.clientY, Math.floor(baseCoins), isCritical);
             
             // Coin animation
             coinEl.style.transform = 'scale(0.95) rotate(15deg)';
             setTimeout(() => {
                 coinEl.style.transform = 'scale(1) rotate(0)';
             }, 100);
+            
+            // Auto-save every 30 seconds
+            if (Date.now() - lastSave > 30000) {
+                saveGame();
+                showSaveNotice();
+                lastSave = Date.now();
+            }
         });
         
         // Upgrade functions
         function buyUpgrade(type) {
-            if (type === 'click' && coins >= clickUpgradeCost) {
-                coins -= clickUpgradeCost;
-                perClick += 1;
-                clickUpgradeCost = Math.floor(clickUpgradeCost * 1.5);
-                updateUI();
-            } else if (type === 'auto' && coins >= autoUpgradeCost) {
-                coins -= autoUpgradeCost;
-                autoClicker += 1;
-                autoUpgradeCost = Math.floor(autoUpgradeCost * 2);
+            const upgrade = upgrades[type];
+            
+            if (coins >= upgrade.cost) {
+                coins -= upgrade.cost;
                 
-                if (!autoClickerInterval) {
+                switch (type) {
+                    case 'click':
+                        upgrade.level++;
+                        upgrade.effect += 1;
+                        perClick = upgrade.effect;
+                        upgrade.cost = Math.floor(upgrade.cost * 1.8);
+                        showNotification("Click power increased!");
+                        break;
+                        
+                    case 'auto':
+                        upgrade.level++;
+                        autoClicker += 1;
+                        upgrade.cost = Math.floor(upgrade.cost * 2.2);
+                        
+                        if (!autoClickerInterval) {
+                            autoClickerInterval = setInterval(() => {
+                                coins += autoClicker;
+                                updateUI();
+                            }, 1000);
+                        }
+                        
+                        showNotification("Auto-clicker installed!");
+                        break;
+                        
+                    case 'multiplier':
+                        upgrade.level++;
+                        upgrade.effect += 0.5;
+                        upgrade.cost = Math.floor(upgrade.cost * 2.5);
+                        showNotification("Income multiplier increased!");
+                        break;
+                        
+                    case 'critical':
+                        upgrade.level++;
+                        upgrade.chance += 0.02;
+                        upgrade.multiplier += 0.5;
+                        upgrade.cost = Math.floor(upgrade.cost * 3);
+                        showNotification("Critical hit chance increased!");
+                        break;
+                }
+                
+                // Unlock achievements
+                checkAchievements();
+                
+                updateUI();
+                saveGame();
+            }
+        }
+        
+        // Prestige function
+        function doPrestige() {
+            if (coins >= 10000) {
+                prestige++;
+                prestigeBonus = prestige * 5; // 5% per prestige
+                
+                // Reset game state
+                coins = 0;
+                perClick = 1;
+                autoClicker = 0;
+                clearInterval(autoClickerInterval);
+                autoClickerInterval = null;
+                
+                // Reset upgrades
+                upgrades = {
+                    click: { level: 1, cost: 50, effect: 1 },
+                    auto: { level: 0, cost: 500, effect: 0 },
+                    multiplier: { level: 1, cost: 1000, effect: 1 },
+                    critical: { level: 1, cost: 2000, chance: 0.05, multiplier: 2 }
+                };
+                
+                showNotification(`Prestige ${prestige} achieved! +${prestigeBonus}% bonus`);
+                updateUI();
+                saveGame();
+            }
+        }
+        
+        // UI update
+        function updateUI() {
+            // Update coins and stats
+            coinsEl.textContent = Math.floor(coins);
+            perClickEl.textContent = perClick.toFixed(1);
+            prestigeEl.textContent = prestige;
+            prestigeBonusEl.textContent = prestigeBonus;
+            
+            // Update upgrade info
+            document.getElementById('click-level').textContent = upgrades.click.level;
+            document.getElementById('click-cost').textContent = Math.floor(upgrades.click.cost);
+            document.getElementById('auto-level').textContent = upgrades.auto.level;
+            document.getElementById('auto-cost').textContent = Math.floor(upgrades.auto.cost);
+            document.getElementById('multiplier-level').textContent = upgrades.multiplier.level;
+            document.getElementById('multiplier-cost').textContent = Math.floor(upgrades.multiplier.cost);
+            document.getElementById('critical-level').textContent = upgrades.critical.level;
+            document.getElementById('critical-cost').textContent = Math.floor(upgrades.critical.cost);
+            
+            // Update progress bars
+            document.getElementById('click-progress').style.width = 
+                Math.min(100, (coins / upgrades.click.cost) * 100) + '%';
+            
+            document.getElementById('auto-progress').style.width = 
+                Math.min(100, (coins / upgrades.auto.cost) * 100) + '%';
+            
+            document.getElementById('multiplier-progress').style.width = 
+                Math.min(100, (coins / upgrades.multiplier.cost) * 100) + '%';
+            
+            document.getElementById('critical-progress').style.width = 
+                Math.min(100, (coins / upgrades.critical.cost) * 100) + '%';
+            
+            // Enable/disable buttons
+            document.getElementById('click-upgrade').disabled = coins < upgrades.click.cost;
+            document.getElementById('auto-upgrade').disabled = coins < upgrades.auto.cost;
+            document.getElementById('multiplier-upgrade').disabled = coins < upgrades.multiplier.cost;
+            document.getElementById('critical-upgrade').disabled = coins < upgrades.critical.cost;
+            document.getElementById('prestige-btn').disabled = coins < 10000;
+        }
+        
+        // Click animation
+        function createClickAnimation(x, y, amount, isCritical) {
+            const anim = document.createElement('div');
+            anim.className = 'coin-click';
+            anim.textContent = `+${Math.floor(amount)}`;
+            anim.style.left = `${x - 20}px`;
+            anim.style.top = `${y - 20}px`;
+            
+            if (isCritical) {
+                anim.style.color = '#ff0000';
+                anim.style.fontSize = '2rem';
+                anim.style.fontWeight = 'bold';
+                anim.textContent = `CRIT! +${Math.floor(amount)}`;
+            }
+            
+            document.body.appendChild(anim);
+            
+            setTimeout(() => {
+                anim.remove();
+            }, 1500);
+        }
+        
+        // Show notification
+        function showNotification(text) {
+            notificationEl.textContent = text;
+            notificationEl.style.opacity = '1';
+            
+            setTimeout(() => {
+                notificationEl.style.opacity = '0';
+            }, 3000);
+        }
+        
+        // Show save notice
+        function showSaveNotice() {
+            saveNoticeEl.style.opacity = '1';
+            
+            setTimeout(() => {
+                saveNoticeEl.style.opacity = '0';
+            }, 2000);
+        }
+        
+        // Check achievements
+        function checkAchievements() {
+            if (coins >= 1000 && !document.getElementById('ach1').classList.contains('unlocked')) {
+                document.getElementById('ach1').classList.add('unlocked');
+                showNotification('Achievement Unlocked: First Thousand!');
+            }
+            
+            if (upgrades.auto.level >= 5 && !document.getElementById('ach2').classList.contains('unlocked')) {
+                document.getElementById('ach2').classList.add('unlocked');
+                showNotification('Achievement Unlocked: Auto Master!');
+            }
+            
+            if (prestige >= 1 && !document.getElementById('ach3').classList.contains('unlocked')) {
+                document.getElementById('ach3').classList.add('unlocked');
+                showNotification('Achievement Unlocked: First Prestige!');
+            }
+            
+            if (coins >= 100000 && !document.getElementById('ach4').classList.contains('unlocked')) {
+                document.getElementById('ach4').classList.add('unlocked');
+                showNotification('Achievement Unlocked: Coin Magnate!');
+            }
+        }
+        
+        // Save game
+        function saveGame() {
+            const gameData = {
+                coins,
+                perClick,
+                prestige,
+                prestigeBonus,
+                upgrades,
+                autoClicker,
+                achievements: [
+                    document.getElementById('ach1').classList.contains('unlocked'),
+                    document.getElementById('ach2').classList.contains('unlocked'),
+                    document.getElementById('ach3').classList.contains('unlocked'),
+                    document.getElementById('ach4').classList.contains('unlocked')
+                ]
+            };
+            
+            localStorage.setItem('coinClickerSave', JSON.stringify(gameData));
+        }
+        
+        // Load game
+        function loadGame() {
+            const savedData = localStorage.getItem('coinClickerSave');
+            
+            if (savedData) {
+                const gameData = JSON.parse(savedData);
+                
+                coins = gameData.coins || 0;
+                perClick = gameData.perClick || 1;
+                prestige = gameData.prestige || 0;
+                prestigeBonus = gameData.prestigeBonus || 0;
+                upgrades = gameData.upgrades || {
+                    click: { level: 1, cost: 50, effect: 1 },
+                    auto: { level: 0, cost: 500, effect: 0 },
+                    multiplier: { level: 1, cost: 1000, effect: 1 },
+                    critical: { level: 1, cost: 2000, chance: 0.05, multiplier: 2 }
+                };
+                autoClicker = gameData.autoClicker || 0;
+                
+                // Start auto-clicker if needed
+                if (autoClicker > 0 && !autoClickerInterval) {
                     autoClickerInterval = setInterval(() => {
                         coins += autoClicker;
                         updateUI();
                     }, 1000);
                 }
                 
+                // Load achievements
+                if (gameData.achievements) {
+                    if (gameData.achievements[0]) document.getElementById('ach1').classList.add('unlocked');
+                    if (gameData.achievements[1]) document.getElementById('ach2').classList.add('unlocked');
+                    if (gameData.achievements[2]) document.getElementById('ach3').classList.add('unlocked');
+                    if (gameData.achievements[3]) document.getElementById('ach4').classList.add('unlocked');
+                }
+                
                 updateUI();
+                showNotification('Game loaded!');
             }
         }
         
-        // UI update
-        function updateUI() {
-            coinsEl.textContent = coins;
-            perClickEl.textContent = perClick;
-            
-            document.getElementById('click-cost').textContent = clickUpgradeCost;
-            document.getElementById('auto-cost').textContent = autoUpgradeCost;
-            
-            document.getElementById('click-upgrade').disabled = coins < clickUpgradeCost;
-            
-            if (coins >= 300) {
-                document.getElementById('auto-upgrade').disabled = coins < autoUpgradeCost;
-                document.getElementById('auto-upgrade').textContent = `Auto-Clicker (${autoClicker}) - Cost: `;
-            }
-        }
+        // Initialize auto-save
+        setInterval(saveGame, 60000); // Save every minute
         
-        // Click animation
-        function createClickAnimation(x, y) {
-            const anim = document.createElement('div');
-            anim.className = 'coin-click';
-            anim.textContent = `+${perClick}`;
-            anim.style.left = `${x - 20}px`;
-            anim.style.top = `${y - 20}px`;
-            document.body.appendChild(anim);
-            
-            setTimeout(() => {
-                anim.remove();
-            }, 1000);
-        }
-        
-        // Initialize
+        // Initial UI update
         updateUI();
     </script>
 </body>
