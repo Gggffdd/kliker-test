@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Coin Clicker</title>
+    <title>Golden Coin Clicker</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -90,8 +90,8 @@
         
         #coin-container {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             margin: 0 auto 30px;
             cursor: pointer;
         }
@@ -99,30 +99,47 @@
         #coin {
             width: 100%;
             height: 100%;
-            background: url('https://i.imgur.com/1HDp2PO.png') center/contain no-repeat;
-            transition: transform 0.3s;
+            background: url('https://i.imgur.com/g20MY7g.png') center/contain no-repeat;
+            transition: all 0.3s;
+            transform: scale(1);
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
+        }
+        
+        #coin:hover {
+            transform: scale(1.05) rotate(5deg);
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9));
         }
         
         #coin:active {
             transform: scale(0.95) rotate(15deg);
         }
         
+        @keyframes coin-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.07); }
+            100% { transform: scale(1); }
+        }
+        
+        #coin.pulse {
+            animation: coin-pulse 2s infinite;
+        }
+        
         #coin-shadow {
             position: absolute;
-            bottom: -10px;
+            bottom: -15px;
             left: 10%;
             width: 80%;
-            height: 20px;
-            background: rgba(0, 0, 0, 0.5);
+            height: 30px;
+            background: rgba(0, 0, 0, 0.7);
             border-radius: 50%;
-            filter: blur(10px);
+            filter: blur(15px);
             z-index: -1;
             transition: all 0.3s;
         }
         
         #coin-container:active #coin-shadow {
             transform: scale(0.9);
-            filter: blur(8px);
+            filter: blur(12px);
         }
         
         .coin-click {
@@ -318,7 +335,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>Coin Clicker</h1>
+            <h1>Golden Coin Clicker</h1>
         </header>
         
         <div class="stats">
@@ -337,7 +354,7 @@
         </div>
         
         <div id="coin-container">
-            <div id="coin"></div>
+            <div id="coin" class="pulse"></div>
             <div id="coin-shadow"></div>
         </div>
         
@@ -743,6 +760,13 @@
         
         // Initial UI update
         updateUI();
+        
+        // Add parallax effect
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 10;
+            const y = (e.clientY / window.innerHeight - 0.5) * 10;
+            coinEl.style.transform = `translate(${x}px, ${y}px) rotate(${x}deg)`;
+        });
     </script>
 </body>
 </html>
