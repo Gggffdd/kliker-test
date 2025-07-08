@@ -6,6 +6,7 @@
     <title>FG BOT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Базовые стили */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -24,6 +25,43 @@
             position: relative;
             padding: 20px;
             margin: 0;
+        }
+        
+        .desktop-block {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        .desktop-block h2 {
+            color: #ff6b6b;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .desktop-block p {
+            color: #4facfe;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+        
+        .desktop-qr {
+            width: 200px;
+            height: 200px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
         }
         
         .crypto-bg {
@@ -590,6 +628,95 @@
             animation: coin-spin 1s ease-in-out;
         }
         
+        /* Премиум магазин */
+        .premium-shop {
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 15px;
+            margin-top: 20px;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        .wallet-section {
+            background: rgba(20, 30, 50, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .wallet-status {
+            margin: 15px 0;
+            font-size: 1.1rem;
+        }
+        
+        .wallet-address {
+            font-family: monospace;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            word-break: break-all;
+            font-size: 0.9rem;
+        }
+        
+        .shop-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .shop-item {
+            background: rgba(25, 35, 60, 0.8);
+            border-radius: 12px;
+            padding: 20px 15px;
+            border: 2px solid #ffb300;
+            transition: all 0.3s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shop-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #ffb300, #ff6b00);
+        }
+        
+        .shop-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #ffb300;
+        }
+        
+        .shop-item .price {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            font-weight: bold;
+            color: #ffb300;
+        }
+        
+        .shop-item .price img {
+            width: 24px;
+            height: 24px;
+            margin-right: 5px;
+        }
+        
+        .shop-item .item-desc {
+            font-size: 0.85rem;
+            color: #a0a0ff;
+            margin-bottom: 15px;
+            min-height: 60px;
+        }
+        
         /* Адаптивность */
         @media (max-width: 600px) {
             .container {
@@ -650,6 +777,10 @@
                 height: 90px;
                 padding: 10px 5px;
             }
+            
+            .shop-items {
+                grid-template-columns: 1fr;
+            }
         }
         
         /* Кнопки */
@@ -698,6 +829,10 @@
         
         .upgrade-btn {
             background: linear-gradient(45deg, #9c27b0, #673ab7);
+        }
+        
+        .premium-btn {
+            background: linear-gradient(45deg, #ffb300, #ff6b00);
         }
         
         /* Модальное окно настроек */
@@ -862,10 +997,99 @@
             border: 1px solid #ff6b6b;
             color: #ff6b6b;
         }
+        
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 30, 50, 0.9);
+            color: #4facfe;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: 600;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        .save-notice {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 30, 50, 0.9);
+            color: #00f2fe;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: 600;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Новые анимации */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px #4facfe; }
+            50% { box-shadow: 0 0 20px #4facfe; }
+            100% { box-shadow: 0 0 5px #4facfe; }
+        }
+        
+        .glow {
+            animation: glow 3s infinite;
+        }
+        
+        /* Стили для Toncoin иконки */
+        .ton-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #0088cc, #00aced);
+            border-radius: 50%;
+            margin-right: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ton-icon::before {
+            content: 'T';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Блокировка для компьютеров -->
+    <div class="desktop-block">
+        <h2>FG Bot доступен только на мобильных устройствах!</h2>
+        <p>Пожалуйста, откройте эту страницу на вашем смартфоне или планшете для доступа к игре.</p>
+        <div class="desktop-qr">QR-код для мобильного устройства</div>
+        <p>Отсканируйте QR-код для быстрого доступа с мобильного устройства</p>
+    </div>
+    
     <div class="crypto-bg"></div>
     <div class="crypto-particles" id="crypto-particles"></div>
     
@@ -979,7 +1203,7 @@
             </div>
         </div>
         
-        <!-- Новая вкладка Улучшения -->
+        <!-- Вкладка Улучшения -->
         <div id="upgrades" class="tab-content">
             <div class="quest-card">
                 <h3><i class="fas fa-arrow-up"></i> <span class="lang-upgrades-title">Улучшения</span></h3>
@@ -1033,6 +1257,85 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Вкладка Премиум Магазин -->
+        <div id="premium" class="tab-content">
+            <div class="premium-shop">
+                <h3><i class="fas fa-crown"></i> Премиум Магазин</h3>
+                <p>Покупайте уникальные предметы за Toncoin</p>
+                
+                <div class="wallet-section">
+                    <h4>Подключение кошелька</h4>
+                    <div class="wallet-status" id="wallet-status">Кошелек не подключен</div>
+                    <button class="btn premium-btn" id="connect-wallet">
+                        <i class="fas fa-wallet"></i> Подключить Tonkeeper
+                    </button>
+                    <div class="wallet-address" id="wallet-address"></div>
+                </div>
+                
+                <div class="shop-items">
+                    <div class="shop-item">
+                        <i class="fas fa-coins"></i>
+                        <h3>Золотой пакет</h3>
+                        <div class="item-desc">+50 000 монет для вашей игры</div>
+                        <div class="price">
+                            <div class="ton-icon"></div> 0.5 TON
+                        </div>
+                        <button class="btn premium-btn">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <i class="fas fa-gem"></i>
+                        <h3>Бриллиантовая энергия</h3>
+                        <div class="item-desc">Бесконечная энергия на 24 часа</div>
+                        <div class="price">
+                            <div class="ton-icon"></div> 1.0 TON
+                        </div>
+                        <button class="btn premium-btn">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Бустер кликов</h3>
+                        <div class="item-desc">+10 монет за клик на 12 часов</div>
+                        <div class="price">
+                            <div class="ton-icon"></div> 0.8 TON
+                        </div>
+                        <button class="btn premium-btn">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Защита от потерь</h3>
+                        <div class="item-desc">Сохранение прогресса при сбросе</div>
+                        <div class="price">
+                            <div class="ton-icon"></div> 1.5 TON
+                        </div>
+                        <button class="btn premium-btn">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <i class="fas fa-robot"></i>
+                        <h3>Профессиональный кликер</h3>
+                        <div class="item-desc">+5 автокликеров навсегда</div>
+                        <div class="price">
+                            <div class="ton-icon"></div> 2.0 TON
+                        </div>
+                        <button class="btn premium-btn">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- Навигация внизу -->
@@ -1049,6 +1352,9 @@
             </div>
             <div class="tab" data-tab="bonuses">
                 <i class="fas fa-gift"></i> <span class="lang-tab-bonuses">Бонусы</span>
+            </div>
+            <div class="tab" data-tab="premium">
+                <i class="fas fa-crown"></i> <span>Премиум</span>
             </div>
         </div>
     </div>
@@ -1088,11 +1394,22 @@
     <div class="save-notice" id="save-notice"><span class="lang-game-saved">Игра сохранена!</span></div>
 
     <script>
+        // ========== БЛОКИРОВКА ДОСТУПА НА КОМПЬЮТЕРАХ ==========
+        function isMobileDevice() {
+            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+        }
+        
+        if (!isMobileDevice()) {
+            document.querySelector('.desktop-block').style.display = 'flex';
+            document.querySelector('.container').style.display = 'none';
+            document.querySelector('.bottom-nav').style.display = 'none';
+        }
+        
         // ========== ИНИЦИАЛИЗАЦИЯ ИГРЫ ==========
         
         // Состояние игры
         let coins = 0;
-        let perClick = 2; // Изменено с 1 на 2
+        let perClick = 2;
         let level = 1;
         let lastDailyReward = 0;
         let currentDay = 0;
@@ -1101,6 +1418,9 @@
         let lastSave = Date.now();
         let language = 'ru';
         let usedPromoCodes = [];
+        let walletConnected = false;
+        let walletAddress = '';
+        
         let quests = {
             telegram: { completed: false, reward: 500 },
             chat: { completed: false, reward: 1000 }
@@ -1113,8 +1433,8 @@
         // Улучшения
         let upgrades = {
             click: { level: 0, cost: 1500, effect: 0 },
-            auto: { level: 0, cost: 15000, effect: 0 }, // Цена изменена на 15000
-            critical: { level: 0, cost: 7500, effect: 0 } // Цена изменена на 7500
+            auto: { level: 0, cost: 15000, effect: 0 },
+            critical: { level: 0, cost: 7500, effect: 0 }
         };
         
         let autoClickerInterval;
@@ -1247,6 +1567,9 @@
         const buyCriticalBtn = document.getElementById('buy-critical-btn');
         const energyFill = document.getElementById('energy-fill');
         const energyText = document.getElementById('energy-text');
+        const walletStatus = document.getElementById('wallet-status');
+        const walletAddressEl = document.getElementById('wallet-address');
+        const connectWalletBtn = document.getElementById('connect-wallet');
 
         // Создание крипто-частиц
         function createParticles() {
@@ -1299,7 +1622,7 @@
                 const gameData = JSON.parse(savedData);
                 
                 coins = gameData.coins || 0;
-                perClick = gameData.perClick || 2; // Изменено с 1 на 2
+                perClick = gameData.perClick || 2;
                 level = gameData.level || 1;
                 lastDailyReward = gameData.lastDailyReward || 0;
                 currentDay = gameData.currentDay || 0;
@@ -1308,18 +1631,23 @@
                 energy = gameData.energy || 1000;
                 language = gameData.language || 'ru';
                 usedPromoCodes = gameData.usedPromoCodes || [];
+                walletConnected = gameData.walletConnected || false;
+                walletAddress = gameData.walletAddress || '';
                 quests = gameData.quests || {
                     telegram: { completed: false, reward: 500 },
                     chat: { completed: false, reward: 1000 }
                 };
                 upgrades = gameData.upgrades || {
                     click: { level: 0, cost: 1500, effect: 0 },
-                    auto: { level: 0, cost: 15000, effect: 0 }, // Цена изменена
-                    critical: { level: 0, cost: 7500, effect: 0 } // Цена изменена
+                    auto: { level: 0, cost: 15000, effect: 0 },
+                    critical: { level: 0, cost: 7500, effect: 0 }
                 };
                 
                 // Обновить состояние кнопок заданий
                 updateQuestButtons();
+                
+                // Обновить состояние кошелька
+                updateWalletStatus();
                 
                 // Установить язык
                 languageSelect.value = language;
@@ -1609,6 +1937,34 @@
             }
         }
         
+        // Подключение кошелька
+        function connectWallet() {
+            // Эмуляция подключения кошелька
+            walletConnected = true;
+            walletAddress = 'EQD...' + Math.random().toString(36).substr(2, 6);
+            
+            updateWalletStatus();
+            saveGame();
+            showNotification('Кошелек успешно подключен!');
+        }
+        
+        // Обновить статус кошелька
+        function updateWalletStatus() {
+            if (walletConnected) {
+                walletStatus.textContent = 'Кошелек подключен';
+                walletStatus.style.color = '#00f2fe';
+                walletAddressEl.textContent = walletAddress;
+                connectWalletBtn.textContent = 'Кошелек подключен';
+                connectWalletBtn.disabled = true;
+            } else {
+                walletStatus.textContent = 'Кошелек не подключен';
+                walletStatus.style.color = '#ff6b6b';
+                walletAddressEl.textContent = '';
+                connectWalletBtn.textContent = 'Подключить Tonkeeper';
+                connectWalletBtn.disabled = false;
+            }
+        }
+        
         // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
         
         // Обновление UI
@@ -1707,6 +2063,8 @@
                 energy,
                 language,
                 usedPromoCodes,
+                walletConnected,
+                walletAddress,
                 quests
             };
             
@@ -1776,6 +2134,9 @@
             buyClickBtn.addEventListener('click', () => buyUpgrade('click'));
             buyAutoBtn.addEventListener('click', () => buyUpgrade('auto'));
             buyCriticalBtn.addEventListener('click', () => buyUpgrade('critical'));
+            
+            // Подключение кошелька
+            connectWalletBtn.addEventListener('click', connectWallet);
         }
         
         // Загрузка игры при старте
@@ -1784,6 +2145,7 @@
             initEventListeners();
             loadGame();
             updateQuestButtons();
+            updateWalletStatus();
             
             // Автосохранение каждую минуту
             setInterval(saveGame, 60000);
