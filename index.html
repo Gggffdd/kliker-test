@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRYPTO TAP</title>
+    <title>FG BOT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -327,6 +327,34 @@
             }
         }
         
+        /* Энергетический бар */
+        .energy-container {
+            margin-top: 20px;
+            padding: 0 15px;
+        }
+        
+        .energy-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(to right, #00f2fe, #4facfe);
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        
+        .energy-text {
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #a0a0ff;
+        }
+        
         /* Страница заданий */
         .quests-section {
             padding: 20px;
@@ -502,16 +530,22 @@
         /* Ежедневные награды */
         .daily-rewards {
             display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
+            justify-content: center;
             flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
         }
         
         .reward-day {
             background: rgba(20, 30, 50, 0.8);
             border-radius: 12px;
             padding: 15px 10px;
-            width: 60px;
+            width: 70px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             border: 2px solid #4a5fc1;
             margin: 5px;
             transition: all 0.3s;
@@ -605,6 +639,16 @@
                 width: 180px;
                 height: 180px;
                 font-size: 2.8rem;
+            }
+            
+            .daily-rewards {
+                gap: 5px;
+            }
+            
+            .reward-day {
+                width: 60px;
+                height: 90px;
+                padding: 10px 5px;
             }
         }
         
@@ -827,7 +871,7 @@
     
     <div class="container">
         <header>
-            <h1><i class="fas fa-coins"></i> CRYPTO TAP</h1>
+            <h1><i class="fas fa-coins"></i> FG BOT</h1>
             <div class="settings-btn" id="settings-btn">
                 <i class="fas fa-cog"></i>
             </div>
@@ -841,7 +885,7 @@
             </div>
             <div class="stat-card">
                 <div><i class="fas fa-mouse"></i> <span class="lang-per-click">За клик</span></div>
-                <div class="stat-value" id="per-click">1</div>
+                <div class="stat-value" id="per-click">2</div>
             </div>
             <div class="stat-card">
                 <div><i class="fas fa-star"></i> <span class="lang-level">Уровень</span></div>
@@ -855,6 +899,14 @@
                 <div id="coin" class="pulse">FG</div>
                 <div id="coin-shadow"></div>
             </div>
+            
+            <!-- Энергетический бар -->
+            <div class="energy-container">
+                <div class="energy-bar">
+                    <div class="energy-fill" id="energy-fill"></div>
+                </div>
+                <div class="energy-text" id="energy-text">1000/1000</div>
+            </div>
         </div>
         
         <!-- Вкладка Задания -->
@@ -867,8 +919,8 @@
                     <div class="quest-grid">
                         <div class="quest" id="telegram-quest">
                             <i class="fab fa-telegram"></i>
-                            <h3 class="lang-quest-1">Подписка на Telegram</h3>
-                            <p class="lang-quest-1-desc">Подпишитесь на наш канал и получите бонусные монеты</p>
+                            <h3 class="lang-quest1">Подписка на Telegram</h3>
+                            <p class="lang-quest1Desc">Подпишитесь на наш канал и получите бонусные монеты</p>
                             <button class="btn telegram-btn" id="telegram-btn">
                                 <i class="fab fa-telegram"></i> <span class="lang-join-telegram">Присоединиться</span>
                             </button>
@@ -878,8 +930,8 @@
                         </div>
                         <div class="quest" id="chat-quest">
                             <i class="fas fa-comments"></i>
-                            <h3 class="lang-quest-2">Вход в чат</h3>
-                            <p class="lang-quest-2-desc">Присоединитесь к нашему чату и получите бонус</p>
+                            <h3 class="lang-quest2">Вход в чат</h3>
+                            <p class="lang-quest2Desc">Присоединитесь к нашему чату и получите бонус</p>
                             <button class="btn chat-btn" id="chat-btn">
                                 <i class="fas fa-comments"></i> <span class="lang-join-chat">Войти в чат</span>
                             </button>
@@ -936,8 +988,8 @@
                 <div class="upgrade-card">
                     <div class="upgrade" id="click-upgrade">
                         <i class="fas fa-hand-pointer"></i>
-                        <h3 class="lang-upgrade-1">Улучшение клика</h3>
-                        <p class="lang-upgrade-1-desc">Увеличивает количество монет за каждый клик</p>
+                        <h3 class="lang-upgrade1">Улучшение клика</h3>
+                        <p class="lang-upgrade1Desc">Увеличивает количество монет за каждый клик</p>
                         <div class="upgrade-cost">
                             <i class="fas fa-coins"></i> <span id="click-upgrade-cost">1500</span> монет
                         </div>
@@ -951,10 +1003,10 @@
                     
                     <div class="upgrade" id="auto-clicker">
                         <i class="fas fa-robot"></i>
-                        <h3 class="lang-upgrade-2">Автокликер</h3>
-                        <p class="lang-upgrade-2-desc">Автоматически кликает за вас каждую секунду</p>
+                        <h3 class="lang-upgrade2">Автокликер</h3>
+                        <p class="lang-upgrade2Desc">Автоматически кликает за вас каждую секунду</p>
                         <div class="upgrade-cost">
-                            <i class="fas fa-coins"></i> <span id="auto-clicker-cost">5000</span> монет
+                            <i class="fas fa-coins"></i> <span id="auto-clicker-cost">15000</span> монет
                         </div>
                         <div class="upgrade-effect">
                             +<span id="auto-clicker-effect">1</span> клик/сек
@@ -966,10 +1018,10 @@
                     
                     <div class="upgrade" id="critical-upgrade">
                         <i class="fas fa-bolt"></i>
-                        <h3 class="lang-upgrade-3">Критический удар</h3>
-                        <p class="lang-upgrade-3-desc">Шанс получить двойные монеты за клик</p>
+                        <h3 class="lang-upgrade3">Критический удар</h3>
+                        <p class="lang-upgrade3Desc">Шанс получить двойные монеты за клик</p>
                         <div class="upgrade-cost">
-                            <i class="fas fa-coins"></i> <span id="critical-upgrade-cost">10000</span> монет
+                            <i class="fas fa-coins"></i> <span id="critical-upgrade-cost">7500</span> монет
                         </div>
                         <div class="upgrade-effect">
                             <span id="critical-upgrade-effect">1</span>% шанс крита
@@ -1040,7 +1092,7 @@
         
         // Состояние игры
         let coins = 0;
-        let perClick = 1;
+        let perClick = 2; // Изменено с 1 на 2
         let level = 1;
         let lastDailyReward = 0;
         let currentDay = 0;
@@ -1054,11 +1106,15 @@
             chat: { completed: false, reward: 1000 }
         };
         
+        // Система энергии
+        let energy = 1000;
+        let maxEnergy = 1000;
+        
         // Улучшения
         let upgrades = {
-            click: { level: 1, cost: 1500, effect: 1 },
-            auto: { level: 0, cost: 5000, effect: 0 },
-            critical: { level: 0, cost: 10000, effect: 0 }
+            click: { level: 0, cost: 1500, effect: 0 },
+            auto: { level: 0, cost: 15000, effect: 0 }, // Цена изменена на 15000
+            critical: { level: 0, cost: 7500, effect: 0 } // Цена изменена на 7500
         };
         
         let autoClickerInterval;
@@ -1099,9 +1155,6 @@
                 resetGame: "Сбросить игру",
                 gameSaved: "Игра сохранена!",
                 claimed: "Выполнено",
-                joinTelegram: "Присоединиться",
-                joinChat: "Войти в чат",
-                claimReward: "Получить награду",
                 telegramSuccess: "Вы получили бонус за подписку!",
                 chatSuccess: "Вы получили бонус за вход в чат!",
                 upgradesTitle: "Улучшения",
@@ -1116,7 +1169,9 @@
                 upgradeSuccess: "Улучшение куплено!",
                 notEnoughCoins: "Недостаточно монет!",
                 criticalHit: "КРИТИЧЕСКИЙ УДАР!",
-                autoClickerActive: "Автокликер активирован!"
+                autoClickerActive: "Автокликер активирован!",
+                noEnergy: "Недостаточно энергии!",
+                energyRestored: "Энергия восстановлена!"
             },
             en: {
                 coins: "Coins",
@@ -1145,9 +1200,6 @@
                 resetGame: "Reset Game",
                 gameSaved: "Game saved!",
                 claimed: "Claimed",
-                joinTelegram: "Join Telegram",
-                joinChat: "Join Chat",
-                claimReward: "Claim Reward",
                 telegramSuccess: "You got bonus for subscription!",
                 chatSuccess: "You got bonus for joining chat!",
                 upgradesTitle: "Upgrades",
@@ -1162,7 +1214,9 @@
                 upgradeSuccess: "Upgrade purchased!",
                 notEnoughCoins: "Not enough coins!",
                 criticalHit: "CRITICAL HIT!",
-                autoClickerActive: "Auto clicker activated!"
+                autoClickerActive: "Auto clicker activated!",
+                noEnergy: "Not enough energy!",
+                energyRestored: "Energy restored!"
             }
         };
         
@@ -1191,6 +1245,8 @@
         const buyClickBtn = document.getElementById('buy-click-btn');
         const buyAutoBtn = document.getElementById('buy-auto-btn');
         const buyCriticalBtn = document.getElementById('buy-critical-btn');
+        const energyFill = document.getElementById('energy-fill');
+        const energyText = document.getElementById('energy-text');
 
         // Создание крипто-частиц
         function createParticles() {
@@ -1228,6 +1284,13 @@
             document.getElementById('critical-upgrade-cost').textContent = upgrades.critical.cost;
         }
         
+        // Обновить шкалу энергии
+        function updateEnergyBar() {
+            const percent = (energy / maxEnergy) * 100;
+            energyFill.style.width = `${percent}%`;
+            energyText.textContent = `${Math.floor(energy)}/${maxEnergy}`;
+        }
+        
         // Загрузка игры
         function loadGame() {
             const savedData = localStorage.getItem('cryptoTapSave');
@@ -1236,12 +1299,13 @@
                 const gameData = JSON.parse(savedData);
                 
                 coins = gameData.coins || 0;
-                perClick = gameData.perClick || 1;
+                perClick = gameData.perClick || 2; // Изменено с 1 на 2
                 level = gameData.level || 1;
                 lastDailyReward = gameData.lastDailyReward || 0;
                 currentDay = gameData.currentDay || 0;
                 criticalHits = gameData.criticalHits || 0;
                 totalCoins = gameData.totalCoins || 0;
+                energy = gameData.energy || 1000;
                 language = gameData.language || 'ru';
                 usedPromoCodes = gameData.usedPromoCodes || [];
                 quests = gameData.quests || {
@@ -1249,9 +1313,9 @@
                     chat: { completed: false, reward: 1000 }
                 };
                 upgrades = gameData.upgrades || {
-                    click: { level: 1, cost: 1500, effect: 1 },
-                    auto: { level: 0, cost: 5000, effect: 0 },
-                    critical: { level: 0, cost: 10000, effect: 0 }
+                    click: { level: 0, cost: 1500, effect: 0 },
+                    auto: { level: 0, cost: 15000, effect: 0 }, // Цена изменена
+                    critical: { level: 0, cost: 7500, effect: 0 } // Цена изменена
                 };
                 
                 // Обновить состояние кнопок заданий
@@ -1276,6 +1340,12 @@
         
         // Обработчик клика по монете
         function handleCoinClick(e) {
+            // Проверить энергию
+            if (energy <= 0) {
+                showNotification(translations[language].noEnergy);
+                return;
+            }
+            
             // Рассчитать базовые монеты
             let baseCoins = perClick + upgrades.click.effect;
             let isCritical = false;
@@ -1293,6 +1363,10 @@
             // Добавить монеты
             coins += baseCoins;
             totalCoins += baseCoins;
+            
+            // Уменьшить энергию
+            energy--;
+            
             updateUI();
             
             // Создать анимацию
@@ -1398,6 +1472,23 @@
                     "Сегодня вы уже получили награду. Завтра приходите снова!" : 
                     "You've already claimed today's reward. Come back tomorrow!";
                 dailyStatus.style.color = "#ff6b6b";
+            }
+            
+            // Обновить визуальное состояние ежедневных наград
+            updateDailyRewards();
+        }
+        
+        // Обновить визуальное состояние ежедневных наград
+        function updateDailyRewards() {
+            for (let i = 1; i <= 5; i++) {
+                const dayEl = document.getElementById(`day${i}`);
+                dayEl.classList.remove('active', 'claimed');
+                
+                if (currentDay >= i) {
+                    dayEl.classList.add('claimed');
+                } else if (currentDay === i - 1) {
+                    dayEl.classList.add('active');
+                }
             }
         }
         
@@ -1539,6 +1630,9 @@
             buyClickBtn.disabled = coins < upgrades.click.cost;
             buyAutoBtn.disabled = coins < upgrades.auto.cost;
             buyCriticalBtn.disabled = coins < upgrades.critical.cost;
+            
+            // Обновить шкалу энергии
+            updateEnergyBar();
         }
         
         // Анимация клика
@@ -1610,6 +1704,7 @@
                 currentDay,
                 criticalHits,
                 totalCoins,
+                energy,
                 language,
                 usedPromoCodes,
                 quests
@@ -1695,6 +1790,18 @@
             
             // Обновление UI каждую секунду
             setInterval(updateUI, 1000);
+            
+            // Восстановление энергии
+            setInterval(() => {
+                if (energy < maxEnergy) {
+                    energy += 1;
+                    updateEnergyBar();
+                    
+                    if (energy === maxEnergy) {
+                        showNotification(translations[language].energyRestored);
+                    }
+                }
+            }, 1000);
         });
     </script>
 </body>
