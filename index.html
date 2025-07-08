@@ -14,6 +14,7 @@
             --accent: #6a4cff;
             --critical: #ff3366;
             --success: #4CAF50;
+            --settings-bg: rgba(30, 20, 50, 0.95);
         }
         
         * {
@@ -32,6 +33,13 @@
             position: relative;
             padding: 20px;
             margin: 0;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255,215,0,0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255,215,0,0.1) 0%, transparent 20%),
+                url('https://i.imgur.com/6W9wF3H.png');
+            background-size: 50px 50px, 50px 50px, auto;
+            background-position: 0 0, 0 0, center;
+            background-blend-mode: screen;
         }
         
         body::before {
@@ -58,16 +66,26 @@
             backdrop-filter: blur(5px);
         }
         
-        /* Навигация */
+        /* Навигация внизу */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(30, 30, 60, 0.95);
+            padding: 10px;
+            z-index: 100;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.7);
+            border-top: 1px solid var(--primary);
+        }
+        
         .tabs {
             display: flex;
             justify-content: space-around;
-            margin-bottom: 20px;
-            background: rgba(30, 30, 60, 0.8);
-            border-radius: 50px;
-            padding: 5px;
             flex-wrap: wrap;
             gap: 5px;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
         .tab {
@@ -117,6 +135,9 @@
             padding-bottom: 15px;
             border-bottom: 2px solid var(--primary);
             position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         h1 {
@@ -129,6 +150,29 @@
             background-clip: text;
             color: transparent;
             position: relative;
+            flex: 1;
+            text-align: left;
+        }
+        
+        .settings-btn {
+            background: rgba(106, 76, 255, 0.3);
+            border: 1px solid var(--accent);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(106, 76, 255, 0.5);
+        }
+        
+        .settings-btn:hover {
+            transform: rotate(45deg);
+            box-shadow: 0 0 20px rgba(106, 76, 255, 0.8);
         }
         
         .stats {
@@ -577,10 +621,17 @@
             .tab {
                 flex: 0 0 48%;
                 margin-bottom: 5px;
+                min-width: 100px;
+                padding: 10px 0;
+                font-size: 0.9rem;
             }
             
             .upgrades {
                 grid-template-columns: 1fr;
+            }
+            
+            .bottom-nav {
+                padding: 5px;
             }
         }
         
@@ -674,33 +725,166 @@
             font-weight: bold;
             color: var(--success);
         }
+        
+        /* Модальное окно настроек */
+        .settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .settings-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+        
+        .settings-content {
+            background: var(--settings-bg);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(106, 76, 255, 0.5);
+            border: 2px solid var(--primary);
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        .settings-title {
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .setting-group {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .setting-group:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--primary);
+            text-align: left;
+        }
+        
+        .language-select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .promo-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .promo-btn {
+            background: linear-gradient(45deg, var(--accent), #8E2DE2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .promo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(106, 76, 255, 0.5);
+        }
+        
+        .reset-btn {
+            background: linear-gradient(45deg, #ff3366, #cc0000);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .reset-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.5);
+        }
+        
+        .promo-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .promo-success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+        
+        .promo-error {
+            background: rgba(255, 51, 102, 0.2);
+            border: 1px solid var(--critical);
+            color: var(--critical);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1><i class="fas fa-coins"></i> Golden Coin Clicker</h1>
-            <div class="btn" id="reset-btn"><i class="fas fa-redo"></i> Сбросить игру</div>
+            <div class="settings-btn" id="settings-btn">
+                <i class="fas fa-cog"></i>
+            </div>
         </header>
-        
-        <!-- Навигация -->
-        <div class="tabs">
-            <div class="tab active" data-tab="clicker">
-                <i class="fas fa-hand-pointer"></i> Кликер
-            </div>
-            <div class="tab" data-tab="upgrades">
-                <i class="fas fa-cogs"></i> Улучшения
-            </div>
-            <div class="tab" data-tab="prestige">
-                <i class="fas fa-crown"></i> Престиж
-            </div>
-            <div class="tab" data-tab="achievements">
-                <i class="fas fa-trophy"></i> Достижения
-            </div>
-            <div class="tab" data-tab="bonuses">
-                <i class="fas fa-gift"></i> Бонусы
-            </div>
-        </div>
         
         <!-- Статистика (только на вкладке Кликер) -->
         <div class="stats" id="stats-container">
@@ -942,6 +1126,58 @@
         </div>
     </div>
     
+    <!-- Навигация внизу -->
+    <div class="bottom-nav">
+        <div class="tabs">
+            <div class="tab active" data-tab="clicker">
+                <i class="fas fa-hand-pointer"></i> Кликер
+            </div>
+            <div class="tab" data-tab="upgrades">
+                <i class="fas fa-cogs"></i> Улучшения
+            </div>
+            <div class="tab" data-tab="prestige">
+                <i class="fas fa-crown"></i> Престиж
+            </div>
+            <div class="tab" data-tab="achievements">
+                <i class="fas fa-trophy"></i> Достижения
+            </div>
+            <div class="tab" data-tab="bonuses">
+                <i class="fas fa-gift"></i> Бонусы
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно настроек -->
+    <div class="settings-modal" id="settings-modal">
+        <div class="settings-content">
+            <button class="close-btn" id="close-settings">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="settings-title"><i class="fas fa-cog"></i> Настройки</h2>
+            
+            <div class="setting-group">
+                <label class="setting-label">Язык:</label>
+                <select class="language-select" id="language-select">
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            
+            <div class="setting-group">
+                <label class="setting-label">Промокод:</label>
+                <input type="text" class="promo-input" id="promo-input" placeholder="Введите промокод...">
+                <button class="promo-btn" onclick="activatePromo()">Активировать промокод</button>
+                <div class="promo-result" id="promo-result"></div>
+            </div>
+            
+            <div class="setting-group">
+                <button class="reset-btn" onclick="resetGame()">
+                    <i class="fas fa-redo"></i> Сбросить игру
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <div class="notification" id="notification"></div>
     <div class="save-notice" id="save-notice">Игра сохранена!</div>
 
@@ -958,6 +1194,17 @@
         let criticalHits = 0;
         let totalCoins = 0;
         let lastSave = Date.now();
+        let language = 'ru';
+        let usedPromoCodes = [];
+        
+        // Промокоды
+        const promoCodes = {
+            "GOLDENSTART": { coins: 1000, message: "Стартовый бонус: +1000 монет!" },
+            "CLICKER": { perClick: 2, message: "Бонус: +2 монеты за клик!" },
+            "AUTOBOT": { auto: 1, message: "Бонус: +1 авто-кликер!" },
+            "CRITICAL": { critical: 0.05, message: "Бонус: +5% к шансу критического удара!" },
+            "PRESTIGE": { prestigeBonus: 5, message: "Бонус: +5% к бонусу престижа!" }
+        };
         
         // Улучшения
         let upgrades = {
@@ -994,6 +1241,12 @@
         const prestigeProgressEl = document.getElementById('prestige-progress');
         const dailyBtn = document.getElementById('daily-btn');
         const dailyStatus = document.getElementById('daily-status');
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsModal = document.getElementById('settings-modal');
+        const closeSettings = document.getElementById('close-settings');
+        const languageSelect = document.getElementById('language-select');
+        const promoInput = document.getElementById('promo-input');
+        const promoResult = document.getElementById('promo-result');
         
         // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
         
@@ -1019,6 +1272,8 @@
                 currentDay = gameData.currentDay || 0;
                 criticalHits = gameData.criticalHits || 0;
                 totalCoins = gameData.totalCoins || 0;
+                language = gameData.language || 'ru';
+                usedPromoCodes = gameData.usedPromoCodes || [];
                 
                 // Обновить достижения
                 if (gameData.achievements) {
@@ -1038,6 +1293,9 @@
                         updateUI();
                     }, 1000);
                 }
+                
+                // Установить язык
+                languageSelect.value = language;
                 
                 updateUI();
                 checkDailyReward();
@@ -1218,6 +1476,64 @@
             checkDailyReward();
         }
         
+        // Активация промокода
+        function activatePromo() {
+            const promoCode = promoInput.value.trim().toUpperCase();
+            
+            if (!promoCode) {
+                showPromoResult("Пожалуйста, введите промокод", false);
+                return;
+            }
+            
+            if (usedPromoCodes.includes(promoCode)) {
+                showPromoResult("Этот промокод уже использован", false);
+                return;
+            }
+            
+            if (promoCodes[promoCode])) {
+                const bonus = promoCodes[promoCode];
+                
+                // Применить бонус
+                if (bonus.coins) {
+                    coins += bonus.coins;
+                    totalCoins += bonus.coins;
+                }
+                if (bonus.perClick) {
+                    perClick += bonus.perClick;
+                    upgrades.click.effect += bonus.perClick;
+                }
+                if (bonus.auto) {
+                    autoClicker += bonus.auto;
+                    upgrades.auto.level += bonus.auto;
+                }
+                if (bonus.critical) {
+                    upgrades.critical.chance += bonus.critical;
+                }
+                if (bonus.prestigeBonus) {
+                    prestigeBonus += bonus.prestigeBonus;
+                }
+                
+                usedPromoCodes.push(promoCode);
+                showPromoResult(bonus.message, true);
+                updateUI();
+                saveGame();
+            } else {
+                showPromoResult("Неверный промокод", false);
+            }
+        }
+        
+        // Смена языка
+        function changeLanguage() {
+            language = languageSelect.value;
+            saveGame();
+            
+            if (language === 'en') {
+                showNotification("Language changed to English");
+            } else {
+                showNotification("Язык изменен на русский");
+            }
+        }
+        
         // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
         
         // Обновление UI
@@ -1335,6 +1651,17 @@
             }, 2000);
         }
         
+        // Показать результат промокода
+        function showPromoResult(text, success) {
+            promoResult.textContent = text;
+            promoResult.className = 'promo-result ' + (success ? 'promo-success' : 'promo-error');
+            promoResult.style.display = 'block';
+            
+            setTimeout(() => {
+                promoResult.style.display = 'none';
+            }, 5000);
+        }
+        
         // Проверить достижения
         function checkAchievements() {
             achievements.forEach(ach => {
@@ -1368,6 +1695,8 @@
                 currentDay,
                 criticalHits,
                 totalCoins,
+                language,
+                usedPromoCodes,
                 achievements: {}
             };
             
@@ -1399,8 +1728,17 @@
             });
         });
         
-        // Кнопка сброса
-        document.getElementById('reset-btn').addEventListener('click', resetGame);
+        // Открыть/закрыть настройки
+        settingsBtn.addEventListener('click', () => {
+            settingsModal.classList.add('active');
+        });
+        
+        closeSettings.addEventListener('click', () => {
+            settingsModal.classList.remove('active');
+        });
+        
+        // Изменение языка
+        languageSelect.addEventListener('change', changeLanguage);
         
         // Загрузка игры при старте
         window.addEventListener('DOMContentLoaded', () => {
