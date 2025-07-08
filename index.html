@@ -6,17 +6,6 @@
     <title>Golden Coin Clicker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #FFD700;
-            --secondary: #B8860B;
-            --dark: #0a0a1a;
-            --light: #f8f9fa;
-            --accent: #6a4cff;
-            --critical: #ff3366;
-            --success: #4CAF50;
-            --settings-bg: rgba(30, 20, 50, 0.95);
-        }
-        
         * {
             box-sizing: border-box;
             margin: 0;
@@ -35,11 +24,7 @@
             margin: 0;
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(255,215,0,0.1) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(255,215,0,0.1) 0%, transparent 20%),
-                url('https://i.imgur.com/6W9wF3H.png');
-            background-size: 50px 50px, 50px 50px, auto;
-            background-position: 0 0, 0 0, center;
-            background-blend-mode: screen;
+                radial-gradient(circle at 90% 80%, rgba(255,215,0,0.1) 0%, transparent 20%);
         }
         
         body::before {
@@ -60,7 +45,7 @@
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 0 4px rgba(255, 215, 0, 0.3);
-            border: 2px solid var(--primary);
+            border: 2px solid #FFD700;
             min-height: 90vh;
             position: relative;
             backdrop-filter: blur(5px);
@@ -76,7 +61,7 @@
             padding: 10px;
             z-index: 100;
             box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.7);
-            border-top: 1px solid var(--primary);
+            border-top: 1px solid #FFD700;
         }
         
         .tabs {
@@ -98,11 +83,11 @@
             min-width: 120px;
             margin: 2px;
             background: rgba(50, 50, 90, 0.5);
+            color: white;
         }
         
         .tab.active {
-            background: linear-gradient(45deg, var(--accent), #8E2DE2);
-            color: white;
+            background: linear-gradient(45deg, #6a4cff, #8E2DE2);
             box-shadow: 0 0 15px rgba(106, 76, 255, 0.5);
         }
         
@@ -133,7 +118,7 @@
         header {
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid var(--primary);
+            border-bottom: 2px solid #FFD700;
             position: relative;
             display: flex;
             justify-content: space-between;
@@ -141,22 +126,19 @@
         }
         
         h1 {
-            color: var(--primary);
             font-size: 2.5rem;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
             margin-bottom: 10px;
             background: linear-gradient(to right, #ffd700, #ffaa00);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            position: relative;
             flex: 1;
             text-align: left;
         }
         
         .settings-btn {
             background: rgba(106, 76, 255, 0.3);
-            border: 1px solid var(--accent);
+            border: 1px solid #6a4cff;
             color: white;
             width: 50px;
             height: 50px;
@@ -188,7 +170,7 @@
             border-radius: 10px;
             padding: 12px 20px;
             min-width: 150px;
-            border: 1px solid var(--primary);
+            border: 1px solid #FFD700;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s;
         }
@@ -200,7 +182,7 @@
         .stat-value {
             font-size: 1.8rem;
             font-weight: bold;
-            color: var(--primary);
+            color: #FFD700;
             margin-top: 5px;
             text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
@@ -220,7 +202,7 @@
         #coin {
             width: 180px;
             height: 180px;
-            background: url('https://i.imgur.com/6W9wF3H.png') center/contain no-repeat;
+            background: radial-gradient(circle at 30% 30%, #FFD700, #B8860B);
             border-radius: 50%;
             position: relative;
             transition: all 0.3s;
@@ -228,6 +210,14 @@
             z-index: 2;
             cursor: pointer;
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #8B7500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            border: 8px solid #daa520;
         }
 
         #coin:hover {
@@ -261,14 +251,9 @@
             transition: all 0.3s;
         }
         
-        #coin-container:active #coin-shadow {
-            transform: scale(0.9);
-            filter: blur(12px);
-        }
-        
         .coin-click {
             position: absolute;
-            color: var(--primary);
+            color: #FFD700;
             font-weight: bold;
             font-size: 1.8rem;
             pointer-events: none;
@@ -280,7 +265,7 @@
         }
         
         .critical {
-            color: var(--critical);
+            color: #ff3366;
             text-shadow: 0 0 10px rgba(255, 51, 102, 0.7);
             font-size: 2.2rem;
         }
@@ -317,7 +302,7 @@
             text-align: left;
             position: relative;
             overflow: hidden;
-            border: 1px solid var(--primary);
+            border: 1px solid #FFD700;
             display: flex;
             flex-direction: column;
         }
@@ -342,7 +327,7 @@
         }
         
         .upgrade-level {
-            background: var(--primary);
+            background: #FFD700;
             color: #000;
             padding: 2px 8px;
             border-radius: 10px;
@@ -353,7 +338,7 @@
         .upgrade-cost {
             margin-top: 8px;
             font-weight: bold;
-            color: var(--primary);
+            color: #FFD700;
             display: flex;
             justify-content: space-between;
         }
@@ -368,7 +353,7 @@
         
         .progress-fill {
             height: 100%;
-            background: var(--primary);
+            background: #FFD700;
             width: 0%;
             transition: width 0.5s;
         }
@@ -379,7 +364,7 @@
             background: rgba(40, 30, 80, 0.5);
             border-radius: 15px;
             margin-top: 20px;
-            border: 1px solid var(--primary);
+            border: 1px solid #FFD700;
         }
         
         .prestige-card {
@@ -387,7 +372,7 @@
             border-radius: 10px;
             padding: 15px;
             margin: 15px 0;
-            border: 1px solid var(--primary);
+            border: 1px solid #FFD700;
         }
         
         #prestige-btn {
@@ -396,7 +381,7 @@
             padding: 15px 30px;
             margin-top: 15px;
             border-radius: 50px;
-            border: 2px solid var(--primary);
+            border: 2px solid #FFD700;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
@@ -431,14 +416,14 @@
         }
         
         .prestige-level.active {
-            border: 2px solid var(--primary);
+            border: 2px solid #FFD700;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
             background: rgba(106, 76, 255, 0.3);
         }
         
         .prestige-level i {
             font-size: 1.8rem;
-            color: var(--primary);
+            color: #FFD700;
             margin-bottom: 10px;
         }
         
@@ -469,7 +454,7 @@
         
         .achievement.unlocked {
             background: linear-gradient(135deg, #3a2e6d, #2a2350);
-            border: 2px solid var(--primary);
+            border: 2px solid #FFD700;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
             animation: achievement-unlock 0.8s ease-in-out;
         }
@@ -487,7 +472,7 @@
         }
         
         .achievement.unlocked .achievement-icon {
-            color: var(--primary);
+            color: #FFD700;
         }
         
         .achievement-title {
@@ -511,10 +496,10 @@
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.8);
-            color: var(--primary);
+            color: #FFD700;
             padding: 15px 25px;
             border-radius: 10px;
-            border: 1px solid var(--primary);
+            border: 1px solid #FFD700;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             z-index: 100;
             opacity: 0;
@@ -557,25 +542,25 @@
         }
         
         .reward-day.active {
-            border-color: var(--accent);
+            border-color: #6a4cff;
             background: rgba(106, 76, 255, 0.3);
             transform: translateY(-5px);
         }
         
         .reward-day.claimed {
-            border-color: var(--primary);
+            border-color: #FFD700;
             background: rgba(255, 215, 0, 0.2);
         }
         
         .reward-day i {
             font-size: 1.5rem;
             margin-bottom: 10px;
-            color: var(--primary);
+            color: #FFD700;
         }
         
         .reward-amount {
             font-weight: bold;
-            color: var(--primary);
+            color: #FFD700;
         }
         
         .reward-day.active:hover {
@@ -637,7 +622,7 @@
         
         /* Кнопки */
         .btn {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            background: linear-gradient(45deg, #FFD700, #B8860B);
             border: none;
             color: #000;
             padding: 10px 20px;
@@ -669,7 +654,7 @@
             position: absolute;
             width: 10px;
             height: 10px;
-            background: var(--primary);
+            background: #FFD700;
             border-radius: 50%;
             pointer-events: none;
             animation: sparkle 0.8s forwards;
@@ -687,7 +672,7 @@
         
         .prestige-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
+            background: linear-gradient(90deg, #6a4cff, #FFD700);
             width: 0%;
             transition: width 0.5s;
         }
@@ -698,7 +683,7 @@
             border-radius: 15px;
             padding: 15px;
             margin-top: 20px;
-            border: 1px solid var(--success);
+            border: 1px solid #4CAF50;
         }
         
         .bonus-grid {
@@ -712,18 +697,18 @@
             background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             padding: 15px;
-            border: 1px solid var(--success);
+            border: 1px solid #4CAF50;
         }
         
         .bonus-card h4 {
-            color: var(--success);
+            color: #4CAF50;
             margin-bottom: 10px;
         }
         
         .bonus-value {
             font-size: 1.5rem;
             font-weight: bold;
-            color: var(--success);
+            color: #4CAF50;
         }
         
         /* Модальное окно настроек */
@@ -747,13 +732,13 @@
         }
         
         .settings-content {
-            background: var(--settings-bg);
+            background: rgba(30, 20, 50, 0.95);
             width: 90%;
             max-width: 500px;
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 0 30px rgba(106, 76, 255, 0.5);
-            border: 2px solid var(--primary);
+            border: 2px solid #FFD700;
             position: relative;
         }
         
@@ -770,12 +755,12 @@
         }
         
         .close-btn:hover {
-            color: var(--primary);
+            color: #FFD700;
             transform: scale(1.2);
         }
         
         .settings-title {
-            color: var(--primary);
+            color: #FFD700;
             margin-bottom: 25px;
             font-size: 1.8rem;
             text-align: center;
@@ -796,7 +781,7 @@
             display: block;
             margin-bottom: 10px;
             font-weight: bold;
-            color: var(--primary);
+            color: #FFD700;
             text-align: left;
         }
         
@@ -804,7 +789,7 @@
             width: 100%;
             padding: 12px;
             background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--primary);
+            border: 1px solid #FFD700;
             border-radius: 10px;
             color: white;
             font-size: 1rem;
@@ -815,7 +800,7 @@
             width: 100%;
             padding: 12px;
             background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--primary);
+            border: 1px solid #FFD700;
             border-radius: 10px;
             color: white;
             font-size: 1rem;
@@ -823,7 +808,7 @@
         }
         
         .promo-btn {
-            background: linear-gradient(45deg, var(--accent), #8E2DE2);
+            background: linear-gradient(45deg, #6a4cff, #8E2DE2);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -866,14 +851,14 @@
         
         .promo-success {
             background: rgba(76, 175, 80, 0.2);
-            border: 1px solid var(--success);
-            color: var(--success);
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
         }
         
         .promo-error {
             background: rgba(255, 51, 102, 0.2);
-            border: 1px solid var(--critical);
-            color: var(--critical);
+            border: 1px solid #ff3366;
+            color: #ff3366;
         }
     </style>
 </head>
@@ -905,40 +890,15 @@
         <!-- Вкладка Кликер -->
         <div id="clicker" class="tab-content active">
             <div id="coin-container">
-                <div id="coin" class="pulse"></div>
+                <div id="coin" class="pulse">G</div>
                 <div id="coin-shadow"></div>
-            </div>
-            
-            <!-- Ежедневные награды -->
-            <h3><i class="fas fa-calendar-day"></i> Ежедневные награды</h3>
-            <div class="daily-rewards">
-                <div class="reward-day" id="day1">
-                    <i class="fas fa-coins"></i>
-                    <div class="reward-amount">100</div>
-                </div>
-                <div class="reward-day" id="day2">
-                    <i class="fas fa-coins"></i>
-                    <div class="reward-amount">250</div>
-                </div>
-                <div class="reward-day" id="day3">
-                    <i class="fas fa-coins"></i>
-                    <div class="reward-amount">500</div>
-                </div>
-                <div class="reward-day" id="day4">
-                    <i class="fas fa-coins"></i>
-                    <div class="reward-amount">1000</div>
-                </div>
-                <div class="reward-day" id="day5">
-                    <i class="fas fa-coins"></i>
-                    <div class="reward-amount">2000</div>
-                </div>
             </div>
         </div>
         
         <!-- Вкладка Улучшения -->
         <div id="upgrades" class="tab-content">
             <div class="upgrades">
-                <button class="upgrade" onclick="buyUpgrade('click')" id="click-upgrade">
+                <button class="upgrade" id="click-upgrade">
                     <div class="upgrade-title">
                         <span>Сильные пальцы</span>
                         <span class="upgrade-level" id="click-level">1</span>
@@ -953,7 +913,7 @@
                     </div>
                 </button>
                 
-                <button class="upgrade" onclick="buyUpgrade('auto')" id="auto-upgrade">
+                <button class="upgrade" id="auto-upgrade">
                     <div class="upgrade-title">
                         <span>Авто-кликер</span>
                         <span class="upgrade-level" id="auto-level">0</span>
@@ -968,7 +928,7 @@
                     </div>
                 </button>
                 
-                <button class="upgrade" onclick="buyUpgrade('multiplier')" id="multiplier-upgrade">
+                <button class="upgrade" id="multiplier-upgrade">
                     <div class="upgrade-title">
                         <span>Множитель</span>
                         <span class="upgrade-level" id="multiplier-level">1</span>
@@ -983,7 +943,7 @@
                     </div>
                 </button>
                 
-                <button class="upgrade" onclick="buyUpgrade('critical')" id="critical-upgrade">
+                <button class="upgrade" id="critical-upgrade">
                     <div class="upgrade-title">
                         <span>Критические удары</span>
                         <span class="upgrade-level" id="critical-level">1</span>
@@ -1021,7 +981,7 @@
                         <div class="prestige-progress-fill" id="prestige-progress"></div>
                     </div>
                     
-                    <button class="btn" id="prestige-btn" onclick="doPrestige()">
+                    <button class="btn" id="prestige-btn">
                         <i class="fas fa-crown"></i> Получить Престиж
                     </button>
                 </div>
@@ -1115,11 +1075,34 @@
                 </div>
             </div>
             
+            <!-- Ежедневные награды -->
             <div class="prestige-card">
-                <h4><i class="fas fa-calendar-alt"></i> Ежедневный бонус</h4>
+                <h3><i class="fas fa-calendar-day"></i> Ежедневные награды</h3>
                 <p>Заходите ежедневно, чтобы получать награды!</p>
+                <div class="daily-rewards">
+                    <div class="reward-day" id="day1">
+                        <i class="fas fa-coins"></i>
+                        <div class="reward-amount">100</div>
+                    </div>
+                    <div class="reward-day" id="day2">
+                        <i class="fas fa-coins"></i>
+                        <div class="reward-amount">250</div>
+                    </div>
+                    <div class="reward-day" id="day3">
+                        <i class="fas fa-coins"></i>
+                        <div class="reward-amount">500</div>
+                    </div>
+                    <div class="reward-day" id="day4">
+                        <i class="fas fa-coins"></i>
+                        <div class="reward-amount">1000</div>
+                    </div>
+                    <div class="reward-day" id="day5">
+                        <i class="fas fa-coins"></i>
+                        <div class="reward-amount">2000</div>
+                    </div>
+                </div>
                 <p id="daily-status">Сегодняшняя награда доступна!</p>
-                <button class="btn" id="daily-btn" onclick="claimDailyBonus()">
+                <button class="btn" id="daily-btn">
                     <i class="fas fa-gift"></i> Получить ежедневную награду
                 </button>
             </div>
@@ -1166,12 +1149,12 @@
             <div class="setting-group">
                 <label class="setting-label">Промокод:</label>
                 <input type="text" class="promo-input" id="promo-input" placeholder="Введите промокод...">
-                <button class="promo-btn" onclick="activatePromo()">Активировать промокод</button>
+                <button class="promo-btn" id="promo-btn">Активировать промокод</button>
                 <div class="promo-result" id="promo-result"></div>
             </div>
             
             <div class="setting-group">
-                <button class="reset-btn" onclick="resetGame()">
+                <button class="reset-btn" id="reset-btn">
                     <i class="fas fa-redo"></i> Сбросить игру
                 </button>
             </div>
@@ -1247,6 +1230,15 @@
         const languageSelect = document.getElementById('language-select');
         const promoInput = document.getElementById('promo-input');
         const promoResult = document.getElementById('promo-result');
+        const promoBtn = document.getElementById('promo-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const prestigeBtn = document.getElementById('prestige-btn');
+        
+        // Элементы улучшений
+        const clickUpgradeBtn = document.getElementById('click-upgrade');
+        const autoUpgradeBtn = document.getElementById('auto-upgrade');
+        const multiplierUpgradeBtn = document.getElementById('multiplier-upgrade');
+        const criticalUpgradeBtn = document.getElementById('critical-upgrade');
         
         // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
         
@@ -1306,7 +1298,7 @@
         }
         
         // Обработчик клика по монете
-        coinContainer.addEventListener('click', (e) => {
+        function handleCoinClick(e) {
             const rect = coinContainer.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
@@ -1353,7 +1345,7 @@
                 showSaveNotice();
                 lastSave = Date.now();
             }
-        });
+        }
         
         // Покупка улучшения
         function buyUpgrade(type) {
@@ -1452,11 +1444,11 @@
                 
                 dailyBtn.disabled = false;
                 dailyStatus.textContent = "Сегодняшняя награда доступна!";
-                dailyStatus.style.color = "var(--success)";
+                dailyStatus.style.color = "#4CAF50";
             } else {
                 dailyBtn.disabled = true;
                 dailyStatus.textContent = "Сегодня вы уже получили награду. Завтра приходите снова!";
-                dailyStatus.style.color = "var(--critical)";
+                dailyStatus.style.color = "#ff3366";
             }
         }
         
@@ -1490,7 +1482,7 @@
                 return;
             }
             
-            if (promoCodes[promoCode])) {
+            if (promoCodes[promoCode]) {
                 const bonus = promoCodes[promoCode];
                 
                 // Применить бонус
@@ -1572,11 +1564,11 @@
             prestigeProgressEl.style.width = Math.min(100, (coins / 100000) * 100) + '%';
             
             // Включить/отключить кнопки
-            document.getElementById('click-upgrade').disabled = coins < upgrades.click.cost;
-            document.getElementById('auto-upgrade').disabled = coins < upgrades.auto.cost;
-            document.getElementById('multiplier-upgrade').disabled = coins < upgrades.multiplier.cost;
-            document.getElementById('critical-upgrade').disabled = coins < upgrades.critical.cost;
-            document.getElementById('prestige-btn').disabled = coins < 100000;
+            clickUpgradeBtn.disabled = coins < upgrades.click.cost;
+            autoUpgradeBtn.disabled = coins < upgrades.auto.cost;
+            multiplierUpgradeBtn.disabled = coins < upgrades.multiplier.cost;
+            criticalUpgradeBtn.disabled = coins < upgrades.critical.cost;
+            prestigeBtn.disabled = coins < 100000;
             
             // Обновить информацию о престиже
             document.getElementById('prestige-value').textContent = prestige;
@@ -1710,38 +1702,63 @@
         
         // ========== ИНИЦИАЛИЗАЦИЯ ==========
         
-        // Переключение вкладок
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                tab.classList.add('active');
-                document.getElementById(tab.dataset.tab).classList.add('active');
-                
-                // Показать статистику только на вкладке Кликер
-                if (tab.dataset.tab === 'clicker') {
-                    statsContainer.style.display = 'flex';
-                } else {
-                    statsContainer.style.display = 'none';
-                }
+        // Инициализация обработчиков событий
+        function initEventListeners() {
+            // Обработчик клика по монете
+            coinContainer.addEventListener('click', handleCoinClick);
+            
+            // Обработчики кнопок улучшений
+            clickUpgradeBtn.addEventListener('click', () => buyUpgrade('click'));
+            autoUpgradeBtn.addEventListener('click', () => buyUpgrade('auto'));
+            multiplierUpgradeBtn.addEventListener('click', () => buyUpgrade('multiplier'));
+            criticalUpgradeBtn.addEventListener('click', () => buyUpgrade('critical'));
+            
+            // Престиж
+            prestigeBtn.addEventListener('click', doPrestige);
+            
+            // Ежедневная награда
+            dailyBtn.addEventListener('click', claimDailyBonus);
+            
+            // Промокод
+            promoBtn.addEventListener('click', activatePromo);
+            
+            // Сброс игры
+            resetBtn.addEventListener('click', resetGame);
+            
+            // Смена языка
+            languageSelect.addEventListener('change', changeLanguage);
+            
+            // Открыть/закрыть настройки
+            settingsBtn.addEventListener('click', () => {
+                settingsModal.classList.add('active');
             });
-        });
-        
-        // Открыть/закрыть настройки
-        settingsBtn.addEventListener('click', () => {
-            settingsModal.classList.add('active');
-        });
-        
-        closeSettings.addEventListener('click', () => {
-            settingsModal.classList.remove('active');
-        });
-        
-        // Изменение языка
-        languageSelect.addEventListener('change', changeLanguage);
+            
+            closeSettings.addEventListener('click', () => {
+                settingsModal.classList.remove('active');
+            });
+            
+            // Переключение вкладок
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+                    
+                    // Показать статистику только на вкладке Кликер
+                    if (tab.dataset.tab === 'clicker') {
+                        statsContainer.style.display = 'flex';
+                    } else {
+                        statsContainer.style.display = 'none';
+                    }
+                });
+            });
+        }
         
         // Загрузка игры при старте
         window.addEventListener('DOMContentLoaded', () => {
+            initEventListeners();
             loadGame();
             
             // Автосохранение каждую минуту
