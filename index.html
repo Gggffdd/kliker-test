@@ -23,8 +23,10 @@
             padding: 20px;
             margin: 0;
             background-image: 
+                url('https://www.transparenttextures.com/patterns/cartographer.png'),
                 radial-gradient(circle at 10% 20%, rgba(255,215,0,0.1) 0%, transparent 20%),
                 radial-gradient(circle at 90% 80%, rgba(255,215,0,0.1) 0%, transparent 20%);
+            background-blend-mode: overlay;
         }
         
         body::before {
@@ -46,9 +48,10 @@
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 0 4px rgba(255, 215, 0, 0.3);
             border: 2px solid #FFD700;
-            min-height: 90vh;
+            min-height: calc(100vh - 120px);
             position: relative;
             backdrop-filter: blur(5px);
+            margin-bottom: 80px;
         }
         
         /* Навигация внизу */
@@ -218,6 +221,9 @@
             color: #8B7500;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
             border: 8px solid #daa520;
+            background-image: url('https://i.imgur.com/sQo7QvG.png');
+            background-size: cover;
+            background-position: center;
         }
 
         #coin:hover {
@@ -583,6 +589,7 @@
             .container {
                 padding: 15px;
                 border-radius: 15px;
+                margin-bottom: 100px;
             }
             
             .stats {
@@ -641,24 +648,6 @@
         
         .btn:active {
             transform: translateY(1px);
-        }
-        
-        /* Анимации */
-        @keyframes sparkle {
-            0% { transform: scale(0); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
-        }
-        
-        .sparkle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #FFD700;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: sparkle 0.8s forwards;
-            z-index: 20;
         }
         
         /* Прогресс престижа */
@@ -860,9 +849,37 @@
             border: 1px solid #ff3366;
             color: #ff3366;
         }
+        
+        /* Новые стили для фона */
+        .gold-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/dark-wood.png');
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: -2;
+        }
+        
+        .gold-dust {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/dust.png');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: -1;
+        }
     </style>
 </head>
 <body>
+    <div class="gold-pattern"></div>
+    <div class="gold-dust"></div>
+    
     <div class="container">
         <header>
             <h1><i class="fas fa-coins"></i> Golden Coin Clicker</h1>
@@ -890,7 +907,7 @@
         <!-- Вкладка Кликер -->
         <div id="clicker" class="tab-content active">
             <div id="coin-container">
-                <div id="coin" class="pulse">G</div>
+                <div id="coin" class="pulse"></div>
                 <div id="coin-shadow"></div>
             </div>
         </div>
@@ -1336,9 +1353,6 @@
                 coinEl.style.transform = 'scale(1) rotate(0)';
             }, 100);
             
-            // Создать эффект искр
-            createSparkleEffect(centerX, centerY);
-            
             // Автосохранение каждые 30 секунд
             if (Date.now() - lastSave > 30000) {
                 saveGame();
@@ -1597,31 +1611,6 @@
             setTimeout(() => {
                 anim.remove();
             }, 1500);
-        }
-        
-        // Эффект искр
-        function createSparkleEffect(x, y) {
-            for (let i = 0; i < 8; i++) {
-                setTimeout(() => {
-                    const sparkle = document.createElement('div');
-                    sparkle.className = 'sparkle';
-                    
-                    // Позиция искры вокруг центра
-                    const angle = Math.random() * Math.PI * 2;
-                    const distance = Math.random() * 50 + 20;
-                    const sparkleX = x + Math.cos(angle) * distance;
-                    const sparkleY = y + Math.sin(angle) * distance;
-                    
-                    sparkle.style.left = `${sparkleX}px`;
-                    sparkle.style.top = `${sparkleY}px`;
-                    
-                    document.body.appendChild(sparkle);
-                    
-                    setTimeout(() => {
-                        sparkle.remove();
-                    }, 800);
-                }, i * 50);
-            }
         }
         
         // Показать уведомление
