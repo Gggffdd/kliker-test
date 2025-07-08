@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloud Coin Clicker</title>
+    <title>FG BOT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -16,8 +16,8 @@
         
         body {
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #87CEEB, #E0F7FA);
-            color: #2C3E50;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: #ffffff;
             text-align: center;
             min-height: 100vh;
             overflow-x: hidden;
@@ -33,7 +33,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.8;
+            opacity: 0.4;
             background-image: 
                 url('https://assets.codepen.io/3364143/clouds-1.png'),
                 url('https://assets.codepen.io/3364143/clouds-2.png'),
@@ -67,15 +67,15 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(30, 30, 50, 0.85);
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             min-height: calc(100vh - 120px);
             position: relative;
             backdrop-filter: blur(5px);
             margin-bottom: 80px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(100, 100, 255, 0.3);
         }
         
         /* Навигация внизу */
@@ -84,11 +84,11 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 10px;
+            background: rgba(30, 30, 50, 0.95);
+            padding: 8px;
             z-index: 100;
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(100, 100, 255, 0.3);
             backdrop-filter: blur(10px);
         }
         
@@ -96,46 +96,47 @@
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 3px;
             max-width: 800px;
             margin: 0 auto;
         }
         
         .tab {
             flex: 1;
-            padding: 12px 0;
+            padding: 10px 0;
             cursor: pointer;
             border-radius: 12px;
             transition: all 0.3s ease;
             font-weight: 600;
-            min-width: 120px;
+            min-width: 90px;
             margin: 2px;
             background: transparent;
-            color: #7F8C8D;
-            font-size: 0.9rem;
+            color: #a0a0ff;
+            font-size: 0.8rem;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         
         .tab.active {
-            color: #3498DB;
-            background: rgba(52, 152, 219, 0.1);
+            color: #ffffff;
+            background: rgba(80, 120, 255, 0.3);
         }
         
         .tab:hover:not(.active) {
-            background: rgba(52, 152, 219, 0.05);
+            background: rgba(80, 120, 255, 0.2);
         }
         
         .tab i {
             margin-bottom: 5px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
         
         /* Содержимое вкладок */
         .tab-content {
             display: none;
             animation: fadeIn 0.5s;
+            padding-top: 15px;
         }
         
         .tab-content.active {
@@ -148,9 +149,9 @@
         }
         
         header {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             padding-bottom: 15px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(100, 100, 255, 0.3);
             position: relative;
             display: flex;
             justify-content: space-between;
@@ -160,19 +161,19 @@
         h1 {
             font-size: 1.8rem;
             margin-bottom: 10px;
-            background: linear-gradient(to right, #3498DB, #2C3E50);
+            background: linear-gradient(to right, #4facfe, #00f2fe);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             flex: 1;
-            text-align: left;
+            text-align: center;
             font-weight: 700;
         }
         
         .settings-btn {
-            background: rgba(52, 152, 219, 0.1);
+            background: rgba(80, 120, 255, 0.2);
             border: none;
-            color: #3498DB;
+            color: #4facfe;
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -182,50 +183,57 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: absolute;
+            right: 0;
+            top: 0;
         }
         
         .settings-btn:hover {
             transform: rotate(45deg);
-            background: rgba(52, 152, 219, 0.2);
+            background: rgba(80, 120, 255, 0.3);
         }
         
         .stats {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            margin-bottom: 25px;
-            gap: 15px;
+            margin-bottom: 15px;
+            gap: 10px;
+            background: rgba(20, 20, 40, 0.6);
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid rgba(100, 100, 255, 0.2);
         }
         
         .stat-card {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(40, 40, 70, 0.7);
             border-radius: 15px;
-            padding: 15px;
-            min-width: 150px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 12px;
+            min-width: 120px;
+            border: 1px solid rgba(100, 100, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
             backdrop-filter: blur(5px);
         }
         
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
         
         .stat-value {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            color: #3498DB;
+            color: #4facfe;
             margin-top: 5px;
         }
         
         /* Страница кликера */
         #coin-container {
             position: relative;
-            width: 240px;
-            height: 240px;
-            margin: 0 auto 30px;
+            width: 260px;
+            height: 260px;
+            margin: 0 auto;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -234,28 +242,28 @@
         }
         
         #coin {
-            width: 180px;
-            height: 180px;
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
             position: relative;
             transition: all 0.3s;
             transform: scale(1);
             z-index: 2;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(52, 152, 219, 0.3);
-            background: radial-gradient(circle at 30% 30%, #FFD700, #FFA500);
-            border: 8px solid #daa520;
+            box-shadow: 0 0 30px rgba(79, 172, 254, 0.4);
+            background: url('https://i.yapx.ru/Z0SaR.png') center/cover no-repeat;
+            border: 10px solid #daa520;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            color: rgba(0, 0, 0, 0.2);
+            font-size: 3.5rem;
+            color: rgba(255, 255, 255, 0.8);
             font-weight: bold;
         }
 
         #coin:hover {
             transform: scale(1.05) rotate(5deg);
-            box-shadow: 0 0 40px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 0 40px rgba(79, 172, 254, 0.6);
         }
         
         #coin:active {
@@ -275,9 +283,9 @@
         #coin-shadow {
             position: absolute;
             bottom: 10px;
-            width: 160px;
+            width: 180px;
             height: 40px;
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 50%;
             filter: blur(15px);
             z-index: 1;
@@ -286,19 +294,19 @@
         
         .coin-click {
             position: absolute;
-            color: #3498DB;
+            color: #4facfe;
             font-weight: bold;
             font-size: 1.8rem;
             pointer-events: none;
             animation: float-up 1.5s forwards;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
             z-index: 10;
             font-family: 'Poppins', sans-serif;
         }
         
         .critical {
-            color: #E74C3C;
-            text-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+            color: #ff6b6b;
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
             font-size: 2.2rem;
         }
         
@@ -319,33 +327,36 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
             margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
         }
         
         .upgrade {
-            background: white;
-            color: #2C3E50;
+            background: rgba(40, 40, 70, 0.8);
+            color: #ffffff;
             border: none;
             padding: 15px;
             border-radius: 15px;
             cursor: pointer;
             font-size: 1rem;
             transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             text-align: left;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(100, 100, 255, 0.3);
             display: flex;
             flex-direction: column;
         }
         
         .upgrade:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
         
         .upgrade:disabled {
-            background: #ECF0F1;
+            background: rgba(60, 60, 90, 0.5);
             cursor: not-allowed;
             opacity: 0.7;
         }
@@ -356,11 +367,11 @@
             margin-bottom: 5px;
             display: flex;
             justify-content: space-between;
-            color: #3498DB;
+            color: #4facfe;
         }
         
         .upgrade-level {
-            background: #3498DB;
+            background: #4facfe;
             color: white;
             padding: 2px 8px;
             border-radius: 10px;
@@ -371,14 +382,14 @@
         .upgrade-cost {
             margin-top: 8px;
             font-weight: bold;
-            color: #27AE60;
+            color: #00f2fe;
             display: flex;
             justify-content: space-between;
         }
         
         .progress-bar {
             height: 8px;
-            background: rgba(0, 0, 0, 0.05);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 4px;
             margin-top: 10px;
             overflow: hidden;
@@ -386,7 +397,7 @@
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #3498DB, #2ECC71);
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
             width: 0%;
             transition: width 0.5s;
             border-radius: 4px;
@@ -395,20 +406,20 @@
         /* Страница заданий */
         .quests-section {
             padding: 20px;
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(30, 30, 50, 0.7);
             border-radius: 15px;
             margin-top: 20px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(100, 100, 255, 0.3);
             backdrop-filter: blur(5px);
         }
         
         .quest-card {
-            background: white;
+            background: rgba(40, 40, 70, 0.8);
             border-radius: 12px;
             padding: 15px;
             margin: 15px 0;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(100, 100, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
         .quest-grid {
@@ -419,29 +430,24 @@
         }
         
         .quest {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(50, 50, 80, 0.8);
             border-radius: 12px;
             padding: 15px;
-            border: 2px solid #ECF0F1;
+            border: 2px solid #4a5fc1;
             transition: all 0.3s;
             text-align: center;
         }
         
         .quest.active {
-            border: 2px solid #3498DB;
-            box-shadow: 0 0 15px rgba(52, 152, 219, 0.2);
-            background: rgba(52, 152, 219, 0.05);
+            border: 2px solid #4facfe;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.4);
+            background: rgba(79, 172, 254, 0.1);
         }
         
         .quest i {
             font-size: 1.8rem;
-            color: #3498DB;
+            color: #4facfe;
             margin-bottom: 10px;
-        }
-        
-        .quest h4 {
-            margin-bottom: 5px;
-            color: #2C3E50;
         }
         
         /* Страница достижений */
@@ -450,26 +456,29 @@
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 15px;
             margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
         }
         
         .achievement {
-            background: white;
+            background: rgba(40, 40, 70, 0.8);
             border-radius: 12px;
             padding: 15px 10px;
-            border: 2px solid #ECF0F1;
+            border: 2px solid #4a5fc1;
             transition: all 0.3s;
             min-height: 120px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
         .achievement.unlocked {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
-            border: 2px solid #3498DB;
-            box-shadow: 0 0 15px rgba(52, 152, 219, 0.2);
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2));
+            border: 2px solid #4facfe;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.4);
             animation: achievement-unlock 0.8s ease-in-out;
         }
         
@@ -482,26 +491,22 @@
         .achievement-icon {
             font-size: 2rem;
             margin-bottom: 10px;
-            color: #BDC3C7;
+            color: #4a5fc1;
         }
         
         .achievement.unlocked .achievement-icon {
-            color: #3498DB;
+            color: #4facfe;
         }
         
         .achievement-title {
             font-weight: bold;
             margin-bottom: 5px;
-            color: #2C3E50;
+            color: #ffffff;
         }
         
         .achievement-desc {
             font-size: 0.85rem;
-            color: #7F8C8D;
-        }
-        
-        .achievement.unlocked .achievement-desc {
-            color: #2C3E50;
+            color: #a0a0ff;
         }
         
         /* Уведомления */
@@ -510,12 +515,12 @@
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            color: #3498DB;
+            background: rgba(40, 40, 70, 0.95);
+            color: #4facfe;
             padding: 15px 25px;
             border-radius: 12px;
-            border: 1px solid rgba(52, 152, 219, 0.3);
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(79, 172, 254, 0.5);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
             z-index: 100;
             opacity: 0;
             transition: opacity 0.3s;
@@ -529,14 +534,14 @@
             position: fixed;
             bottom: 10px;
             right: 10px;
-            background: rgba(46, 204, 113, 0.9);
-            color: white;
+            background: rgba(0, 242, 254, 0.9);
+            color: #1a2a6c;
             padding: 8px 15px;
             border-radius: 20px;
             font-size: 0.8rem;
             opacity: 0;
             transition: opacity 0.3s;
-            box-shadow: 0 3px 15px rgba(46, 204, 113, 0.3);
+            box-shadow: 0 3px 15px rgba(0, 242, 254, 0.4);
             font-weight: 500;
         }
         
@@ -549,42 +554,42 @@
         }
         
         .reward-day {
-            background: white;
+            background: rgba(40, 40, 70, 0.8);
             border-radius: 12px;
             padding: 15px 10px;
             width: 60px;
-            border: 2px solid #ECF0F1;
+            border: 2px solid #4a5fc1;
             margin: 5px;
             transition: all 0.3s;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
         
         .reward-day.active {
-            border-color: #3498DB;
-            background: rgba(52, 152, 219, 0.05);
+            border-color: #4facfe;
+            background: rgba(79, 172, 254, 0.2);
             transform: translateY(-5px);
         }
         
         .reward-day.claimed {
-            border-color: #2ECC71;
-            background: rgba(46, 204, 113, 0.1);
+            border-color: #00f2fe;
+            background: rgba(0, 242, 254, 0.2);
         }
         
         .reward-day i {
             font-size: 1.5rem;
             margin-bottom: 10px;
-            color: #3498DB;
+            color: #4facfe;
         }
         
         .reward-amount {
             font-weight: bold;
-            color: #3498DB;
+            color: #4facfe;
         }
         
         .reward-day.active:hover {
             transform: translateY(-8px);
-            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.2);
+            box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4);
         }
         
         /* Анимация монетки */
@@ -606,13 +611,16 @@
             }
             
             .stats {
-                flex-direction: column;
+                flex-direction: row;
                 align-items: center;
+                padding: 10px;
+                gap: 5px;
             }
             
             .stat-card {
-                width: 100%;
-                max-width: 250px;
+                width: 30%;
+                min-width: auto;
+                padding: 8px;
             }
             
             h1 {
@@ -624,11 +632,11 @@
             }
             
             .tab {
-                flex: 0 0 48%;
+                flex: 0 0 30%;
                 margin-bottom: 5px;
-                min-width: 100px;
-                padding: 10px 0;
-                font-size: 0.8rem;
+                min-width: 70px;
+                padding: 8px 0;
+                font-size: 0.7rem;
             }
             
             .upgrades {
@@ -640,24 +648,28 @@
             }
             
             #coin {
-                width: 150px;
-                height: 150px;
-                font-size: 2.5rem;
+                width: 180px;
+                height: 180px;
+                font-size: 2.8rem;
+            }
+            
+            .achievements {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             }
         }
         
         /* Кнопки */
         .btn {
-            background: linear-gradient(45deg, #3498DB, #2ECC71);
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
             border: none;
-            color: white;
+            color: #1a2a6c;
             padding: 12px 25px;
             border-radius: 50px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             margin: 5px;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
             font-size: 1rem;
             display: inline-flex;
             align-items: center;
@@ -666,7 +678,7 @@
         
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
         }
         
         .btn:active {
@@ -685,7 +697,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 1000;
             backdrop-filter: blur(5px);
             justify-content: center;
@@ -700,15 +712,16 @@
         }
         
         .settings-content {
-            background: white;
+            background: rgba(30, 30, 50, 0.95);
             width: 90%;
             max-width: 500px;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
             position: relative;
             transform: translateY(20px);
             transition: transform 0.3s;
+            border: 1px solid rgba(100, 100, 255, 0.3);
         }
         
         .settings-modal.active .settings-content {
@@ -721,19 +734,19 @@
             right: 20px;
             background: transparent;
             border: none;
-            color: #7F8C8D;
+            color: #a0a0ff;
             font-size: 1.5rem;
             cursor: pointer;
             transition: all 0.3s;
         }
         
         .close-btn:hover {
-            color: #E74C3C;
+            color: #ff6b6b;
             transform: scale(1.2);
         }
         
         .settings-title {
-            color: #3498DB;
+            color: #4facfe;
             margin-bottom: 25px;
             font-size: 1.5rem;
             text-align: center;
@@ -743,7 +756,7 @@
         .setting-group {
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(100, 100, 255, 0.3);
         }
         
         .setting-group:last-child {
@@ -754,37 +767,37 @@
             display: block;
             margin-bottom: 10px;
             font-weight: 600;
-            color: #2C3E50;
+            color: #ffffff;
             text-align: left;
         }
         
         .language-select {
             width: 100%;
             padding: 12px;
-            background: white;
-            border: 1px solid #ECF0F1;
+            background: rgba(40, 40, 70, 0.8);
+            border: 1px solid #4a5fc1;
             border-radius: 10px;
-            color: #2C3E50;
+            color: #ffffff;
             font-size: 1rem;
             margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         
         .promo-input {
             width: 100%;
             padding: 12px;
-            background: white;
-            border: 1px solid #ECF0F1;
+            background: rgba(40, 40, 70, 0.8);
+            border: 1px solid #4a5fc1;
             border-radius: 10px;
-            color: #2C3E50;
+            color: #ffffff;
             font-size: 1rem;
             margin-bottom: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         
         .promo-btn {
-            background: linear-gradient(45deg, #3498DB, #2980B9);
-            color: white;
+            background: linear-gradient(45deg, #4facfe, #3a86ff);
+            color: #1a2a6c;
             border: none;
             padding: 12px 20px;
             border-radius: 10px;
@@ -792,16 +805,16 @@
             font-weight: 600;
             width: 100%;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
         }
         
         .promo-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
         }
         
         .reset-btn {
-            background: linear-gradient(45deg, #E74C3C, #C0392B);
+            background: linear-gradient(45deg, #ff6b6b, #ff4757);
             color: white;
             border: none;
             padding: 15px;
@@ -811,12 +824,12 @@
             width: 100%;
             transition: all 0.3s;
             margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
         }
         
         .reset-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
         }
         
         .promo-result {
@@ -828,15 +841,15 @@
         }
         
         .promo-success {
-            background: rgba(46, 204, 113, 0.1);
-            border: 1px solid #2ECC71;
-            color: #27AE60;
+            background: rgba(0, 242, 254, 0.2);
+            border: 1px solid #00f2fe;
+            color: #00f2fe;
         }
         
         .promo-error {
-            background: rgba(231, 76, 60, 0.1);
-            border: 1px solid #E74C3C;
-            color: #C0392B;
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
         }
         
         /* Стили для заданий */
@@ -849,21 +862,21 @@
             align-items: center;
             margin-bottom: 10px;
             padding: 12px;
-            background: white;
+            background: rgba(40, 40, 70, 0.8);
             border-radius: 12px;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
         }
         
         .quest-reward-icon {
             width: 40px;
             height: 40px;
-            background: #3498DB;
+            background: #4facfe;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 15px;
-            color: white;
+            color: #1a2a6c;
             font-weight: bold;
         }
         
@@ -875,16 +888,12 @@
         .quest-reward-title {
             font-weight: 600;
             margin-bottom: 5px;
-            color: #2C3E50;
+            color: #ffffff;
         }
         
         .quest-reward-desc {
             font-size: 0.9rem;
-            color: #7F8C8D;
-        }
-        
-        .quest-reward.unlocked {
-            border-left: 4px solid #3498DB;
+            color: #a0a0ff;
         }
         
         /* Стили для социальных кнопок */
@@ -905,12 +914,12 @@
             color: white;
             font-size: 1.2rem;
             transition: all 0.3s;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
         
         .social-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .telegram { background: #0088CC; }
@@ -926,13 +935,13 @@
     
     <div class="container">
         <header>
-            <h1><i class="fas fa-cloud"></i> Cloud Coin Clicker</h1>
+            <h1><i class="fas fa-robot"></i> FG BOT</h1>
             <div class="settings-btn" id="settings-btn">
                 <i class="fas fa-cog"></i>
             </div>
         </header>
         
-        <!-- Статистика (только на вкладке Кликер) -->
+        <!-- Статистика над монетой -->
         <div class="stats" id="stats-container">
             <div class="stat-card">
                 <div><i class="fas fa-coins"></i> <span class="lang-coins">Монеты</span></div>
@@ -951,7 +960,7 @@
         <!-- Вкладка Кликер -->
         <div id="clicker" class="tab-content active">
             <div id="coin-container">
-                <div id="coin" class="pulse">$</div>
+                <div id="coin" class="pulse">FG</div>
                 <div id="coin-shadow"></div>
             </div>
         </div>
@@ -967,7 +976,7 @@
                     <div class="lang-click-desc">Увеличивает монеты за клик</div>
                     <div class="upgrade-cost">
                         <span class="lang-cost">Стоимость:</span>
-                        <span id="click-cost">50</span>
+                        <span id="click-cost">500</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="click-progress"></div>
@@ -982,7 +991,7 @@
                     <div class="lang-auto-desc">Автоматически кликает каждую секунду</div>
                     <div class="upgrade-cost">
                         <span class="lang-cost">Стоимость:</span>
-                        <span id="auto-cost">30,000</span>
+                        <span id="auto-cost">50,000</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="auto-progress"></div>
@@ -997,7 +1006,7 @@
                     <div class="lang-multiplier-desc">Умножает весь доход х2</div>
                     <div class="upgrade-cost">
                         <span class="lang-cost">Стоимость:</span>
-                        <span id="multiplier-cost">50,000</span>
+                        <span id="multiplier-cost">100,000</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="multiplier-progress"></div>
@@ -1012,7 +1021,7 @@
                     <div class="lang-critical-desc">Шанс критического удара</div>
                     <div class="upgrade-cost">
                         <span class="lang-cost">Стоимость:</span>
-                        <span id="critical-cost">10,000</span>
+                        <span id="critical-cost">20,000</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="critical-progress"></div>
@@ -1262,10 +1271,10 @@
         
         // Улучшения
         let upgrades = {
-            click: { level: 1, cost: 50, effect: 1 },
-            auto: { level: 0, cost: 30000, effect: 0 },
-            multiplier: { level: 1, cost: 50000, effect: 1 },
-            critical: { level: 1, cost: 10000, chance: 0.02, multiplier: 3 }
+            click: { level: 1, cost: 500, effect: 1 },
+            auto: { level: 0, cost: 50000, effect: 0 },
+            multiplier: { level: 1, cost: 100000, effect: 1 },
+            critical: { level: 1, cost: 20000, chance: 0.01, multiplier: 2 }
         };
         
         let autoClicker = 0;
@@ -1456,10 +1465,10 @@
                 perClick = gameData.perClick || 1;
                 level = gameData.level || 1;
                 upgrades = gameData.upgrades || {
-                    click: { level: 1, cost: 50, effect: 1 },
-                    auto: { level: 0, cost: 30000, effect: 0 },
-                    multiplier: { level: 1, cost: 50000, effect: 1 },
-                    critical: { level: 1, cost: 10000, chance: 0.02, multiplier: 3 }
+                    click: { level: 1, cost: 500, effect: 1 },
+                    auto: { level: 0, cost: 50000, effect: 0 },
+                    multiplier: { level: 1, cost: 100000, effect: 1 },
+                    critical: { level: 1, cost: 20000, chance: 0.01, multiplier: 2 }
                 };
                 autoClicker = gameData.autoClicker || 0;
                 lastDailyReward = gameData.lastDailyReward || 0;
@@ -1504,11 +1513,11 @@
         function handleCoinClick(e) {
             // Рассчитать базовые монеты
             let baseCoins = perClick;
-            
-            // Проверить критический удар
             let isCritical = false;
+            
+            // Проверить критический удар (шанс 1%)
             if (Math.random() < upgrades.critical.chance) {
-                baseCoins *= upgrades.critical.multiplier;
+                baseCoins = Math.floor(baseCoins * upgrades.critical.multiplier);
                 isCritical = true;
                 criticalHits++;
                 coinEl.classList.add('coin-spin');
@@ -1516,7 +1525,7 @@
             }
             
             // Применить множитель
-            baseCoins *= upgrades.multiplier.effect;
+            baseCoins = Math.floor(baseCoins * upgrades.multiplier.effect);
             
             // Добавить монеты
             coins += baseCoins;
@@ -1524,7 +1533,7 @@
             updateUI();
             
             // Создать анимацию
-            createClickAnimation(e.clientX, e.clientY, Math.floor(baseCoins), isCritical);
+            createClickAnimation(e.clientX, e.clientY, baseCoins, isCritical);
             
             // Анимация монеты
             coinEl.style.transform = 'scale(0.95) rotate(15deg)';
@@ -1552,14 +1561,14 @@
                         upgrade.level++;
                         upgrade.effect += 1;
                         perClick = upgrade.effect;
-                        upgrade.cost = Math.floor(upgrade.cost * 1.8);
+                        upgrade.cost = Math.floor(upgrade.cost * 2.5);
                         showNotification(language === 'ru' ? "Сила клика увеличена!" : "Click power increased!");
                         break;
                         
                     case 'auto':
                         upgrade.level++;
                         autoClicker += 1;
-                        upgrade.cost = Math.floor(upgrade.cost * 2.2);
+                        upgrade.cost = Math.floor(upgrade.cost * 3.0);
                         
                         if (!autoClickerInterval) {
                             autoClickerInterval = setInterval(() => {
@@ -1575,15 +1584,14 @@
                     case 'multiplier':
                         upgrade.level++;
                         upgrade.effect *= 2;
-                        upgrade.cost = Math.floor(upgrade.cost * 2.5);
+                        upgrade.cost = Math.floor(upgrade.cost * 4.0);
                         showNotification(language === 'ru' ? "Множитель дохода увеличен!" : "Income multiplier increased!");
                         break;
                         
                     case 'critical':
                         upgrade.level++;
-                        upgrade.chance += 0.01;
-                        upgrade.multiplier += 0.5;
-                        upgrade.cost = Math.floor(upgrade.cost * 3);
+                        upgrade.chance += 0.005; // +0.5% за уровень
+                        upgrade.cost = Math.floor(upgrade.cost * 4.5);
                         showNotification(language === 'ru' ? "Шанс критического удара увеличен!" : "Critical hit chance increased!");
                         break;
                 }
@@ -1631,13 +1639,13 @@
                 dailyStatus.textContent = language === 'ru' ? 
                     "Сегодняшняя награда доступна!" : 
                     "Today's reward is available!";
-                dailyStatus.style.color = "#2ECC71";
+                dailyStatus.style.color = "#00f2fe";
             } else {
                 dailyBtn.disabled = true;
                 dailyStatus.textContent = language === 'ru' ? 
                     "Сегодня вы уже получили награду. Завтра приходите снова!" : 
                     "You've already claimed today's reward. Come back tomorrow!";
-                dailyStatus.style.color = "#E74C3C";
+                dailyStatus.style.color = "#ff6b6b";
             }
         }
         
@@ -1782,7 +1790,7 @@
         function createClickAnimation(x, y, amount, isCritical) {
             const anim = document.createElement('div');
             anim.className = 'coin-click' + (isCritical ? ' critical' : '');
-            anim.textContent = `+${Math.floor(amount)}`;
+            anim.textContent = `+${amount}`;
             anim.style.left = `${x}px`;
             anim.style.top = `${y}px`;
             anim.style.position = 'fixed';
