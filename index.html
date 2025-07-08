@@ -14,7 +14,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a0a2e, #0a0420);
+            background: linear-gradient(135deg, #1a2a6c, #3a7bd5);
             color: white;
             text-align: center;
             min-height: 100vh;
@@ -23,7 +23,7 @@
             padding: 20px;
             margin: 0;
             background-image: 
-                url('https://www.transparenttextures.com/patterns/cartographer.png'),
+                url('https://www.transparenttextures.com/patterns/clouds.png'),
                 radial-gradient(circle at 10% 20%, rgba(255,215,0,0.1) 0%, transparent 20%),
                 radial-gradient(circle at 90% 80%, rgba(255,215,0,0.1) 0%, transparent 20%);
             background-blend-mode: overlay;
@@ -43,7 +43,7 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: rgba(20, 20, 40, 0.92);
+            background: rgba(20, 40, 80, 0.85);
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 0 4px rgba(255, 215, 0, 0.3);
@@ -60,7 +60,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(30, 30, 60, 0.95);
+            background: rgba(30, 60, 120, 0.95);
             padding: 10px;
             z-index: 100;
             box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.7);
@@ -85,17 +85,17 @@
             font-weight: bold;
             min-width: 120px;
             margin: 2px;
-            background: rgba(50, 50, 90, 0.5);
+            background: rgba(50, 90, 150, 0.5);
             color: white;
         }
         
         .tab.active {
-            background: linear-gradient(45deg, #6a4cff, #8E2DE2);
-            box-shadow: 0 0 15px rgba(106, 76, 255, 0.5);
+            background: linear-gradient(45deg, #1a2a6c, #3a7bd5);
+            box-shadow: 0 0 15px rgba(26, 42, 108, 0.5);
         }
         
         .tab:hover:not(.active) {
-            background: rgba(106, 76, 255, 0.3);
+            background: rgba(26, 42, 108, 0.3);
         }
         
         .tab i {
@@ -140,8 +140,8 @@
         }
         
         .settings-btn {
-            background: rgba(106, 76, 255, 0.3);
-            border: 1px solid #6a4cff;
+            background: rgba(26, 42, 108, 0.3);
+            border: 1px solid #1a2a6c;
             color: white;
             width: 50px;
             height: 50px;
@@ -152,12 +152,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 10px rgba(106, 76, 255, 0.5);
+            box-shadow: 0 0 10px rgba(26, 42, 108, 0.5);
         }
         
         .settings-btn:hover {
             transform: rotate(45deg);
-            box-shadow: 0 0 20px rgba(106, 76, 255, 0.8);
+            box-shadow: 0 0 20px rgba(26, 42, 108, 0.8);
         }
         
         .stats {
@@ -212,7 +212,7 @@
             z-index: 2;
             cursor: pointer;
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
-            background-image: url('https://i.imgur.com/sQo7QvG.png');
+            background-image: url('https://i.imgur.com/sunDbb8.png');
             background-size: cover;
             background-position: center;
             border: 8px solid #daa520;
@@ -359,7 +359,7 @@
         /* Страница престижа */
         .prestige-section {
             padding: 20px;
-            background: rgba(40, 30, 80, 0.5);
+            background: rgba(40, 60, 120, 0.5);
             border-radius: 15px;
             margin-top: 20px;
             border: 1px solid #FFD700;
@@ -374,7 +374,7 @@
         }
         
         #prestige-btn {
-            background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+            background: linear-gradient(135deg, #1a2a6c, #3a7bd5);
             font-size: 1.2rem;
             padding: 15px 30px;
             margin-top: 15px;
@@ -388,7 +388,7 @@
         
         #prestige-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(142, 45, 226, 0.7);
+            box-shadow: 0 0 20px rgba(26, 42, 108, 0.7);
         }
         
         #prestige-btn:disabled {
@@ -406,7 +406,7 @@
         }
         
         .prestige-level {
-            background: rgba(60, 50, 100, 0.6);
+            background: rgba(60, 100, 150, 0.6);
             border-radius: 10px;
             padding: 15px;
             border: 2px solid #444;
@@ -416,7 +416,7 @@
         .prestige-level.active {
             border: 2px solid #FFD700;
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-            background: rgba(106, 76, 255, 0.3);
+            background: rgba(26, 42, 108, 0.3);
         }
         
         .prestige-level i {
@@ -438,7 +438,7 @@
         }
         
         .achievement {
-            background: rgba(60, 50, 100, 0.6);
+            background: rgba(60, 100, 150, 0.6);
             border-radius: 10px;
             padding: 15px 10px;
             border: 2px solid #444;
@@ -529,7 +529,7 @@
         }
         
         .reward-day {
-            background: rgba(60, 50, 100, 0.6);
+            background: rgba(60, 100, 150, 0.6);
             border-radius: 10px;
             padding: 15px 10px;
             width: 60px;
@@ -540,8 +540,8 @@
         }
         
         .reward-day.active {
-            border-color: #6a4cff;
-            background: rgba(106, 76, 255, 0.3);
+            border-color: #1a2a6c;
+            background: rgba(26, 42, 108, 0.3);
             transform: translateY(-5px);
         }
         
@@ -563,7 +563,7 @@
         
         .reward-day.active:hover {
             transform: translateY(-8px);
-            box-shadow: 0 5px 15px rgba(106, 76, 255, 0.5);
+            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.5);
         }
         
         /* Анимация монетки */
@@ -653,7 +653,7 @@
         
         .prestige-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #6a4cff, #FFD700);
+            background: linear-gradient(90deg, #1a2a6c, #FFD700);
             width: 0%;
             transition: width 0.5s;
         }
@@ -713,12 +713,12 @@
         }
         
         .settings-content {
-            background: rgba(30, 20, 50, 0.95);
+            background: rgba(30, 40, 80, 0.95);
             width: 90%;
             max-width: 500px;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 0 30px rgba(106, 76, 255, 0.5);
+            box-shadow: 0 0 30px rgba(26, 42, 108, 0.5);
             border: 2px solid #FFD700;
             position: relative;
         }
@@ -789,7 +789,7 @@
         }
         
         .promo-btn {
-            background: linear-gradient(45deg, #6a4cff, #8E2DE2);
+            background: linear-gradient(45deg, #1a2a6c, #3a7bd5);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -802,7 +802,7 @@
         
         .promo-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(106, 76, 255, 0.5);
+            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.5);
         }
         
         .reset-btn {
@@ -865,6 +865,52 @@
             opacity: 0.05;
             pointer-events: none;
             z-index: -1;
+        }
+        
+        /* Новые стили для престижа */
+        .prestige-rewards {
+            margin-top: 20px;
+        }
+        
+        .prestige-reward {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+        
+        .prestige-reward-icon {
+            width: 40px;
+            height: 40px;
+            background: #FFD700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #000;
+            font-weight: bold;
+        }
+        
+        .prestige-reward-info {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .prestige-reward-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .prestige-reward-desc {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .prestige-reward.unlocked {
+            border-left: 4px solid #FFD700;
         }
     </style>
 </head>
@@ -1022,6 +1068,54 @@
                             <i class="fas fa-crown"></i>
                             <h4>Уровень 5</h4>
                             <p>+50% доход</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Новый блок с наградами за престиж -->
+                <div class="prestige-card">
+                    <h4><i class="fas fa-gift"></i> Награды за престиж</h4>
+                    <p>Получайте специальные награды за каждый уровень престижа</p>
+                    
+                    <div class="prestige-rewards">
+                        <div class="prestige-reward" id="prestige-reward-1">
+                            <div class="prestige-reward-icon">1</div>
+                            <div class="prestige-reward-info">
+                                <div class="prestige-reward-title">Золотая монета</div>
+                                <div class="prestige-reward-desc">Специальный эффект для монеты</div>
+                            </div>
+                        </div>
+                        
+                        <div class="prestige-reward" id="prestige-reward-2">
+                            <div class="prestige-reward-icon">2</div>
+                            <div class="prestige-reward-info">
+                                <div class="prestige-reward-title">Золотая рамка</div>
+                                <div class="prestige-reward-desc">Эксклюзивная рамка интерфейса</div>
+                            </div>
+                        </div>
+                        
+                        <div class="prestige-reward" id="prestige-reward-3">
+                            <div class="prestige-reward-icon">3</div>
+                            <div class="prestige-reward-info">
+                                <div class="prestige-reward-title">Анимация клика</div>
+                                <div class="prestige-reward-desc">Особая анимация при клике</div>
+                            </div>
+                        </div>
+                        
+                        <div class="prestige-reward" id="prestige-reward-4">
+                            <div class="prestige-reward-icon">4</div>
+                            <div class="prestige-reward-info">
+                                <div class="prestige-reward-title">Золотой фон</div>
+                                <div class="prestige-reward-desc">Эксклюзивный фон интерфейса</div>
+                            </div>
+                        </div>
+                        
+                        <div class="prestige-reward" id="prestige-reward-5">
+                            <div class="prestige-reward-icon">5</div>
+                            <div class="prestige-reward-info">
+                                <div class="prestige-reward-title">Легендарный статус</div>
+                                <div class="prestige-reward-desc">Особый значок в профиле</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1286,6 +1380,9 @@
                     });
                 }
                 
+                // Обновить награды престижа
+                updatePrestigeRewards();
+                
                 // Запустить авто-кликер
                 if (autoClicker > 0 && !autoClickerInterval) {
                     autoClickerInterval = setInterval(() => {
@@ -1431,8 +1528,23 @@
                 };
                 
                 showNotification(`Достигнут Престиж ${prestige}! +${prestigeBonus}% бонус`);
+                updatePrestigeRewards();
                 updateUI();
                 saveGame();
+            }
+        }
+        
+        // Обновить награды престижа
+        function updatePrestigeRewards() {
+            for (let i = 1; i <= 5; i++) {
+                const rewardEl = document.getElementById(`prestige-reward-${i}`);
+                if (rewardEl) {
+                    if (prestige >= i) {
+                        rewardEl.classList.add('unlocked');
+                    } else {
+                        rewardEl.classList.remove('unlocked');
+                    }
+                }
             }
         }
         
