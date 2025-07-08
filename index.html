@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
     <style>
-        /* Базовые стили */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -114,7 +113,6 @@
             border: 1px solid rgba(79, 172, 254, 0.3);
         }
         
-        /* Навигация внизу */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -168,7 +166,6 @@
             font-size: 1.1rem;
         }
         
-        /* Содержимое вкладок */
         .tab-content {
             display: none;
             animation: fadeIn 0.5s;
@@ -264,7 +261,6 @@
             margin-top: 5px;
         }
         
-        /* Страница кликера */
         #coin-container {
             position: relative;
             width: 260px;
@@ -357,7 +353,6 @@
             }
         }
         
-        /* Энергетический бар */
         .energy-container {
             margin-top: 20px;
             padding: 0 15px;
@@ -385,7 +380,6 @@
             color: #a0a0ff;
         }
         
-        /* Страница заданий */
         .quests-section {
             padding: 20px;
             background: rgba(15, 23, 42, 0.7);
@@ -457,7 +451,6 @@
             font-size: 1.2rem;
         }
         
-        /* Страница бонусов */
         .bonus-stats {
             display: flex;
             justify-content: center;
@@ -491,7 +484,6 @@
             color: #a0a0ff;
         }
         
-        /* Улучшения */
         .upgrade-card {
             background: rgba(20, 30, 50, 0.8);
             border-radius: 12px;
@@ -557,7 +549,6 @@
             color: #00f2fe;
         }
         
-        /* Ежедневные награды */
         .daily-rewards {
             display: flex;
             justify-content: center;
@@ -610,7 +601,6 @@
             box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4);
         }
         
-        /* Анимация монетки */
         @keyframes coin-spin {
             0% { transform: rotateY(0); }
             100% { transform: rotateY(360deg); }
@@ -620,7 +610,6 @@
             animation: coin-spin 1s ease-in-out;
         }
         
-        /* Премиум магазин */
         .premium-shop {
             padding: 20px;
             background: rgba(15, 23, 42, 0.7);
@@ -709,7 +698,6 @@
             min-height: 60px;
         }
         
-        /* Адаптивность */
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
@@ -775,7 +763,6 @@
             }
         }
         
-        /* Кнопки */
         .btn {
             background: linear-gradient(45deg, #4facfe, #00f2fe);
             border: none;
@@ -827,7 +814,6 @@
             background: linear-gradient(45deg, #ffb300, #ff6b00);
         }
         
-        /* Модальное окно настроек */
         .settings-modal {
             display: none;
             position: fixed;
@@ -990,7 +976,6 @@
             color: #ff6b6b;
         }
         
-        /* Уведомления */
         .notification {
             position: fixed;
             top: 20px;
@@ -1027,7 +1012,6 @@
             backdrop-filter: blur(5px);
         }
         
-        /* Новые анимации */
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -1048,7 +1032,6 @@
             animation: glow 3s infinite;
         }
         
-        /* Стили для Toncoin иконки */
         .ton-icon {
             display: inline-block;
             width: 24px;
@@ -1074,7 +1057,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Блокировка для компьютеров -->
     <div class="desktop-block">
         <h2>FG Bot доступен только на мобильных устройствах!</h2>
         <p>Пожалуйста, откройте эту страницу на вашем смартфоне или планшете для доступа к игре.</p>
@@ -1091,7 +1073,6 @@
             </div>
         </header>
         
-        <!-- Статистика над монетой -->
         <div class="stats" id="stats-container">
             <div class="stat-card">
                 <div><i class="fas fa-coins"></i> <span class="lang-coins">Монеты</span></div>
@@ -1107,14 +1088,12 @@
             </div>
         </div>
         
-        <!-- Вкладка Кликер -->
         <div id="clicker" class="tab-content active">
             <div id="coin-container">
                 <div id="coin" class="pulse">FG</div>
                 <div id="coin-shadow"></div>
             </div>
             
-            <!-- Энергетический бар -->
             <div class="energy-container">
                 <div class="energy-bar">
                     <div class="energy-fill" id="energy-fill"></div>
@@ -1123,7 +1102,6 @@
             </div>
         </div>
         
-        <!-- Вкладка Задания -->
         <div id="quests" class="tab-content">
             <div class="quests-section">
                 <h3><i class="fas fa-tasks"></i> <span class="lang-quests-title">Система заданий</span></h3>
@@ -1158,9 +1136,7 @@
             </div>
         </div>
         
-        <!-- Вкладка Бонусы -->
         <div id="bonuses" class="tab-content">
-            <!-- Ежедневные награды -->
             <div class="quest-card">
                 <h3><i class="fas fa-calendar-day"></i> <span class="lang-daily-title">Ежедневные награды</span></h3>
                 <p class="lang-daily-desc">Заходите ежедневно, чтобы получать награды!</p>
@@ -1193,7 +1169,6 @@
             </div>
         </div>
         
-        <!-- Вкладка Улучшения -->
         <div id="upgrades" class="tab-content">
             <div class="quest-card">
                 <h3><i class="fas fa-arrow-up"></i> <span class="lang-upgrades-title">Улучшения</span></h3>
@@ -1248,7 +1223,6 @@
             </div>
         </div>
         
-        <!-- Вкладка Премиум Магазин -->
         <div id="premium" class="tab-content">
             <div class="premium-shop">
                 <h3><i class="fas fa-crown"></i> Премиум Магазин</h3>
@@ -1343,7 +1317,6 @@
         </div>
     </div>
     
-    <!-- Навигация внизу -->
     <div class="bottom-nav">
         <div class="tabs">
             <div class="tab active" data-tab="clicker">
@@ -1364,7 +1337,6 @@
         </div>
     </div>
     
-    <!-- Модальное окно настроек -->
     <div class="settings-modal" id="settings-modal">
         <div class="settings-content">
             <button class="close-btn" id="close-settings">
@@ -1412,8 +1384,11 @@
         
         // ========== ИНИЦИАЛИЗАЦИЯ TONCONNECT ==========
         const connector = new TonConnectSDK.TonConnect({
-            manifestUrl: 'https://fg-bot.com/tonconnect-manifest.json'
+            manifestUrl: 'https://kliker-test.vercel.app/tonconnect-manifest.json'
         });
+        
+        // Реальный адрес для получения платежей (ЗАМЕНИТЕ НА ВАШ АДРЕС)
+        const merchantAddress = 'UQBGOyQ6PLnzk8Wb2jF1qoQXPOmBQtqE9ooNjhot5VWTZgjp';
         
         // ========== ИНИЦИАЛИЗАЦИЯ ИГРЫ ==========
         
@@ -1623,10 +1598,8 @@
                 }
             });
             
-            // Обновить placeholder промокода
             promoInput.placeholder = language === 'ru' ? "Введите промокод..." : "Enter promo code...";
             
-            // Обновить цены улучшений
             document.getElementById('click-upgrade-cost').textContent = upgrades.click.cost;
             document.getElementById('auto-clicker-cost').textContent = upgrades.auto.cost;
             document.getElementById('critical-upgrade-cost').textContent = upgrades.critical.cost;
@@ -1667,14 +1640,11 @@
                     critical: { level: 0, cost: 7500, effect: 0 }
                 };
                 
-                // Обновить состояние кнопок заданий
                 updateQuestButtons();
                 
-                // Установить язык
                 languageSelect.value = language;
                 updateLanguage();
                 
-                // Запустить автокликер, если он куплен
                 if (upgrades.auto.level > 0) {
                     startAutoClicker();
                 }
@@ -1686,23 +1656,19 @@
                 saveGame();
             }
             
-            // Инициализация кошелька
             initWallet();
         }
         
         // Обработчик клика по монете
         function handleCoinClick(e) {
-            // Проверить энергию
             if (energy <= 0) {
                 showNotification(translations[language].noEnergy);
                 return;
             }
             
-            // Рассчитать базовые монеты с учетом множителя
             let baseCoins = (perClick + upgrades.click.effect) * tapMultiplier;
             let isCritical = false;
             
-            // Проверить критический удар
             if (Math.random() < (upgrades.critical.effect / 100)) {
                 baseCoins = Math.floor(baseCoins * 2);
                 isCritical = true;
@@ -1712,25 +1678,19 @@
                 showNotification(translations[language].criticalHit);
             }
             
-            // Добавить монеты
             coins += baseCoins;
             totalCoins += baseCoins;
-            
-            // Уменьшить энергию
             energy--;
             
             updateUI();
             
-            // Создать анимацию
             createClickAnimation(e.clientX, e.clientY, baseCoins, isCritical);
             
-            // Анимация монеты
             coinEl.style.transform = 'scale(0.95) rotate(15deg)';
             setTimeout(() => {
                 coinEl.style.transform = 'scale(1) rotate(0)';
             }, 100);
             
-            // Автосохранение каждые 30 секунд
             if (Date.now() - lastSave > 30000) {
                 saveGame();
                 showSaveNotice();
@@ -1765,7 +1725,6 @@
                         break;
                 }
                 
-                // Проверить уровень
                 checkLevel();
                 
                 updateUI();
@@ -1809,7 +1768,6 @@
             const lastRewardDate = new Date(lastDailyReward);
             const currentDate = new Date();
             
-            // Проверить, можно ли получить награду сегодня
             if (lastDailyReward === 0 || 
                 currentDate.getDate() !== lastRewardDate.getDate() || 
                 currentDate.getMonth() !== lastRewardDate.getMonth() ||
@@ -1826,7 +1784,6 @@
                 dailyStatus.style.color = "#ff6b6b";
             }
             
-            // Обновить визуальное состояние ежедневных наград
             updateDailyRewards();
         }
         
@@ -1891,7 +1848,6 @@
             if (promoCodes[promoCode]) {
                 const bonus = promoCodes[promoCode];
                 
-                // Применить бонус
                 if (bonus.coins) {
                     coins += bonus.coins;
                     totalCoins += bonus.coins;
@@ -1966,8 +1922,10 @@
         // Инициализация кошелька
         async function initWallet() {
             try {
-                await connector.restoreConnection();
-                updateWalletUI();
+                const connected = await connector.restoreConnection();
+                if (connected) {
+                    updateWalletUI(connector.wallet);
+                }
                 
                 connector.onStatusChange(wallet => {
                     updateWalletUI(wallet);
@@ -1985,12 +1943,7 @@
                 const wallet = walletsList[0];
                 
                 if (wallet) {
-                    const connectionSource = {
-                        universalLink: wallet.universalLink,
-                        bridgeUrl: wallet.bridgeUrl
-                    };
-                    
-                    await connector.connect(connectionSource);
+                    await connector.connect({ jsBridgeKey: wallet.jsBridgeKey });
                     showNotification(translations[language].walletConnected);
                 }
             } catch (e) {
@@ -2003,7 +1956,7 @@
         async function disconnectWallet() {
             try {
                 await connector.disconnect();
-                updateWalletUI();
+                updateWalletUI(null);
                 showNotification(translations[language].walletDisconnected);
             } catch (e) {
                 console.error('Disconnect error:', e);
@@ -2034,7 +1987,7 @@
         // Покупка товара
         async function buyItem(itemId, price) {
             try {
-                const wallet = await connector.connected;
+                const wallet = connector.wallet;
                 
                 if (!wallet) {
                     showNotification(language === 'ru' ? 
@@ -2044,24 +1997,25 @@
                     return;
                 }
                 
-                // Формируем транзакцию
                 const transaction = {
-                    validUntil: Math.floor(Date.now() / 1000) + 300, // 5 минут
+                    validUntil: Math.floor(Date.now() / 1000) + 300,
                     messages: [
                         {
-                            address: 'UQBGOyQ6PLnzk8Wb2jF1qoQXPOmBQtqE9ooNjhot5VWTZgjp', // Замените на реальный адрес
-                            amount: String(price * 1000000000), // Конвертация в нанотоны
-                            payload: itemId // Идентификатор товара
+                            address: merchantAddress,
+                            amount: String(price * 1000000000),
+                            payload: itemId
                         }
                     ]
                 };
                 
-                // Отправляем транзакцию на подписание
                 const result = await connector.sendTransaction(transaction);
                 
-                // Обработка успешной транзакции
-                handleSuccessfulPurchase(itemId);
-                showNotification(translations[language].purchaseSuccess);
+                if (result) {
+                    handleSuccessfulPurchase(itemId);
+                    showNotification(translations[language].purchaseSuccess);
+                } else {
+                    showNotification(translations[language].transactionCancelled);
+                }
                 
             } catch (e) {
                 console.error('Transaction error:', e);
@@ -2092,7 +2046,6 @@
                     );
                     break;
                 case 'energy-boost':
-                    // Активация бесконечной энергии на 24 часа
                     maxEnergy = 1000000;
                     energy = maxEnergy;
                     showNotification(language === 'ru' ? 
@@ -2101,7 +2054,6 @@
                     );
                     break;
                 case 'click-booster':
-                    // Активация бустера кликов
                     perClick += 10;
                     showNotification(language === 'ru' ? 
                         "Бустер кликов активирован на 12 часов!" : 
@@ -2109,7 +2061,6 @@
                     );
                     break;
                 case 'protection':
-                    // Активация защиты
                     showNotification(language === 'ru' ? 
                         "Защита от потерь активирована!" : 
                         "Loss protection activated!"
@@ -2132,12 +2083,10 @@
         
         // Обновление UI
         function updateUI() {
-            // Обновить монеты и статистику
             coinsEl.textContent = Math.floor(coins).toLocaleString();
             perClickEl.textContent = ((perClick + upgrades.click.effect) * tapMultiplier).toFixed(1);
             levelEl.textContent = level;
             
-            // Обновить информацию об улучшениях
             document.getElementById('click-upgrade-cost').textContent = upgrades.click.cost;
             document.getElementById('click-upgrade-effect').textContent = upgrades.click.effect;
             document.getElementById('auto-clicker-cost').textContent = upgrades.auto.cost;
@@ -2145,12 +2094,10 @@
             document.getElementById('critical-upgrade-cost').textContent = upgrades.critical.cost;
             document.getElementById('critical-upgrade-effect').textContent = upgrades.critical.effect;
             
-            // Обновить состояние кнопок улучшений
             buyClickBtn.disabled = coins < upgrades.click.cost;
             buyAutoBtn.disabled = coins < upgrades.auto.cost;
             buyCriticalBtn.disabled = coins < upgrades.critical.cost;
             
-            // Обновить шкалу энергии
             updateEnergyBar();
         }
         
@@ -2238,23 +2185,17 @@
         
         // Инициализация обработчиков событий
         function initEventListeners() {
-            // Обработчик клика по монете
             coinContainer.addEventListener('click', handleCoinClick);
             coinContainer.addEventListener('touchstart', handleCoinClick, { passive: true });
             
-            // Ежедневная награда
             dailyBtn.addEventListener('click', claimDailyBonus);
             
-            // Промокод
             promoBtn.addEventListener('click', activatePromo);
             
-            // Сброс игры
             resetBtn.addEventListener('click', resetGame);
             
-            // Смена языка
             languageSelect.addEventListener('change', changeLanguage);
             
-            // Открыть/закрыть настройки
             settingsBtn.addEventListener('click', () => {
                 settingsModal.classList.add('active');
             });
@@ -2263,7 +2204,6 @@
                 settingsModal.classList.remove('active');
             });
             
-            // Переключение вкладок
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.addEventListener('click', () => {
                     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -2272,7 +2212,6 @@
                     tab.classList.add('active');
                     document.getElementById(tab.dataset.tab).classList.add('active');
                     
-                    // Показать статистику только на вкладке Кликер
                     if (tab.dataset.tab === 'clicker') {
                         statsContainer.style.display = 'flex';
                     } else {
@@ -2281,7 +2220,6 @@
                 });
             });
             
-            // Задания
             telegramBtn.addEventListener('click', () => {
                 window.open('https://t.me/gifteverydayyy', '_blank');
                 showNotification(translations[language].telegramSuccess);
@@ -2293,16 +2231,13 @@
                 completeQuest('chat');
             });
             
-            // Улучшения
             buyClickBtn.addEventListener('click', () => buyUpgrade('click'));
             buyAutoBtn.addEventListener('click', () => buyUpgrade('auto'));
             buyCriticalBtn.addEventListener('click', () => buyUpgrade('critical'));
             
-            // Кошелек
             connectWalletBtn.addEventListener('click', connectWallet);
             disconnectWalletBtn.addEventListener('click', disconnectWallet);
             
-            // Покупка товаров
             document.querySelectorAll('.buy-item').forEach(button => {
                 button.addEventListener('click', function() {
                     const shopItem = this.closest('.shop-item');
