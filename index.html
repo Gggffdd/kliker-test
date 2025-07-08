@@ -176,27 +176,16 @@
         #coin {
             width: 180px;
             height: 180px;
-            background: radial-gradient(circle at 30% 30%, #FFD700, #B8860B);
+            background: url('https://i.imgur.com/6W9wF3H.png') center/contain no-repeat;
             border-radius: 50%;
             position: relative;
-            box-shadow: 
-                0 0 30px rgba(255, 215, 0, 0.7),
-                inset 0 -15px 30px rgba(0, 0, 0, 0.5),
-                inset 0 15px 30px rgba(255, 255, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
             transition: all 0.3s;
             transform: scale(1);
             z-index: 2;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
         }
-        
-        #coin::before {
-            content: "💰";
-            font-size: 80px;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-        }
-        
+
         #coin:hover {
             transform: scale(1.05) rotate(5deg);
             box-shadow: 0 0 40px rgba(255, 215, 0, 0.9);
