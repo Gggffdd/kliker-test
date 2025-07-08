@@ -3,55 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Golden Coin Clicker</title>
+    <title>Cloud Coin Clicker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a2a6c, #3a7bd5);
-            color: white;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #87CEEB, #E0F7FA);
+            color: #2C3E50;
             text-align: center;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
             padding: 20px;
             margin: 0;
-            background-image: 
-                url('https://www.transparenttextures.com/patterns/clouds.png'),
-                radial-gradient(circle at 10% 20%, rgba(255,215,0,0.1) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(255,215,0,0.1) 0%, transparent 20%);
-            background-blend-mode: overlay;
         }
         
-        body::before {
-            content: "";
-            position: absolute;
+        .cloud-bg {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, rgba(0,0,0,0) 70%);
             z-index: -1;
+            opacity: 0.8;
+            background-image: 
+                url('https://assets.codepen.io/3364143/clouds-1.png'),
+                url('https://assets.codepen.io/3364143/clouds-2.png'),
+                url('https://assets.codepen.io/3364143/clouds-3.png');
+            animation: clouds 120s linear infinite;
+        }
+        
+        @keyframes clouds {
+            0% { background-position: -1000px 100px, 300px 300px, -200px 250px; }
+            100% { background-position: 2000px 100px, 2600px 300px, 1800px 250px; }
+        }
+        
+        .sun {
+            position: fixed;
+            top: 50px;
+            right: 50px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, #FFD700, #FFA500);
+            border-radius: 50%;
+            box-shadow: 0 0 50px #FFD700;
+            z-index: -1;
+            animation: pulse 4s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 50px #FFD700; }
+            100% { transform: scale(1.05); box-shadow: 0 0 70px #FFD700; }
         }
         
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: rgba(20, 40, 80, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 0 4px rgba(255, 215, 0, 0.3);
-            border: 2px solid #FFD700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             min-height: calc(100vh - 120px);
             position: relative;
             backdrop-filter: blur(5px);
             margin-bottom: 80px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
         /* Навигация внизу */
@@ -60,11 +84,12 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(30, 60, 120, 0.95);
+            background: rgba(255, 255, 255, 0.95);
             padding: 10px;
             z-index: 100;
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.7);
-            border-top: 1px solid #FFD700;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
         
         .tabs {
@@ -80,48 +105,52 @@
             flex: 1;
             padding: 12px 0;
             cursor: pointer;
-            border-radius: 50px;
-            transition: all 0.3s;
-            font-weight: bold;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 600;
             min-width: 120px;
             margin: 2px;
-            background: rgba(50, 90, 150, 0.5);
-            color: white;
+            background: transparent;
+            color: #7F8C8D;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .tab.active {
-            background: linear-gradient(45deg, #1a2a6c, #3a7bd5);
-            box-shadow: 0 0 15px rgba(26, 42, 108, 0.5);
+            color: #3498DB;
+            background: rgba(52, 152, 219, 0.1);
         }
         
         .tab:hover:not(.active) {
-            background: rgba(26, 42, 108, 0.3);
+            background: rgba(52, 152, 219, 0.05);
         }
         
         .tab i {
-            margin-right: 8px;
+            margin-bottom: 5px;
             font-size: 1.2rem;
         }
         
         /* Содержимое вкладок */
         .tab-content {
             display: none;
+            animation: fadeIn 0.5s;
         }
         
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.5s;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         header {
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #FFD700;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             position: relative;
             display: flex;
             justify-content: space-between;
@@ -129,35 +158,35 @@
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             margin-bottom: 10px;
-            background: linear-gradient(to right, #ffd700, #ffaa00);
+            background: linear-gradient(to right, #3498DB, #2C3E50);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             flex: 1;
             text-align: left;
+            font-weight: 700;
         }
         
         .settings-btn {
-            background: rgba(26, 42, 108, 0.3);
-            border: 1px solid #1a2a6c;
-            color: white;
-            width: 50px;
-            height: 50px;
+            background: rgba(52, 152, 219, 0.1);
+            border: none;
+            color: #3498DB;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 10px rgba(26, 42, 108, 0.5);
         }
         
         .settings-btn:hover {
             transform: rotate(45deg);
-            box-shadow: 0 0 20px rgba(26, 42, 108, 0.8);
+            background: rgba(52, 152, 219, 0.2);
         }
         
         .stats {
@@ -169,25 +198,26 @@
         }
         
         .stat-card {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 15px;
             min-width: 150px;
-            border: 1px solid #FFD700;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
         }
         
         .stat-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
         
         .stat-value {
             font-size: 1.8rem;
             font-weight: bold;
-            color: #FFD700;
+            color: #3498DB;
             margin-top: 5px;
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
         
         /* Страница кликера */
@@ -200,6 +230,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            -webkit-tap-highlight-color: transparent;
         }
         
         #coin {
@@ -211,16 +242,20 @@
             transform: scale(1);
             z-index: 2;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
-            background-image: url('https://i.imgur.com/sunDbb8.png');
-            background-size: cover;
-            background-position: center;
+            box-shadow: 0 0 30px rgba(52, 152, 219, 0.3);
+            background: radial-gradient(circle at 30% 30%, #FFD700, #FFA500);
             border: 8px solid #daa520;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: rgba(0, 0, 0, 0.2);
+            font-weight: bold;
         }
 
         #coin:hover {
             transform: scale(1.05) rotate(5deg);
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.9);
+            box-shadow: 0 0 40px rgba(52, 152, 219, 0.4);
         }
         
         #coin:active {
@@ -242,7 +277,7 @@
             bottom: 10px;
             width: 160px;
             height: 40px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 50%;
             filter: blur(15px);
             z-index: 1;
@@ -251,20 +286,19 @@
         
         .coin-click {
             position: absolute;
-            color: #FFD700;
+            color: #3498DB;
             font-weight: bold;
             font-size: 1.8rem;
             pointer-events: none;
             animation: float-up 1.5s forwards;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
             z-index: 10;
-            user-select: none;
-            font-family: 'Arial Black', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
         
         .critical {
-            color: #ff3366;
-            text-shadow: 0 0 10px rgba(255, 51, 102, 0.7);
+            color: #E74C3C;
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
             font-size: 2.2rem;
         }
         
@@ -288,30 +322,30 @@
         }
         
         .upgrade {
-            background: linear-gradient(135deg, #2a2350, #3a2e6d);
-            color: white;
+            background: white;
+            color: #2C3E50;
             border: none;
             padding: 15px;
             border-radius: 15px;
             cursor: pointer;
             font-size: 1rem;
             transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             text-align: left;
             position: relative;
             overflow: hidden;
-            border: 1px solid #FFD700;
+            border: 1px solid rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
         }
         
         .upgrade:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
         
         .upgrade:disabled {
-            background: #555;
+            background: #ECF0F1;
             cursor: not-allowed;
             opacity: 0.7;
         }
@@ -322,11 +356,12 @@
             margin-bottom: 5px;
             display: flex;
             justify-content: space-between;
+            color: #3498DB;
         }
         
         .upgrade-level {
-            background: #FFD700;
-            color: #000;
+            background: #3498DB;
+            color: white;
             padding: 2px 8px;
             border-radius: 10px;
             font-size: 0.9rem;
@@ -336,14 +371,14 @@
         .upgrade-cost {
             margin-top: 8px;
             font-weight: bold;
-            color: #FFD700;
+            color: #27AE60;
             display: flex;
             justify-content: space-between;
         }
         
         .progress-bar {
             height: 8px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.05);
             border-radius: 4px;
             margin-top: 10px;
             overflow: hidden;
@@ -351,82 +386,62 @@
         
         .progress-fill {
             height: 100%;
-            background: #FFD700;
+            background: linear-gradient(90deg, #3498DB, #2ECC71);
             width: 0%;
             transition: width 0.5s;
+            border-radius: 4px;
         }
         
-        /* Страница престижа */
-        .prestige-section {
+        /* Страница заданий */
+        .quests-section {
             padding: 20px;
-            background: rgba(40, 60, 120, 0.5);
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 15px;
             margin-top: 20px;
-            border: 1px solid #FFD700;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(5px);
         }
         
-        .prestige-card {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 10px;
+        .quest-card {
+            background: white;
+            border-radius: 12px;
             padding: 15px;
             margin: 15px 0;
-            border: 1px solid #FFD700;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
         
-        #prestige-btn {
-            background: linear-gradient(135deg, #1a2a6c, #3a7bd5);
-            font-size: 1.2rem;
-            padding: 15px 30px;
-            margin-top: 15px;
-            border-radius: 50px;
-            border: 2px solid #FFD700;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: white;
-        }
-        
-        #prestige-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(26, 42, 108, 0.7);
-        }
-        
-        #prestige-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .prestige-grid {
+        .quest-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 15px;
             margin-top: 20px;
         }
         
-        .prestige-level {
-            background: rgba(60, 100, 150, 0.6);
-            border-radius: 10px;
+        .quest {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
             padding: 15px;
-            border: 2px solid #444;
+            border: 2px solid #ECF0F1;
             transition: all 0.3s;
+            text-align: center;
         }
         
-        .prestige-level.active {
-            border: 2px solid #FFD700;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-            background: rgba(26, 42, 108, 0.3);
+        .quest.active {
+            border: 2px solid #3498DB;
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.2);
+            background: rgba(52, 152, 219, 0.05);
         }
         
-        .prestige-level i {
+        .quest i {
             font-size: 1.8rem;
-            color: #FFD700;
+            color: #3498DB;
             margin-bottom: 10px;
         }
         
-        .prestige-level h4 {
+        .quest h4 {
             margin-bottom: 5px;
+            color: #2C3E50;
         }
         
         /* Страница достижений */
@@ -438,22 +453,23 @@
         }
         
         .achievement {
-            background: rgba(60, 100, 150, 0.6);
-            border-radius: 10px;
+            background: white;
+            border-radius: 12px;
             padding: 15px 10px;
-            border: 2px solid #444;
+            border: 2px solid #ECF0F1;
             transition: all 0.3s;
             min-height: 120px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
         
         .achievement.unlocked {
-            background: linear-gradient(135deg, #3a2e6d, #2a2350);
-            border: 2px solid #FFD700;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
+            border: 2px solid #3498DB;
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.2);
             animation: achievement-unlock 0.8s ease-in-out;
         }
         
@@ -466,25 +482,26 @@
         .achievement-icon {
             font-size: 2rem;
             margin-bottom: 10px;
-            color: #888;
+            color: #BDC3C7;
         }
         
         .achievement.unlocked .achievement-icon {
-            color: #FFD700;
+            color: #3498DB;
         }
         
         .achievement-title {
             font-weight: bold;
             margin-bottom: 5px;
+            color: #2C3E50;
         }
         
         .achievement-desc {
             font-size: 0.85rem;
-            color: #aaa;
+            color: #7F8C8D;
         }
         
         .achievement.unlocked .achievement-desc {
-            color: #fff;
+            color: #2C3E50;
         }
         
         /* Уведомления */
@@ -493,31 +510,34 @@
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: #FFD700;
+            background: rgba(255, 255, 255, 0.95);
+            color: #3498DB;
             padding: 15px 25px;
-            border-radius: 10px;
-            border: 1px solid #FFD700;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
             z-index: 100;
             opacity: 0;
             transition: opacity 0.3s;
             max-width: 90%;
-            font-size: 1.1rem;
-            backdrop-filter: blur(5px);
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
         }
         
         .save-notice {
             position: fixed;
             bottom: 10px;
             right: 10px;
-            background: rgba(0, 0, 0, 0.6);
-            color: #0f0;
-            padding: 5px 10px;
-            border-radius: 5px;
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
             font-size: 0.8rem;
             opacity: 0;
             transition: opacity 0.3s;
+            box-shadow: 0 3px 15px rgba(46, 204, 113, 0.3);
+            font-weight: 500;
         }
         
         /* Ежедневные награды */
@@ -529,41 +549,42 @@
         }
         
         .reward-day {
-            background: rgba(60, 100, 150, 0.6);
-            border-radius: 10px;
+            background: white;
+            border-radius: 12px;
             padding: 15px 10px;
             width: 60px;
-            border: 2px solid #444;
+            border: 2px solid #ECF0F1;
             margin: 5px;
             transition: all 0.3s;
             cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
         }
         
         .reward-day.active {
-            border-color: #1a2a6c;
-            background: rgba(26, 42, 108, 0.3);
+            border-color: #3498DB;
+            background: rgba(52, 152, 219, 0.05);
             transform: translateY(-5px);
         }
         
         .reward-day.claimed {
-            border-color: #FFD700;
-            background: rgba(255, 215, 0, 0.2);
+            border-color: #2ECC71;
+            background: rgba(46, 204, 113, 0.1);
         }
         
         .reward-day i {
             font-size: 1.5rem;
             margin-bottom: 10px;
-            color: #FFD700;
+            color: #3498DB;
         }
         
         .reward-amount {
             font-weight: bold;
-            color: #FFD700;
+            color: #3498DB;
         }
         
         .reward-day.active:hover {
             transform: translateY(-8px);
-            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.5);
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.2);
         }
         
         /* Анимация монетки */
@@ -595,7 +616,7 @@
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
             
             .tabs {
@@ -607,7 +628,7 @@
                 margin-bottom: 5px;
                 min-width: 100px;
                 padding: 10px 0;
-                font-size: 0.9rem;
+                font-size: 0.8rem;
             }
             
             .upgrades {
@@ -617,79 +638,43 @@
             .bottom-nav {
                 padding: 5px;
             }
+            
+            #coin {
+                width: 150px;
+                height: 150px;
+                font-size: 2.5rem;
+            }
         }
         
         /* Кнопки */
         .btn {
-            background: linear-gradient(45deg, #FFD700, #B8860B);
+            background: linear-gradient(45deg, #3498DB, #2ECC71);
             border: none;
-            color: #000;
-            padding: 10px 20px;
+            color: white;
+            padding: 12px 25px;
             border-radius: 50px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             margin: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
         }
         
         .btn:active {
             transform: translateY(1px);
         }
         
-        /* Прогресс престижа */
-        .prestige-progress {
-            height: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-        
-        .prestige-progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #1a2a6c, #FFD700);
-            width: 0%;
-            transition: width 0.5s;
-        }
-        
-        /* Бонусы */
-        .bonus-section {
-            background: rgba(30, 80, 40, 0.3);
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 20px;
-            border: 1px solid #4CAF50;
-        }
-        
-        .bonus-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .bonus-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            border: 1px solid #4CAF50;
-        }
-        
-        .bonus-card h4 {
-            color: #4CAF50;
-            margin-bottom: 10px;
-        }
-        
-        .bonus-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #4CAF50;
+        .btn i {
+            margin-right: 8px;
         }
         
         /* Модальное окно настроек */
@@ -700,27 +685,34 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1000;
             backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
         .settings-modal.active {
             display: flex;
-            animation: fadeIn 0.3s;
+            opacity: 1;
         }
         
         .settings-content {
-            background: rgba(30, 40, 80, 0.95);
+            background: white;
             width: 90%;
             max-width: 500px;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 0 30px rgba(26, 42, 108, 0.5);
-            border: 2px solid #FFD700;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
             position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s;
+        }
+        
+        .settings-modal.active .settings-content {
+            transform: translateY(0);
         }
         
         .close-btn {
@@ -729,29 +721,29 @@
             right: 20px;
             background: transparent;
             border: none;
-            color: white;
+            color: #7F8C8D;
             font-size: 1.5rem;
             cursor: pointer;
             transition: all 0.3s;
         }
         
         .close-btn:hover {
-            color: #FFD700;
+            color: #E74C3C;
             transform: scale(1.2);
         }
         
         .settings-title {
-            color: #FFD700;
+            color: #3498DB;
             margin-bottom: 25px;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             text-align: center;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            font-weight: 600;
         }
         
         .setting-group {
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .setting-group:last-child {
@@ -761,66 +753,70 @@
         .setting-label {
             display: block;
             margin-bottom: 10px;
-            font-weight: bold;
-            color: #FFD700;
+            font-weight: 600;
+            color: #2C3E50;
             text-align: left;
         }
         
         .language-select {
             width: 100%;
             padding: 12px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #FFD700;
+            background: white;
+            border: 1px solid #ECF0F1;
             border-radius: 10px;
-            color: white;
+            color: #2C3E50;
             font-size: 1rem;
             margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
         
         .promo-input {
             width: 100%;
             padding: 12px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #FFD700;
+            background: white;
+            border: 1px solid #ECF0F1;
             border-radius: 10px;
-            color: white;
+            color: #2C3E50;
             font-size: 1rem;
             margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
         
         .promo-btn {
-            background: linear-gradient(45deg, #1a2a6c, #3a7bd5);
+            background: linear-gradient(45deg, #3498DB, #2980B9);
             color: white;
             border: none;
             padding: 12px 20px;
             border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             width: 100%;
             transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
         }
         
         .promo-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.5);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
         }
         
         .reset-btn {
-            background: linear-gradient(45deg, #ff3366, #cc0000);
+            background: linear-gradient(45deg, #E74C3C, #C0392B);
             color: white;
             border: none;
             padding: 15px;
             border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             width: 100%;
             transition: all 0.3s;
             margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
         }
         
         .reset-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.5);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
         }
         
         .promo-result {
@@ -828,99 +824,109 @@
             padding: 10px;
             border-radius: 8px;
             display: none;
+            font-size: 0.9rem;
         }
         
         .promo-success {
-            background: rgba(76, 175, 80, 0.2);
-            border: 1px solid #4CAF50;
-            color: #4CAF50;
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid #2ECC71;
+            color: #27AE60;
         }
         
         .promo-error {
-            background: rgba(255, 51, 102, 0.2);
-            border: 1px solid #ff3366;
-            color: #ff3366;
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid #E74C3C;
+            color: #C0392B;
         }
         
-        /* Новые стили для фона */
-        .gold-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/dark-wood.png');
-            opacity: 0.1;
-            pointer-events: none;
-            z-index: -2;
-        }
-        
-        .gold-dust {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/dust.png');
-            opacity: 0.05;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        /* Новые стили для престижа */
-        .prestige-rewards {
+        /* Стили для заданий */
+        .quest-rewards {
             margin-top: 20px;
         }
         
-        .prestige-reward {
+        .quest-reward {
             display: flex;
             align-items: center;
             margin-bottom: 10px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
+            padding: 12px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
         }
         
-        .prestige-reward-icon {
+        .quest-reward-icon {
             width: 40px;
             height: 40px;
-            background: #FFD700;
+            background: #3498DB;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 15px;
-            color: #000;
+            color: white;
             font-weight: bold;
         }
         
-        .prestige-reward-info {
+        .quest-reward-info {
             flex: 1;
             text-align: left;
         }
         
-        .prestige-reward-title {
-            font-weight: bold;
+        .quest-reward-title {
+            font-weight: 600;
             margin-bottom: 5px;
+            color: #2C3E50;
         }
         
-        .prestige-reward-desc {
+        .quest-reward-desc {
             font-size: 0.9rem;
-            color: #aaa;
+            color: #7F8C8D;
         }
         
-        .prestige-reward.unlocked {
-            border-left: 4px solid #FFD700;
+        .quest-reward.unlocked {
+            border-left: 4px solid #3498DB;
         }
+        
+        /* Стили для социальных кнопок */
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .telegram { background: #0088CC; }
+        .youtube { background: #FF0000; }
+        .instagram { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); }
+        .twitter { background: #1DA1F2; }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="gold-pattern"></div>
-    <div class="gold-dust"></div>
+    <div class="cloud-bg"></div>
+    <div class="sun"></div>
     
     <div class="container">
         <header>
-            <h1><i class="fas fa-coins"></i> Golden Coin Clicker</h1>
+            <h1><i class="fas fa-cloud"></i> Cloud Coin Clicker</h1>
             <div class="settings-btn" id="settings-btn">
                 <i class="fas fa-cog"></i>
             </div>
@@ -929,23 +935,23 @@
         <!-- Статистика (только на вкладке Кликер) -->
         <div class="stats" id="stats-container">
             <div class="stat-card">
-                <div><i class="fas fa-coins"></i> Монеты</div>
+                <div><i class="fas fa-coins"></i> <span class="lang-coins">Монеты</span></div>
                 <div class="stat-value" id="coins">0</div>
             </div>
             <div class="stat-card">
-                <div><i class="fas fa-mouse"></i> За клик</div>
+                <div><i class="fas fa-mouse"></i> <span class="lang-per-click">За клик</span></div>
                 <div class="stat-value" id="per-click">1</div>
             </div>
             <div class="stat-card">
-                <div><i class="fas fa-crown"></i> Престиж</div>
-                <div class="stat-value" id="prestige">0</div>
+                <div><i class="fas fa-star"></i> <span class="lang-level">Уровень</span></div>
+                <div class="stat-value" id="level">1</div>
             </div>
         </div>
         
         <!-- Вкладка Кликер -->
         <div id="clicker" class="tab-content active">
             <div id="coin-container">
-                <div id="coin" class="pulse"></div>
+                <div id="coin" class="pulse">$</div>
                 <div id="coin-shadow"></div>
             </div>
         </div>
@@ -955,12 +961,12 @@
             <div class="upgrades">
                 <button class="upgrade" id="click-upgrade">
                     <div class="upgrade-title">
-                        <span>Сильные пальцы</span>
+                        <span class="lang-click-upgrade">Сильные пальцы</span>
                         <span class="upgrade-level" id="click-level">1</span>
                     </div>
-                    <div>Увеличивает монеты за клик</div>
+                    <div class="lang-click-desc">Увеличивает монеты за клик</div>
                     <div class="upgrade-cost">
-                        <span>Стоимость:</span>
+                        <span class="lang-cost">Стоимость:</span>
                         <span id="click-cost">50</span>
                     </div>
                     <div class="progress-bar">
@@ -970,12 +976,12 @@
                 
                 <button class="upgrade" id="auto-upgrade">
                     <div class="upgrade-title">
-                        <span>Авто-кликер</span>
+                        <span class="lang-auto-upgrade">Авто-кликер</span>
                         <span class="upgrade-level" id="auto-level">0</span>
                     </div>
-                    <div>Автоматически кликает каждую секунду</div>
+                    <div class="lang-auto-desc">Автоматически кликает каждую секунду</div>
                     <div class="upgrade-cost">
-                        <span>Стоимость:</span>
+                        <span class="lang-cost">Стоимость:</span>
                         <span id="auto-cost">30,000</span>
                     </div>
                     <div class="progress-bar">
@@ -985,12 +991,12 @@
                 
                 <button class="upgrade" id="multiplier-upgrade">
                     <div class="upgrade-title">
-                        <span>Множитель</span>
+                        <span class="lang-multiplier-upgrade">Множитель</span>
                         <span class="upgrade-level" id="multiplier-level">1</span>
                     </div>
-                    <div>Умножает весь доход х2</div>
+                    <div class="lang-multiplier-desc">Умножает весь доход х2</div>
                     <div class="upgrade-cost">
-                        <span>Стоимость:</span>
+                        <span class="lang-cost">Стоимость:</span>
                         <span id="multiplier-cost">50,000</span>
                     </div>
                     <div class="progress-bar">
@@ -1000,12 +1006,12 @@
                 
                 <button class="upgrade" id="critical-upgrade">
                     <div class="upgrade-title">
-                        <span>Критические удары</span>
+                        <span class="lang-critical-upgrade">Критические удары</span>
                         <span class="upgrade-level" id="critical-level">1</span>
                     </div>
-                    <div>Шанс критического удара</div>
+                    <div class="lang-critical-desc">Шанс критического удара</div>
                     <div class="upgrade-cost">
-                        <span>Стоимость:</span>
+                        <span class="lang-cost">Стоимость:</span>
                         <span id="critical-cost">10,000</span>
                     </div>
                     <div class="progress-bar">
@@ -1015,108 +1021,76 @@
             </div>
         </div>
         
-        <!-- Вкладка Престиж -->
-        <div id="prestige" class="tab-content">
-            <div class="prestige-section">
-                <h3><i class="fas fa-crown"></i> Система Престижа</h3>
-                <p>Сбросьте свой прогресс, чтобы получить постоянные бонусы</p>
+        <!-- Вкладка Задания -->
+        <div id="quests" class="tab-content">
+            <div class="quests-section">
+                <h3><i class="fas fa-tasks"></i> <span class="lang-quests-title">Система заданий</span></h3>
+                <p class="lang-quests-desc">Выполняйте задания, чтобы получать бонусы</p>
                 
-                <div class="prestige-card">
-                    <h4>Текущий престиж: <span id="prestige-value">0</span></h4>
-                    <p>Бонус престижа: <span id="prestige-bonus">0</span>% к доходу</p>
-                    <p>Всего заработано: <span id="total-coins">0</span> монет</p>
-                </div>
-                
-                <div class="prestige-card">
-                    <h4>Следующий престиж</h4>
-                    <p>Требуется: 100,000 монет</p>
-                    <p>Бонус: +10% к доходу</p>
+                <div class="quest-card">
+                    <h4 class="lang-active-quests">Активные задания</h4>
+                    <p class="lang-complete-quests">Выполняйте задания для получения наград</p>
                     
-                    <div class="prestige-progress">
-                        <div class="prestige-progress-fill" id="prestige-progress"></div>
-                    </div>
-                    
-                    <button class="btn" id="prestige-btn">
-                        <i class="fas fa-crown"></i> Получить Престиж
-                    </button>
-                </div>
-                
-                <div class="prestige-card">
-                    <h4>Преимущества престижа</h4>
-                    <div class="prestige-grid">
-                        <div class="prestige-level">
-                            <i class="fas fa-crown"></i>
-                            <h4>Уровень 1</h4>
-                            <p>+10% доход</p>
+                    <div class="quest-grid">
+                        <div class="quest">
+                            <i class="fas fa-coins"></i>
+                            <h4 class="lang-quest-1">100 кликов</h4>
+                            <p>0/100</p>
                         </div>
-                        <div class="prestige-level">
-                            <i class="fas fa-crown"></i>
-                            <h4>Уровень 2</h4>
-                            <p>+20% доход</p>
+                        <div class="quest">
+                            <i class="fas fa-level-up-alt"></i>
+                            <h4 class="lang-quest-2">Уровень 5</h4>
+                            <p>1/5</p>
                         </div>
-                        <div class="prestige-level">
-                            <i class="fas fa-crown"></i>
-                            <h4>Уровень 3</h4>
-                            <p>+30% доход</p>
-                        </div>
-                        <div class="prestige-level">
-                            <i class="fas fa-crown"></i>
-                            <h4>Уровень 4</h4>
-                            <p>+40% доход</p>
-                        </div>
-                        <div class="prestige-level">
-                            <i class="fas fa-crown"></i>
-                            <h4>Уровень 5</h4>
-                            <p>+50% доход</p>
+                        <div class="quest">
+                            <i class="fas fa-bolt"></i>
+                            <h4 class="lang-quest-3">10 критов</h4>
+                            <p>0/10</p>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Новый блок с наградами за престиж -->
-                <div class="prestige-card">
-                    <h4><i class="fas fa-gift"></i> Награды за престиж</h4>
-                    <p>Получайте специальные награды за каждый уровень престижа</p>
+                <div class="quest-card">
+                    <h4><i class="fas fa-gift"></i> <span class="lang-rewards-title">Награды за задания</span></h4>
+                    <p class="lang-rewards-desc">Получайте специальные награды за выполнение заданий</p>
                     
-                    <div class="prestige-rewards">
-                        <div class="prestige-reward" id="prestige-reward-1">
-                            <div class="prestige-reward-icon">1</div>
-                            <div class="prestige-reward-info">
-                                <div class="prestige-reward-title">Золотая монета</div>
-                                <div class="prestige-reward-desc">Специальный эффект для монеты</div>
+                    <div class="quest-rewards">
+                        <div class="quest-reward">
+                            <div class="quest-reward-icon">1</div>
+                            <div class="quest-reward-info">
+                                <div class="quest-reward-title lang-reward-1-title">Золотая монета</div>
+                                <div class="quest-reward-desc lang-reward-1-desc">Специальный эффект для монеты</div>
                             </div>
                         </div>
                         
-                        <div class="prestige-reward" id="prestige-reward-2">
-                            <div class="prestige-reward-icon">2</div>
-                            <div class="prestige-reward-info">
-                                <div class="prestige-reward-title">Золотая рамка</div>
-                                <div class="prestige-reward-desc">Эксклюзивная рамка интерфейса</div>
+                        <div class="quest-reward">
+                            <div class="quest-reward-icon">2</div>
+                            <div class="quest-reward-info">
+                                <div class="quest-reward-title lang-reward-2-title">Золотая рамка</div>
+                                <div class="quest-reward-desc lang-reward-2-desc">Эксклюзивная рамка интерфейса</div>
                             </div>
                         </div>
-                        
-                        <div class="prestige-reward" id="prestige-reward-3">
-                            <div class="prestige-reward-icon">3</div>
-                            <div class="prestige-reward-info">
-                                <div class="prestige-reward-title">Анимация клика</div>
-                                <div class="prestige-reward-desc">Особая анимация при клике</div>
-                            </div>
-                        </div>
-                        
-                        <div class="prestige-reward" id="prestige-reward-4">
-                            <div class="prestige-reward-icon">4</div>
-                            <div class="prestige-reward-info">
-                                <div class="prestige-reward-title">Золотой фон</div>
-                                <div class="prestige-reward-desc">Эксклюзивный фон интерфейса</div>
-                            </div>
-                        </div>
-                        
-                        <div class="prestige-reward" id="prestige-reward-5">
-                            <div class="prestige-reward-icon">5</div>
-                            <div class="prestige-reward-info">
-                                <div class="prestige-reward-title">Легендарный статус</div>
-                                <div class="prestige-reward-desc">Особый значок в профиле</div>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+                
+                <!-- Социальные кнопки -->
+                <div class="quest-card">
+                    <h4><i class="fas fa-share-alt"></i> <span class="lang-social-title">Социальные задания</span></h4>
+                    <p class="lang-social-desc">Подпишитесь на наши соцсети для получения бонусов</p>
+                    
+                    <div class="social-buttons">
+                        <a href="#" class="social-btn telegram" id="telegram-btn">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="#" class="social-btn youtube" id="youtube-btn">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-btn instagram" id="instagram-btn">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-btn twitter" id="twitter-btn">
+                            <i class="fab fa-twitter"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1127,61 +1101,57 @@
             <div class="achievements">
                 <div class="achievement" id="ach1">
                     <div class="achievement-icon">💰</div>
-                    <div class="achievement-title">Первая тысяча</div>
-                    <div class="achievement-desc">Заработайте 1,000 монет</div>
+                    <div class="achievement-title lang-ach1-title">Первая тысяча</div>
+                    <div class="achievement-desc lang-ach1-desc">Заработайте 1,000 монет</div>
                 </div>
                 <div class="achievement" id="ach2">
                     <div class="achievement-icon">⚡</div>
-                    <div class="achievement-title">Мастер автоматизации</div>
-                    <div class="achievement-desc">Купите 5 авто-кликеров</div>
+                    <div class="achievement-title lang-ach2-title">Мастер автоматизации</div>
+                    <div class="achievement-desc lang-ach2-desc">Купите 5 авто-кликеров</div>
                 </div>
                 <div class="achievement" id="ach3">
                     <div class="achievement-icon">🌟</div>
-                    <div class="achievement-title">Первый престиж</div>
-                    <div class="achievement-desc">Достигните 1-го уровня престижа</div>
+                    <div class="achievement-title lang-ach3-title">Первое задание</div>
+                    <div class="achievement-desc lang-ach3-desc">Выполните первое задание</div>
                 </div>
                 <div class="achievement" id="ach4">
                     <div class="achievement-icon">🏆</div>
-                    <div class="achievement-title">Магнат монет</div>
-                    <div class="achievement-desc">Заработайте 100,000 монет</div>
+                    <div class="achievement-title lang-ach4-title">Магнат монет</div>
+                    <div class="achievement-desc lang-ach4-desc">Заработайте 100,000 монет</div>
                 </div>
                 <div class="achievement" id="ach5">
                     <div class="achievement-icon">🎯</div>
-                    <div class="achievement-title">Снайпер</div>
-                    <div class="achievement-desc">Сделайте 100 критических ударов</div>
+                    <div class="achievement-title lang-ach5-title">Снайпер</div>
+                    <div class="achievement-desc lang-ach5-desc">Сделайте 100 критических ударов</div>
                 </div>
                 <div class="achievement" id="ach6">
                     <div class="achievement-icon">💎</div>
-                    <div class="achievement-title">Легенда</div>
-                    <div class="achievement-desc">Достигните 5 уровня престижа</div>
+                    <div class="achievement-title lang-ach6-title">Легенда</div>
+                    <div class="achievement-desc lang-ach6-desc">Достигните 5 уровня</div>
                 </div>
             </div>
         </div>
         
         <!-- Вкладка Бонусы -->
         <div id="bonuses" class="tab-content">
-            <div class="bonus-section">
-                <h3><i class="fas fa-gift"></i> Активные бонусы</h3>
-                <div class="bonus-grid">
-                    <div class="bonus-card">
-                        <h4>Престиж бонус</h4>
-                        <div class="bonus-value"><span id="current-prestige-bonus">0</span>%</div>
+            <div class="quest-card">
+                <h3><i class="fas fa-gift"></i> <span class="lang-active-bonuses">Активные бонусы</span></h3>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div><i class="fas fa-bolt"></i> <span class="lang-crit-bonus">Шанс крита</span></div>
+                        <div class="stat-value"><span id="current-crit-bonus">0</span>%</div>
                     </div>
-                    <div class="bonus-card">
-                        <h4>Авто-клик</h4>
-                        <div class="bonus-value"><span id="current-auto-bonus">0</span> монет/сек</div>
-                    </div>
-                    <div class="bonus-card">
-                        <h4>Шанс крита</h4>
-                        <div class="bonus-value"><span id="current-crit-bonus">0</span>%</div>
+                    <div class="stat-card">
+                        <div><i class="fas fa-robot"></i> <span class="lang-auto-bonus">Авто-клик</span></div>
+                        <div class="stat-value"><span id="current-auto-bonus">0</span>/сек</div>
                     </div>
                 </div>
             </div>
             
             <!-- Ежедневные награды -->
-            <div class="prestige-card">
-                <h3><i class="fas fa-calendar-day"></i> Ежедневные награды</h3>
-                <p>Заходите ежедневно, чтобы получать награды!</p>
+            <div class="quest-card">
+                <h3><i class="fas fa-calendar-day"></i> <span class="lang-daily-title">Ежедневные награды</span></h3>
+                <p class="lang-daily-desc">Заходите ежедневно, чтобы получать награды!</p>
                 <div class="daily-rewards">
                     <div class="reward-day" id="day1">
                         <i class="fas fa-coins"></i>
@@ -1204,9 +1174,9 @@
                         <div class="reward-amount">2000</div>
                     </div>
                 </div>
-                <p id="daily-status">Сегодняшняя награда доступна!</p>
+                <p id="daily-status" class="lang-daily-available">Сегодняшняя награда доступна!</p>
                 <button class="btn" id="daily-btn">
-                    <i class="fas fa-gift"></i> Получить ежедневную награду
+                    <i class="fas fa-gift"></i> <span class="lang-claim-daily">Получить награду</span>
                 </button>
             </div>
         </div>
@@ -1216,19 +1186,19 @@
     <div class="bottom-nav">
         <div class="tabs">
             <div class="tab active" data-tab="clicker">
-                <i class="fas fa-hand-pointer"></i> Кликер
+                <i class="fas fa-hand-pointer"></i> <span class="lang-tab-clicker">Кликер</span>
             </div>
             <div class="tab" data-tab="upgrades">
-                <i class="fas fa-cogs"></i> Улучшения
+                <i class="fas fa-cogs"></i> <span class="lang-tab-upgrades">Улучшения</span>
             </div>
-            <div class="tab" data-tab="prestige">
-                <i class="fas fa-crown"></i> Престиж
+            <div class="tab" data-tab="quests">
+                <i class="fas fa-tasks"></i> <span class="lang-tab-quests">Задания</span>
             </div>
             <div class="tab" data-tab="achievements">
-                <i class="fas fa-trophy"></i> Достижения
+                <i class="fas fa-trophy"></i> <span class="lang-tab-achievements">Достижения</span>
             </div>
             <div class="tab" data-tab="bonuses">
-                <i class="fas fa-gift"></i> Бонусы
+                <i class="fas fa-gift"></i> <span class="lang-tab-bonuses">Бонусы</span>
             </div>
         </div>
     </div>
@@ -1239,10 +1209,10 @@
             <button class="close-btn" id="close-settings">
                 <i class="fas fa-times"></i>
             </button>
-            <h2 class="settings-title"><i class="fas fa-cog"></i> Настройки</h2>
+            <h2 class="settings-title"><i class="fas fa-cog"></i> <span class="lang-settings-title">Настройки</span></h2>
             
             <div class="setting-group">
-                <label class="setting-label">Язык:</label>
+                <label class="setting-label lang-language-label">Язык:</label>
                 <select class="language-select" id="language-select">
                     <option value="ru">Русский</option>
                     <option value="en">English</option>
@@ -1250,22 +1220,22 @@
             </div>
             
             <div class="setting-group">
-                <label class="setting-label">Промокод:</label>
+                <label class="setting-label lang-promo-label">Промокод:</label>
                 <input type="text" class="promo-input" id="promo-input" placeholder="Введите промокод...">
-                <button class="promo-btn" id="promo-btn">Активировать промокод</button>
+                <button class="promo-btn" id="promo-btn"><span class="lang-activate-promo">Активировать промокод</span></button>
                 <div class="promo-result" id="promo-result"></div>
             </div>
             
             <div class="setting-group">
                 <button class="reset-btn" id="reset-btn">
-                    <i class="fas fa-redo"></i> Сбросить игру
+                    <i class="fas fa-redo"></i> <span class="lang-reset-game">Сбросить игру</span>
                 </button>
             </div>
         </div>
     </div>
     
     <div class="notification" id="notification"></div>
-    <div class="save-notice" id="save-notice">Игра сохранена!</div>
+    <div class="save-notice" id="save-notice"><span class="lang-game-saved">Игра сохранена!</span></div>
 
     <script>
         // ========== ИНИЦИАЛИЗАЦИЯ ИГРЫ ==========
@@ -1273,8 +1243,7 @@
         // Состояние игры
         let coins = 0;
         let perClick = 1;
-        let prestige = 0;
-        let prestigeBonus = 0;
+        let level = 1;
         let lastDailyReward = 0;
         let currentDay = 0;
         let criticalHits = 0;
@@ -1285,11 +1254,10 @@
         
         // Промокоды
         const promoCodes = {
-            "GOLDENSTART": { coins: 1000, message: "Стартовый бонус: +1000 монет!" },
-            "CLICKER": { perClick: 2, message: "Бонус: +2 монеты за клик!" },
-            "AUTOBOT": { auto: 1, message: "Бонус: +1 авто-кликер!" },
-            "CRITICAL": { critical: 0.05, message: "Бонус: +5% к шансу критического удара!" },
-            "PRESTIGE": { prestigeBonus: 5, message: "Бонус: +5% к бонусу престижа!" }
+            "GOLDENSTART": { coins: 1000, message: {ru: "Стартовый бонус: +1000 монет!", en: "Starting bonus: +1000 coins!"} },
+            "CLICKER": { perClick: 2, message: {ru: "Бонус: +2 монеты за клик!", en: "Bonus: +2 coins per click!"} },
+            "AUTOBOT": { auto: 1, message: {ru: "Бонус: +1 авто-кликер!", en: "Bonus: +1 auto-clicker!"} },
+            "CRITICAL": { critical: 0.05, message: {ru: "Бонус: +5% к шансу критического удара!", en: "Bonus: +5% critical hit chance!"} }
         };
         
         // Улучшения
@@ -1307,24 +1275,143 @@
         const achievements = [
             { id: 'ach1', unlocked: false, condition: coins => coins >= 1000 },
             { id: 'ach2', unlocked: false, condition: () => upgrades.auto.level >= 5 },
-            { id: 'ach3', unlocked: false, condition: () => prestige >= 1 },
+            { id: 'ach3', unlocked: false, condition: () => false }, // Заглушка для заданий
             { id: 'ach4', unlocked: false, condition: coins => coins >= 100000 },
             { id: 'ach5', unlocked: false, condition: () => criticalHits >= 100 },
-            { id: 'ach6', unlocked: false, condition: () => prestige >= 5 }
+            { id: 'ach6', unlocked: false, condition: () => level >= 5 }
         ];
+        
+        // Локализация
+        const translations = {
+            ru: {
+                coins: "Монеты",
+                perClick: "За клик",
+                level: "Уровень",
+                clickUpgrade: "Сильные пальцы",
+                clickDesc: "Увеличивает монеты за клик",
+                autoUpgrade: "Авто-кликер",
+                autoDesc: "Автоматически кликает каждую секунду",
+                multiplierUpgrade: "Множитель",
+                multiplierDesc: "Умножает весь доход х2",
+                criticalUpgrade: "Критические удары",
+                criticalDesc: "Шанс критического удара",
+                cost: "Стоимость:",
+                questsTitle: "Система заданий",
+                questsDesc: "Выполняйте задания, чтобы получать бонусы",
+                activeQuests: "Активные задания",
+                completeQuests: "Выполняйте задания для получения наград",
+                quest1: "100 кликов",
+                quest2: "Уровень 5",
+                quest3: "10 критов",
+                rewardsTitle: "Награды за задания",
+                rewardsDesc: "Получайте специальные награды за выполнение заданий",
+                reward1Title: "Золотая монета",
+                reward1Desc: "Специальный эффект для монеты",
+                reward2Title: "Золотая рамка",
+                reward2Desc: "Эксклюзивная рамка интерфейса",
+                socialTitle: "Социальные задания",
+                socialDesc: "Подпишитесь на наши соцсети для получения бонусов",
+                ach1Title: "Первая тысяча",
+                ach1Desc: "Заработайте 1,000 монет",
+                ach2Title: "Мастер автоматизации",
+                ach2Desc: "Купите 5 авто-кликеров",
+                ach3Title: "Первое задание",
+                ach3Desc: "Выполните первое задание",
+                ach4Title: "Магнат монет",
+                ach4Desc: "Заработайте 100,000 монет",
+                ach5Title: "Снайпер",
+                ach5Desc: "Сделайте 100 критических ударов",
+                ach6Title: "Легенда",
+                ach6Desc: "Достигните 5 уровня",
+                activeBonuses: "Активные бонусы",
+                critBonus: "Шанс крита",
+                autoBonus: "Авто-клик",
+                dailyTitle: "Ежедневные награды",
+                dailyDesc: "Заходите ежедневно, чтобы получать награды!",
+                dailyAvailable: "Сегодняшняя награда доступна!",
+                claimDaily: "Получить награду",
+                tabClicker: "Кликер",
+                tabUpgrades: "Улучшения",
+                tabQuests: "Задания",
+                tabAchievements: "Достижения",
+                tabBonuses: "Бонусы",
+                settingsTitle: "Настройки",
+                languageLabel: "Язык:",
+                promoLabel: "Промокод:",
+                activatePromo: "Активировать промокод",
+                resetGame: "Сбросить игру",
+                gameSaved: "Игра сохранена!"
+            },
+            en: {
+                coins: "Coins",
+                perClick: "Per click",
+                level: "Level",
+                clickUpgrade: "Strong fingers",
+                clickDesc: "Increases coins per click",
+                autoUpgrade: "Auto-clicker",
+                autoDesc: "Automatically clicks every second",
+                multiplierUpgrade: "Multiplier",
+                multiplierDesc: "Multiplies all income x2",
+                criticalUpgrade: "Critical hits",
+                criticalDesc: "Chance of critical hit",
+                cost: "Cost:",
+                questsTitle: "Quest system",
+                questsDesc: "Complete quests to get bonuses",
+                activeQuests: "Active quests",
+                completeQuests: "Complete quests to get rewards",
+                quest1: "100 clicks",
+                quest2: "Level 5",
+                quest3: "10 crits",
+                rewardsTitle: "Quest rewards",
+                rewardsDesc: "Get special rewards for completing quests",
+                reward1Title: "Golden coin",
+                reward1Desc: "Special effect for coin",
+                reward2Title: "Golden frame",
+                reward2Desc: "Exclusive interface frame",
+                socialTitle: "Social quests",
+                socialDesc: "Subscribe to our social networks for bonuses",
+                ach1Title: "First thousand",
+                ach1Desc: "Earn 1,000 coins",
+                ach2Title: "Automation master",
+                ach2Desc: "Buy 5 auto-clickers",
+                ach3Title: "First quest",
+                ach3Desc: "Complete first quest",
+                ach4Title: "Coin tycoon",
+                ach4Desc: "Earn 100,000 coins",
+                ach5Title: "Sniper",
+                ach5Desc: "Make 100 critical hits",
+                ach6Title: "Legend",
+                ach6Desc: "Reach level 5",
+                activeBonuses: "Active bonuses",
+                critBonus: "Crit chance",
+                autoBonus: "Auto-click",
+                dailyTitle: "Daily rewards",
+                dailyDesc: "Come daily to get rewards!",
+                dailyAvailable: "Today's reward is available!",
+                claimDaily: "Claim reward",
+                tabClicker: "Clicker",
+                tabUpgrades: "Upgrades",
+                tabQuests: "Quests",
+                tabAchievements: "Achievements",
+                tabBonuses: "Bonuses",
+                settingsTitle: "Settings",
+                languageLabel: "Language:",
+                promoLabel: "Promo code:",
+                activatePromo: "Activate promo code",
+                resetGame: "Reset game",
+                gameSaved: "Game saved!"
+            }
+        };
         
         // Элементы DOM
         const coinEl = document.getElementById('coin');
         const coinContainer = document.getElementById('coin-container');
         const coinsEl = document.getElementById('coins');
         const perClickEl = document.getElementById('per-click');
-        const prestigeEl = document.getElementById('prestige');
-        const prestigeBonusEl = document.getElementById('prestige-bonus');
+        const levelEl = document.getElementById('level');
         const notificationEl = document.getElementById('notification');
         const saveNoticeEl = document.getElementById('save-notice');
         const statsContainer = document.getElementById('stats-container');
-        const totalCoinsEl = document.getElementById('total-coins');
-        const prestigeProgressEl = document.getElementById('prestige-progress');
         const dailyBtn = document.getElementById('daily-btn');
         const dailyStatus = document.getElementById('daily-status');
         const settingsBtn = document.getElementById('settings-btn');
@@ -1335,7 +1422,6 @@
         const promoResult = document.getElementById('promo-result');
         const promoBtn = document.getElementById('promo-btn');
         const resetBtn = document.getElementById('reset-btn');
-        const prestigeBtn = document.getElementById('prestige-btn');
         
         // Элементы улучшений
         const clickUpgradeBtn = document.getElementById('click-upgrade');
@@ -1344,6 +1430,20 @@
         const criticalUpgradeBtn = document.getElementById('critical-upgrade');
         
         // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
+        
+        // Обновить язык интерфейса
+        function updateLanguage() {
+            const lang = translations[language];
+            document.querySelectorAll('[class^="lang-"]').forEach(el => {
+                const key = el.className.replace('lang-', '');
+                if (lang[key]) {
+                    el.textContent = lang[key];
+                }
+            });
+            
+            // Обновить placeholder промокода
+            promoInput.placeholder = language === 'ru' ? "Введите промокод..." : "Enter promo code...";
+        }
         
         // Загрузка игры
         function loadGame() {
@@ -1354,8 +1454,7 @@
                 
                 coins = gameData.coins || 0;
                 perClick = gameData.perClick || 1;
-                prestige = gameData.prestige || 0;
-                prestigeBonus = gameData.prestigeBonus || 0;
+                level = gameData.level || 1;
                 upgrades = gameData.upgrades || {
                     click: { level: 1, cost: 50, effect: 1 },
                     auto: { level: 0, cost: 30000, effect: 0 },
@@ -1380,24 +1479,22 @@
                     });
                 }
                 
-                // Обновить награды престижа
-                updatePrestigeRewards();
-                
                 // Запустить авто-кликер
                 if (autoClicker > 0 && !autoClickerInterval) {
                     autoClickerInterval = setInterval(() => {
-                        coins += autoClicker * (1 + prestigeBonus/100);
-                        totalCoins += autoClicker * (1 + prestigeBonus/100);
+                        coins += autoClicker;
+                        totalCoins += autoClicker;
                         updateUI();
                     }, 1000);
                 }
                 
                 // Установить язык
                 languageSelect.value = language;
+                updateLanguage();
                 
                 updateUI();
                 checkDailyReward();
-                showNotification('Игра загружена!');
+                showNotification(language === 'ru' ? 'Игра загружена!' : 'Game loaded!');
             } else {
                 saveGame();
             }
@@ -1405,15 +1502,8 @@
         
         // Обработчик клика по монете
         function handleCoinClick(e) {
-            const rect = coinContainer.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
             // Рассчитать базовые монеты
             let baseCoins = perClick;
-            
-            // Применить бонус престижа
-            baseCoins *= (1 + prestigeBonus/100);
             
             // Проверить критический удар
             let isCritical = false;
@@ -1463,7 +1553,7 @@
                         upgrade.effect += 1;
                         perClick = upgrade.effect;
                         upgrade.cost = Math.floor(upgrade.cost * 1.8);
-                        showNotification("Сила клика увеличена!");
+                        showNotification(language === 'ru' ? "Сила клика увеличена!" : "Click power increased!");
                         break;
                         
                     case 'auto':
@@ -1473,20 +1563,20 @@
                         
                         if (!autoClickerInterval) {
                             autoClickerInterval = setInterval(() => {
-                                coins += autoClicker * (1 + prestigeBonus/100);
-                                totalCoins += autoClicker * (1 + prestigeBonus/100);
+                                coins += autoClicker;
+                                totalCoins += autoClicker;
                                 updateUI();
                             }, 1000);
                         }
                         
-                        showNotification("Авто-кликер установлен!");
+                        showNotification(language === 'ru' ? "Авто-кликер установлен!" : "Auto-clicker installed!");
                         break;
                         
                     case 'multiplier':
                         upgrade.level++;
                         upgrade.effect *= 2;
                         upgrade.cost = Math.floor(upgrade.cost * 2.5);
-                        showNotification("Множитель дохода увеличен!");
+                        showNotification(language === 'ru' ? "Множитель дохода увеличен!" : "Income multiplier increased!");
                         break;
                         
                     case 'critical':
@@ -1494,9 +1584,12 @@
                         upgrade.chance += 0.01;
                         upgrade.multiplier += 0.5;
                         upgrade.cost = Math.floor(upgrade.cost * 3);
-                        showNotification("Шанс критического удара увеличен!");
+                        showNotification(language === 'ru' ? "Шанс критического удара увеличен!" : "Critical hit chance increased!");
                         break;
                 }
+                
+                // Проверить уровень
+                checkLevel();
                 
                 // Разблокировать достижения
                 checkAchievements();
@@ -1506,45 +1599,19 @@
             }
         }
         
-        // Престиж
-        function doPrestige() {
-            if (coins >= 100000) {
-                prestige++;
-                prestigeBonus = prestige * 10;
-                
-                // Сбросить состояние игры
-                coins = 0;
-                perClick = 1;
-                autoClicker = 0;
-                clearInterval(autoClickerInterval);
-                autoClickerInterval = null;
-                
-                // Сбросить улучшения
-                upgrades = {
-                    click: { level: 1, cost: 50, effect: 1 },
-                    auto: { level: 0, cost: 30000, effect: 0 },
-                    multiplier: { level: 1, cost: 50000, effect: 1 },
-                    critical: { level: 1, cost: 10000, chance: 0.02, multiplier: 3 }
-                };
-                
-                showNotification(`Достигнут Престиж ${prestige}! +${prestigeBonus}% бонус`);
-                updatePrestigeRewards();
-                updateUI();
-                saveGame();
-            }
-        }
-        
-        // Обновить награды престижа
-        function updatePrestigeRewards() {
-            for (let i = 1; i <= 5; i++) {
-                const rewardEl = document.getElementById(`prestige-reward-${i}`);
-                if (rewardEl) {
-                    if (prestige >= i) {
-                        rewardEl.classList.add('unlocked');
-                    } else {
-                        rewardEl.classList.remove('unlocked');
-                    }
-                }
+        // Проверить уровень игрока
+        function checkLevel() {
+            const totalUpgrades = upgrades.click.level + upgrades.auto.level + 
+                                upgrades.multiplier.level + upgrades.critical.level;
+            const newLevel = Math.floor(totalUpgrades / 5) + 1;
+            
+            if (newLevel > level) {
+                level = newLevel;
+                showNotification(
+                    language === 'ru' ? 
+                    `Новый уровень: ${level}!` : 
+                    `New level: ${level}!`
+                );
             }
         }
         
@@ -1561,12 +1628,16 @@
                 currentDate.getFullYear() !== lastRewardDate.getFullYear()) {
                 
                 dailyBtn.disabled = false;
-                dailyStatus.textContent = "Сегодняшняя награда доступна!";
-                dailyStatus.style.color = "#4CAF50";
+                dailyStatus.textContent = language === 'ru' ? 
+                    "Сегодняшняя награда доступна!" : 
+                    "Today's reward is available!";
+                dailyStatus.style.color = "#2ECC71";
             } else {
                 dailyBtn.disabled = true;
-                dailyStatus.textContent = "Сегодня вы уже получили награду. Завтра приходите снова!";
-                dailyStatus.style.color = "#ff3366";
+                dailyStatus.textContent = language === 'ru' ? 
+                    "Сегодня вы уже получили награду. Завтра приходите снова!" : 
+                    "You've already claimed today's reward. Come back tomorrow!";
+                dailyStatus.style.color = "#E74C3C";
             }
         }
         
@@ -1580,7 +1651,11 @@
             lastDailyReward = Date.now();
             currentDay++;
             
-            showNotification(`Получена ежедневная награда: ${reward} монет!`);
+            showNotification(
+                language === 'ru' ? 
+                `Получена ежедневная награда: ${reward} монет!` : 
+                `Daily reward claimed: ${reward} coins!`
+            );
             updateUI();
             saveGame();
             checkDailyReward();
@@ -1591,12 +1666,22 @@
             const promoCode = promoInput.value.trim().toUpperCase();
             
             if (!promoCode) {
-                showPromoResult("Пожалуйста, введите промокод", false);
+                showPromoResult(
+                    language === 'ru' ? 
+                    "Пожалуйста, введите промокод" : 
+                    "Please enter promo code", 
+                    false
+                );
                 return;
             }
             
             if (usedPromoCodes.includes(promoCode)) {
-                showPromoResult("Этот промокод уже использован", false);
+                showPromoResult(
+                    language === 'ru' ? 
+                    "Этот промокод уже использован" : 
+                    "This promo code has already been used", 
+                    false
+                );
                 return;
             }
             
@@ -1619,16 +1704,18 @@
                 if (bonus.critical) {
                     upgrades.critical.chance += bonus.critical;
                 }
-                if (bonus.prestigeBonus) {
-                    prestigeBonus += bonus.prestigeBonus;
-                }
                 
                 usedPromoCodes.push(promoCode);
-                showPromoResult(bonus.message, true);
+                showPromoResult(bonus.message[language], true);
                 updateUI();
                 saveGame();
             } else {
-                showPromoResult("Неверный промокод", false);
+                showPromoResult(
+                    language === 'ru' ? 
+                    "Неверный промокод" : 
+                    "Invalid promo code", 
+                    false
+                );
             }
         }
         
@@ -1636,12 +1723,13 @@
         function changeLanguage() {
             language = languageSelect.value;
             saveGame();
+            updateLanguage();
             
-            if (language === 'en') {
-                showNotification("Language changed to English");
-            } else {
-                showNotification("Язык изменен на русский");
-            }
+            showNotification(
+                language === 'ru' ? 
+                "Язык изменен на русский" : 
+                "Language changed to English"
+            );
         }
         
         // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
@@ -1651,9 +1739,7 @@
             // Обновить монеты и статистику
             coinsEl.textContent = Math.floor(coins).toLocaleString();
             perClickEl.textContent = perClick.toFixed(1);
-            prestigeEl.textContent = prestige;
-            prestigeBonusEl.textContent = prestigeBonus;
-            totalCoinsEl.textContent = Math.floor(totalCoins).toLocaleString();
+            levelEl.textContent = level;
             
             // Обновить информацию об улучшениях
             document.getElementById('click-level').textContent = upgrades.click.level;
@@ -1678,24 +1764,15 @@
             document.getElementById('critical-progress').style.width = 
                 Math.min(100, (coins / upgrades.critical.cost) * 100) + '%';
             
-            // Прогресс престижа
-            prestigeProgressEl.style.width = Math.min(100, (coins / 100000) * 100) + '%';
-            
             // Включить/отключить кнопки
             clickUpgradeBtn.disabled = coins < upgrades.click.cost;
             autoUpgradeBtn.disabled = coins < upgrades.auto.cost;
             multiplierUpgradeBtn.disabled = coins < upgrades.multiplier.cost;
             criticalUpgradeBtn.disabled = coins < upgrades.critical.cost;
-            prestigeBtn.disabled = coins < 100000;
-            
-            // Обновить информацию о престиже
-            document.getElementById('prestige-value').textContent = prestige;
-            document.getElementById('prestige-bonus').textContent = prestigeBonus;
             
             // Обновить бонусы
-            document.getElementById('current-prestige-bonus').textContent = prestigeBonus;
-            document.getElementById('current-auto-bonus').textContent = autoClicker;
             document.getElementById('current-crit-bonus').textContent = Math.floor(upgrades.critical.chance * 100);
+            document.getElementById('current-auto-bonus').textContent = autoClicker;
             
             // Проверить достижения
             checkAchievements();
@@ -1753,7 +1830,14 @@
                 if (!ach.unlocked && ach.condition(coins)) {
                     ach.unlocked = true;
                     document.getElementById(ach.id).classList.add('unlocked');
-                    showNotification(`Достижение разблокировано: ${document.querySelector(`#${ach.id} .achievement-title`).textContent}!`);
+                    
+                    const title = document.querySelector(`#${ach.id} .achievement-title`).textContent;
+                    showNotification(
+                        language === 'ru' ? 
+                        `Достижение разблокировано: ${title}!` : 
+                        `Achievement unlocked: ${title}!`
+                    );
+                    
                     saveGame();
                 }
             });
@@ -1761,7 +1845,11 @@
         
         // Сброс игры
         function resetGame() {
-            if (confirm("Вы уверены, что хотите сбросить игру? Весь прогресс будет потерян!")) {
+            if (confirm(
+                language === 'ru' ? 
+                "Вы уверены, что хотите сбросить игру? Весь прогресс будет потерян!" : 
+                "Are you sure you want to reset the game? All progress will be lost!"
+            )) {
                 localStorage.removeItem('coinClickerSave');
                 location.reload();
             }
@@ -1772,8 +1860,7 @@
             const gameData = {
                 coins,
                 perClick,
-                prestige,
-                prestigeBonus,
+                level,
                 upgrades,
                 autoClicker,
                 lastDailyReward,
@@ -1799,15 +1886,13 @@
         function initEventListeners() {
             // Обработчик клика по монете
             coinContainer.addEventListener('click', handleCoinClick);
+            coinContainer.addEventListener('touchstart', handleCoinClick, { passive: true });
             
             // Обработчики кнопок улучшений
             clickUpgradeBtn.addEventListener('click', () => buyUpgrade('click'));
             autoUpgradeBtn.addEventListener('click', () => buyUpgrade('auto'));
             multiplierUpgradeBtn.addEventListener('click', () => buyUpgrade('multiplier'));
             criticalUpgradeBtn.addEventListener('click', () => buyUpgrade('critical'));
-            
-            // Престиж
-            prestigeBtn.addEventListener('click', doPrestige);
             
             // Ежедневная награда
             dailyBtn.addEventListener('click', claimDailyBonus);
@@ -1846,6 +1931,43 @@
                         statsContainer.style.display = 'none';
                     }
                 });
+            });
+            
+            // Социальные кнопки
+            document.getElementById('telegram-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                showNotification(
+                    language === 'ru' ? 
+                    "Подпишитесь на наш Telegram канал!" : 
+                    "Subscribe to our Telegram channel!"
+                );
+            });
+            
+            document.getElementById('youtube-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                showNotification(
+                    language === 'ru' ? 
+                    "Подпишитесь на наш YouTube канал!" : 
+                    "Subscribe to our YouTube channel!"
+                );
+            });
+            
+            document.getElementById('instagram-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                showNotification(
+                    language === 'ru' ? 
+                    "Подпишитесь на наш Instagram!" : 
+                    "Follow us on Instagram!"
+                );
+            });
+            
+            document.getElementById('twitter-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                showNotification(
+                    language === 'ru' ? 
+                    "Подпишитесь на наш Twitter!" : 
+                    "Follow us on Twitter!"
+                );
             });
         }
         
