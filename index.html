@@ -433,40 +433,70 @@
             color: #a0a0ff;
         }
         
-        /* Уведомления */
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(20, 30, 50, 0.95);
-            color: #4facfe;
-            padding: 15px 25px;
+        /* Улучшения */
+        .upgrade-card {
+            background: rgba(20, 30, 50, 0.8);
             border-radius: 12px;
-            border: 1px solid rgba(79, 172, 254, 0.5);
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 0.3s;
-            max-width: 90%;
-            font-size: 1rem;
-            backdrop-filter: blur(10px);
-            font-weight: 500;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
-        .save-notice {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0, 242, 254, 0.9);
-            color: #1a2a6c;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-            box-shadow: 0 3px 15px rgba(0, 242, 254, 0.4);
-            font-weight: 500;
+        .upgrade {
+            background: rgba(25, 35, 60, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #4a5fc1;
+            transition: all 0.3s;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .upgrade.owned {
+            border: 2px solid #00f2fe;
+            background: rgba(0, 242, 254, 0.1);
+        }
+        
+        .upgrade i {
+            font-size: 2.5rem;
+            color: #4facfe;
+            margin-bottom: 15px;
+        }
+        
+        .upgrade h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .upgrade p {
+            font-size: 0.9rem;
+            color: #a0a0ff;
+            margin-bottom: 15px;
+            min-height: 40px;
+        }
+        
+        .upgrade-cost {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+        
+        .upgrade-cost i {
+            margin: 0 5px 0 0;
+            font-size: 1.2rem;
+        }
+        
+        .upgrade-effect {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 5px;
+            font-weight: bold;
+            color: #00f2fe;
         }
         
         /* Ежедневные награды */
@@ -620,6 +650,10 @@
         
         .chat-btn {
             background: linear-gradient(45deg, #25d366, #128c7e);
+        }
+        
+        .upgrade-btn {
+            background: linear-gradient(45deg, #9c27b0, #673ab7);
         }
         
         /* Модальное окно настроек */
@@ -860,22 +894,6 @@
         
         <!-- Вкладка Бонусы -->
         <div id="bonuses" class="tab-content">
-            <div class="quest-card">
-                <h3><i class="fas fa-gift"></i> <span class="lang-active-bonuses">Активные бонусы</span></h3>
-                <div class="bonus-stats">
-                    <div class="bonus-stat">
-                        <i class="fas fa-bolt"></i>
-                        <div class="value"><span id="current-crit-bonus">0</span>%</div>
-                        <div class="label lang-crit-bonus">Шанс крита</div>
-                    </div>
-                    <div class="bonus-stat">
-                        <i class="fas fa-robot"></i>
-                        <div class="value"><span id="current-auto-bonus">0</span>/сек</div>
-                        <div class="label lang-auto-bonus">Авто-клик</div>
-                    </div>
-                </div>
-            </div>
-            
             <!-- Ежедневные награды -->
             <div class="quest-card">
                 <h3><i class="fas fa-calendar-day"></i> <span class="lang-daily-title">Ежедневные награды</span></h3>
@@ -908,6 +926,61 @@
                 </button>
             </div>
         </div>
+        
+        <!-- Новая вкладка Улучшения -->
+        <div id="upgrades" class="tab-content">
+            <div class="quest-card">
+                <h3><i class="fas fa-arrow-up"></i> <span class="lang-upgrades-title">Улучшения</span></h3>
+                <p class="lang-upgrades-desc">Улучшайте свои возможности для увеличения дохода</p>
+                
+                <div class="upgrade-card">
+                    <div class="upgrade" id="click-upgrade">
+                        <i class="fas fa-hand-pointer"></i>
+                        <h3 class="lang-upgrade-1">Улучшение клика</h3>
+                        <p class="lang-upgrade-1-desc">Увеличивает количество монет за каждый клик</p>
+                        <div class="upgrade-cost">
+                            <i class="fas fa-coins"></i> <span id="click-upgrade-cost">1500</span> монет
+                        </div>
+                        <div class="upgrade-effect">
+                            +<span id="click-upgrade-effect">1</span> монет за клик
+                        </div>
+                        <button class="btn upgrade-btn" id="buy-click-btn">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy-upgrade">Купить улучшение</span>
+                        </button>
+                    </div>
+                    
+                    <div class="upgrade" id="auto-clicker">
+                        <i class="fas fa-robot"></i>
+                        <h3 class="lang-upgrade-2">Автокликер</h3>
+                        <p class="lang-upgrade-2-desc">Автоматически кликает за вас каждую секунду</p>
+                        <div class="upgrade-cost">
+                            <i class="fas fa-coins"></i> <span id="auto-clicker-cost">5000</span> монет
+                        </div>
+                        <div class="upgrade-effect">
+                            +<span id="auto-clicker-effect">1</span> клик/сек
+                        </div>
+                        <button class="btn upgrade-btn" id="buy-auto-btn">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy-upgrade">Купить улучшение</span>
+                        </button>
+                    </div>
+                    
+                    <div class="upgrade" id="critical-upgrade">
+                        <i class="fas fa-bolt"></i>
+                        <h3 class="lang-upgrade-3">Критический удар</h3>
+                        <p class="lang-upgrade-3-desc">Шанс получить двойные монеты за клик</p>
+                        <div class="upgrade-cost">
+                            <i class="fas fa-coins"></i> <span id="critical-upgrade-cost">10000</span> монет
+                        </div>
+                        <div class="upgrade-effect">
+                            <span id="critical-upgrade-effect">1</span>% шанс крита
+                        </div>
+                        <button class="btn upgrade-btn" id="buy-critical-btn">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy-upgrade">Купить улучшение</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- Навигация внизу -->
@@ -918,6 +991,9 @@
             </div>
             <div class="tab" data-tab="quests">
                 <i class="fas fa-tasks"></i> <span class="lang-tab-quests">Задания</span>
+            </div>
+            <div class="tab" data-tab="upgrades">
+                <i class="fas fa-arrow-up"></i> <span class="lang-tab-upgrades">Улучшения</span>
             </div>
             <div class="tab" data-tab="bonuses">
                 <i class="fas fa-gift"></i> <span class="lang-tab-bonuses">Бонусы</span>
@@ -978,21 +1054,21 @@
             chat: { completed: false, reward: 1000 }
         };
         
+        // Улучшения
+        let upgrades = {
+            click: { level: 1, cost: 1500, effect: 1 },
+            auto: { level: 0, cost: 5000, effect: 0 },
+            critical: { level: 0, cost: 10000, effect: 0 }
+        };
+        
+        let autoClickerInterval;
+        
         // Промокоды
         const promoCodes = {
             "GOLDENSTART": { coins: 1000, message: {ru: "Стартовый бонус: +1000 монет!", en: "Starting bonus: +1000 coins!"} },
             "CLICKER": { perClick: 2, message: {ru: "Бонус: +2 монеты за клик!", en: "Bonus: +2 coins per click!"} },
             "CRYPTO": { coins: 5000, message: {ru: "Крипто бонус: +5000 монет!", en: "Crypto bonus: +5000 coins!"} }
         };
-        
-        // Улучшения
-        let upgrades = {
-            critical: { level: 1, chance: 0.01, multiplier: 2 },
-            auto: { level: 0, clicks: 0 }
-        };
-        
-        let autoClicker = 0;
-        let autoClickerInterval;
         
         // Локализация
         const translations = {
@@ -1008,15 +1084,13 @@
                 quest2Desc: "Присоединитесь к нашему чату и получите бонус",
                 joinTelegram: "Присоединиться",
                 joinChat: "Войти в чат",
-                activeBonuses: "Активные бонусы",
-                critBonus: "Шанс крита",
-                autoBonus: "Авто-клик",
                 dailyTitle: "Ежедневные награды",
                 dailyDesc: "Заходите ежедневно, чтобы получать награды!",
                 dailyAvailable: "Сегодняшняя награда доступна!",
                 claimDaily: "Получить награду",
                 tabClicker: "Кликер",
                 tabQuests: "Задания",
+                tabUpgrades: "Улучшения",
                 tabBonuses: "Бонусы",
                 settingsTitle: "Настройки",
                 languageLabel: "Язык:",
@@ -1029,7 +1103,20 @@
                 joinChat: "Войти в чат",
                 claimReward: "Получить награду",
                 telegramSuccess: "Вы получили бонус за подписку!",
-                chatSuccess: "Вы получили бонус за вход в чат!"
+                chatSuccess: "Вы получили бонус за вход в чат!",
+                upgradesTitle: "Улучшения",
+                upgradesDesc: "Улучшайте свои возможности для увеличения дохода",
+                upgrade1: "Улучшение клика",
+                upgrade1Desc: "Увеличивает количество монет за каждый клик",
+                upgrade2: "Автокликер",
+                upgrade2Desc: "Автоматически кликает за вас каждую секунду",
+                upgrade3: "Критический удар",
+                upgrade3Desc: "Шанс получить двойные монеты за клик",
+                buyUpgrade: "Купить улучшение",
+                upgradeSuccess: "Улучшение куплено!",
+                notEnoughCoins: "Недостаточно монет!",
+                criticalHit: "КРИТИЧЕСКИЙ УДАР!",
+                autoClickerActive: "Автокликер активирован!"
             },
             en: {
                 coins: "Coins",
@@ -1043,15 +1130,13 @@
                 quest2Desc: "Join our chat and get a bonus",
                 joinTelegram: "Join Telegram",
                 joinChat: "Join Chat",
-                activeBonuses: "Active Bonuses",
-                critBonus: "Crit Chance",
-                autoBonus: "Auto-Click",
                 dailyTitle: "Daily Rewards",
                 dailyDesc: "Come daily to get rewards!",
                 dailyAvailable: "Today's reward is available!",
                 claimDaily: "Claim Reward",
                 tabClicker: "Clicker",
                 tabQuests: "Quests",
+                tabUpgrades: "Upgrades",
                 tabBonuses: "Bonuses",
                 settingsTitle: "Settings",
                 languageLabel: "Language:",
@@ -1064,7 +1149,20 @@
                 joinChat: "Join Chat",
                 claimReward: "Claim Reward",
                 telegramSuccess: "You got bonus for subscription!",
-                chatSuccess: "You got bonus for joining chat!"
+                chatSuccess: "You got bonus for joining chat!",
+                upgradesTitle: "Upgrades",
+                upgradesDesc: "Upgrade your abilities to increase income",
+                upgrade1: "Click Upgrade",
+                upgrade1Desc: "Increases coins per click",
+                upgrade2: "Auto Clicker",
+                upgrade2Desc: "Automatically clicks for you every second",
+                upgrade3: "Critical Hit",
+                upgrade3Desc: "Chance to get double coins per click",
+                buyUpgrade: "Buy Upgrade",
+                upgradeSuccess: "Upgrade purchased!",
+                notEnoughCoins: "Not enough coins!",
+                criticalHit: "CRITICAL HIT!",
+                autoClickerActive: "Auto clicker activated!"
             }
         };
         
@@ -1090,6 +1188,9 @@
         const telegramBtn = document.getElementById('telegram-btn');
         const chatBtn = document.getElementById('chat-btn');
         const cryptoParticles = document.getElementById('crypto-particles');
+        const buyClickBtn = document.getElementById('buy-click-btn');
+        const buyAutoBtn = document.getElementById('buy-auto-btn');
+        const buyCriticalBtn = document.getElementById('buy-critical-btn');
 
         // Создание крипто-частиц
         function createParticles() {
@@ -1120,6 +1221,11 @@
             
             // Обновить placeholder промокода
             promoInput.placeholder = language === 'ru' ? "Введите промокод..." : "Enter promo code...";
+            
+            // Обновить цены улучшений
+            document.getElementById('click-upgrade-cost').textContent = upgrades.click.cost;
+            document.getElementById('auto-clicker-cost').textContent = upgrades.auto.cost;
+            document.getElementById('critical-upgrade-cost').textContent = upgrades.critical.cost;
         }
         
         // Загрузка игры
@@ -1142,6 +1248,11 @@
                     telegram: { completed: false, reward: 500 },
                     chat: { completed: false, reward: 1000 }
                 };
+                upgrades = gameData.upgrades || {
+                    click: { level: 1, cost: 1500, effect: 1 },
+                    auto: { level: 0, cost: 5000, effect: 0 },
+                    critical: { level: 0, cost: 10000, effect: 0 }
+                };
                 
                 // Обновить состояние кнопок заданий
                 updateQuestButtons();
@@ -1149,6 +1260,11 @@
                 // Установить язык
                 languageSelect.value = language;
                 updateLanguage();
+                
+                // Запустить автокликер, если он куплен
+                if (upgrades.auto.level > 0) {
+                    startAutoClicker();
+                }
                 
                 updateUI();
                 checkDailyReward();
@@ -1161,16 +1277,17 @@
         // Обработчик клика по монете
         function handleCoinClick(e) {
             // Рассчитать базовые монеты
-            let baseCoins = perClick;
+            let baseCoins = perClick + upgrades.click.effect;
             let isCritical = false;
             
             // Проверить критический удар
-            if (Math.random() < upgrades.critical.chance) {
-                baseCoins = Math.floor(baseCoins * upgrades.critical.multiplier);
+            if (Math.random() < (upgrades.critical.effect / 100)) {
+                baseCoins = Math.floor(baseCoins * 2);
                 isCritical = true;
                 criticalHits++;
                 coinEl.classList.add('coin-spin');
                 setTimeout(() => coinEl.classList.remove('coin-spin'), 1000);
+                showNotification(translations[language].criticalHit);
             }
             
             // Добавить монеты
@@ -1203,15 +1320,22 @@
                 coins -= upgrade.cost;
                 
                 switch (type) {
+                    case 'click':
+                        upgrade.level++;
+                        upgrade.effect += 1;
+                        upgrade.cost = Math.floor(upgrade.cost * 2.5);
+                        break;
+                    case 'auto':
+                        upgrade.level++;
+                        upgrade.effect += 1;
+                        upgrade.cost = Math.floor(upgrade.cost * 3);
+                        startAutoClicker();
+                        showNotification(translations[language].autoClickerActive);
+                        break;
                     case 'critical':
                         upgrade.level++;
-                        upgrade.chance += 0.005; // +0.5% за уровень
-                        upgrade.cost = Math.floor(upgrade.cost * 4.5);
-                        showNotification(
-                            language === 'ru' ? 
-                            "Шанс критического удара увеличен!" : 
-                            "Critical hit chance increased!"
-                        );
+                        upgrade.effect += 1;
+                        upgrade.cost = Math.floor(upgrade.cost * 4);
                         break;
                 }
                 
@@ -1220,7 +1344,23 @@
                 
                 updateUI();
                 saveGame();
+                showNotification(translations[language].upgradeSuccess);
+            } else {
+                showNotification(translations[language].notEnoughCoins);
             }
+        }
+        
+        // Запустить автокликер
+        function startAutoClicker() {
+            if (autoClickerInterval) clearInterval(autoClickerInterval);
+            
+            autoClickerInterval = setInterval(() => {
+                if (upgrades.auto.effect > 0) {
+                    coins += (perClick + upgrades.click.effect) * upgrades.auto.effect;
+                    totalCoins += (perClick + upgrades.click.effect) * upgrades.auto.effect;
+                    updateUI();
+                }
+            }, 1000);
         }
         
         // Проверить уровень игрока
@@ -1250,9 +1390,7 @@
                 currentDate.getFullYear() !== lastRewardDate.getFullYear()) {
                 
                 dailyBtn.disabled = false;
-                dailyStatus.textContent = language === 'ru' ? 
-                    "Сегодняшняя награда доступна!" : 
-                    "Today's reward is available!";
+                dailyStatus.textContent = translations[language].dailyAvailable;
                 dailyStatus.style.color = "#00f2fe";
             } else {
                 dailyBtn.disabled = true;
@@ -1386,12 +1524,21 @@
         function updateUI() {
             // Обновить монеты и статистику
             coinsEl.textContent = Math.floor(coins).toLocaleString();
-            perClickEl.textContent = perClick.toFixed(1);
+            perClickEl.textContent = (perClick + upgrades.click.effect).toFixed(1);
             levelEl.textContent = level;
             
-            // Обновить информацию о бонусах
-            document.getElementById('current-crit-bonus').textContent = Math.floor(upgrades.critical.chance * 100);
-            document.getElementById('current-auto-bonus').textContent = autoClicker;
+            // Обновить информацию об улучшениях
+            document.getElementById('click-upgrade-cost').textContent = upgrades.click.cost;
+            document.getElementById('click-upgrade-effect').textContent = upgrades.click.effect;
+            document.getElementById('auto-clicker-cost').textContent = upgrades.auto.cost;
+            document.getElementById('auto-clicker-effect').textContent = upgrades.auto.effect;
+            document.getElementById('critical-upgrade-cost').textContent = upgrades.critical.cost;
+            document.getElementById('critical-upgrade-effect').textContent = upgrades.critical.effect;
+            
+            // Обновить состояние кнопок улучшений
+            buyClickBtn.disabled = coins < upgrades.click.cost;
+            buyAutoBtn.disabled = coins < upgrades.auto.cost;
+            buyCriticalBtn.disabled = coins < upgrades.critical.cost;
         }
         
         // Анимация клика
@@ -1459,7 +1606,6 @@
                 perClick,
                 level,
                 upgrades,
-                autoClicker,
                 lastDailyReward,
                 currentDay,
                 criticalHits,
@@ -1530,6 +1676,11 @@
                 showNotification(translations[language].chatSuccess);
                 completeQuest('chat');
             });
+            
+            // Улучшения
+            buyClickBtn.addEventListener('click', () => buyUpgrade('click'));
+            buyAutoBtn.addEventListener('click', () => buyUpgrade('auto'));
+            buyCriticalBtn.addEventListener('click', () => buyUpgrade('critical'));
         }
         
         // Загрузка игры при старте
