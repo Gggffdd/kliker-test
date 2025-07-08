@@ -55,15 +55,6 @@
             margin-bottom: 30px;
         }
         
-        .desktop-qr {
-            width: 200px;
-            height: 200px;
-            background: #fff;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        
         .crypto-bg {
             position: fixed;
             top: 0;
@@ -661,6 +652,23 @@
             font-size: 0.9rem;
         }
         
+        .wallet-input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(20, 30, 50, 0.8);
+            border: 1px solid #4a5fc1;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+        
+        .wallet-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
         .shop-items {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -715,6 +723,37 @@
             color: #a0a0ff;
             margin-bottom: 15px;
             min-height: 60px;
+        }
+        
+        /* Кошелек выбор */
+        .wallet-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .wallet-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(20, 30, 50, 0.8);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .wallet-option:hover {
+            background: rgba(79, 172, 254, 0.2);
+        }
+        
+        .wallet-option i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .wallet-option.active {
+            border: 1px solid #4facfe;
         }
         
         /* Адаптивность */
@@ -781,6 +820,10 @@
             .shop-items {
                 grid-template-columns: 1fr;
             }
+            
+            .wallet-actions {
+                flex-direction: column;
+            }
         }
         
         /* Кнопки */
@@ -833,6 +876,11 @@
         
         .premium-btn {
             background: linear-gradient(45deg, #ffb300, #ff6b00);
+        }
+        
+        .small-btn {
+            padding: 8px 15px;
+            font-size: 0.9rem;
         }
         
         /* Модальное окно настроек */
@@ -1086,8 +1134,6 @@
     <div class="desktop-block">
         <h2>FG Bot доступен только на мобильных устройствах!</h2>
         <p>Пожалуйста, откройте эту страницу на вашем смартфоне или планшете для доступа к игре.</p>
-        <div class="desktop-qr">QR-код для мобильного устройства</div>
-        <p>Отсканируйте QR-код для быстрого доступа с мобильного устройства</p>
     </div>
     
     <div class="crypto-bg"></div>
@@ -1267,9 +1313,30 @@
                 <div class="wallet-section">
                     <h4>Подключение кошелька</h4>
                     <div class="wallet-status" id="wallet-status">Кошелек не подключен</div>
-                    <button class="btn premium-btn" id="connect-wallet">
-                        <i class="fas fa-wallet"></i> Подключить Tonkeeper
-                    </button>
+                    
+                    <div class="wallet-selector" id="wallet-selector">
+                        <div class="wallet-option" data-wallet="tonkeeper">
+                            <i class="fab fa-telegram"></i> Tonkeeper
+                        </div>
+                        <div class="wallet-option" data-wallet="tonhub">
+                            <i class="fas fa-wallet"></i> Tonhub
+                        </div>
+                        <div class="wallet-option" data-wallet="mytonwallet">
+                            <i class="fas fa-wallet"></i> MyTonWallet
+                        </div>
+                    </div>
+                    
+                    <input type="text" class="wallet-input" id="wallet-address-input" placeholder="Введите адрес кошелька">
+                    
+                    <div class="wallet-actions">
+                        <button class="btn premium-btn" id="connect-wallet">
+                            <i class="fas fa-wallet"></i> Подключить кошелек
+                        </button>
+                        <button class="btn premium-btn small-btn" id="change-wallet">
+                            <i class="fas fa-exchange-alt"></i> Изменить
+                        </button>
+                    </div>
+                    
                     <div class="wallet-address" id="wallet-address"></div>
                 </div>
                 
@@ -1328,6 +1395,18 @@
                         <div class="item-desc">+5 автокликеров навсегда</div>
                         <div class="price">
                             <div class="ton-icon"></div> 2.0 TON
+                        </div>
+                        <button class="btn premium-btn">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
+                    
+                    <div class="shop-item">
+                        <i class="fas fa-sync-alt"></i>
+                        <h3>Множитель тапа x2</h3>
+                        <div class="item-desc">Удваивает доход за каждый клик навсегда</div>
+                        <div class="price">
+                            <div class="ton-icon"></div> 0.5 TON
                         </div>
                         <button class="btn premium-btn">
                             <i class="fas fa-shopping-cart"></i> Купить
@@ -1420,6 +1499,8 @@
         let usedPromoCodes = [];
         let walletConnected = false;
         let walletAddress = '';
+        let walletType = '';
+        let tapMultiplier = 1; // Множитель кликов
         
         let quests = {
             telegram: { completed: false, reward: 500 },
@@ -1491,7 +1572,9 @@
                 criticalHit: "КРИТИЧЕСКИЙ УДАР!",
                 autoClickerActive: "Автокликер активирован!",
                 noEnergy: "Недостаточно энергии!",
-                energyRestored: "Энергия восстановлена!"
+                energyRestored: "Энергия восстановлена!",
+                walletConnected: "Кошелек подключен!",
+                walletChanged: "Кошелек изменен!"
             },
             en: {
                 coins: "Coins",
@@ -1536,7 +1619,9 @@
                 criticalHit: "CRITICAL HIT!",
                 autoClickerActive: "Auto clicker activated!",
                 noEnergy: "Not enough energy!",
-                energyRestored: "Energy restored!"
+                energyRestored: "Energy restored!",
+                walletConnected: "Wallet connected!",
+                walletChanged: "Wallet changed!"
             }
         };
         
@@ -1570,6 +1655,9 @@
         const walletStatus = document.getElementById('wallet-status');
         const walletAddressEl = document.getElementById('wallet-address');
         const connectWalletBtn = document.getElementById('connect-wallet');
+        const changeWalletBtn = document.getElementById('change-wallet');
+        const walletAddressInput = document.getElementById('wallet-address-input');
+        const walletOptions = document.querySelectorAll('.wallet-option');
 
         // Создание крипто-частиц
         function createParticles() {
@@ -1633,6 +1721,8 @@
                 usedPromoCodes = gameData.usedPromoCodes || [];
                 walletConnected = gameData.walletConnected || false;
                 walletAddress = gameData.walletAddress || '';
+                walletType = gameData.walletType || '';
+                tapMultiplier = gameData.tapMultiplier || 1;
                 quests = gameData.quests || {
                     telegram: { completed: false, reward: 500 },
                     chat: { completed: false, reward: 1000 }
@@ -1674,8 +1764,8 @@
                 return;
             }
             
-            // Рассчитать базовые монеты
-            let baseCoins = perClick + upgrades.click.effect;
+            // Рассчитать базовые монеты с учетом множителя
+            let baseCoins = (perClick + upgrades.click.effect) * tapMultiplier;
             let isCritical = false;
             
             // Проверить критический удар
@@ -1758,8 +1848,8 @@
             
             autoClickerInterval = setInterval(() => {
                 if (upgrades.auto.effect > 0) {
-                    coins += (perClick + upgrades.click.effect) * upgrades.auto.effect;
-                    totalCoins += (perClick + upgrades.click.effect) * upgrades.auto.effect;
+                    coins += (perClick + upgrades.click.effect) * upgrades.auto.effect * tapMultiplier;
+                    totalCoins += (perClick + upgrades.click.effect) * upgrades.auto.effect * tapMultiplier;
                     updateUI();
                 }
             }, 1000);
@@ -1939,28 +2029,72 @@
         
         // Подключение кошелька
         function connectWallet() {
-            // Эмуляция подключения кошелька
+            const address = walletAddressInput.value.trim();
+            
+            if (!address) {
+                showNotification(language === 'ru' ? 
+                    "Введите адрес кошелька" : 
+                    "Enter wallet address"
+                );
+                return;
+            }
+            
+            if (!walletType) {
+                showNotification(language === 'ru' ? 
+                    "Выберите тип кошелька" : 
+                    "Select wallet type"
+                );
+                return;
+            }
+            
             walletConnected = true;
-            walletAddress = 'EQD...' + Math.random().toString(36).substr(2, 6);
+            walletAddress = address;
             
             updateWalletStatus();
             saveGame();
-            showNotification('Кошелек успешно подключен!');
+            showNotification(translations[language].walletConnected);
+        }
+        
+        // Изменить кошелек
+        function changeWallet() {
+            walletConnected = false;
+            walletAddress = "";
+            walletType = "";
+            walletAddressInput.value = "";
+            
+            // Сбросить выбор кошелька
+            walletOptions.forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            updateWalletStatus();
+            saveGame();
+            showNotification(translations[language].walletChanged);
         }
         
         // Обновить статус кошелька
         function updateWalletStatus() {
             if (walletConnected) {
-                walletStatus.textContent = 'Кошелек подключен';
+                walletStatus.textContent = language === 'ru' ? 
+                    'Кошелек подключен' : 
+                    'Wallet connected';
                 walletStatus.style.color = '#00f2fe';
                 walletAddressEl.textContent = walletAddress;
-                connectWalletBtn.textContent = 'Кошелек подключен';
+                walletAddressInput.value = walletAddress;
+                connectWalletBtn.textContent = language === 'ru' ? 
+                    'Кошелек подключен' : 
+                    'Wallet connected';
                 connectWalletBtn.disabled = true;
             } else {
-                walletStatus.textContent = 'Кошелек не подключен';
+                walletStatus.textContent = language === 'ru' ? 
+                    'Кошелек не подключен' : 
+                    'Wallet not connected';
                 walletStatus.style.color = '#ff6b6b';
                 walletAddressEl.textContent = '';
-                connectWalletBtn.textContent = 'Подключить Tonkeeper';
+                walletAddressInput.value = '';
+                connectWalletBtn.textContent = language === 'ru' ? 
+                    'Подключить кошелек' : 
+                    'Connect Wallet';
                 connectWalletBtn.disabled = false;
             }
         }
@@ -1971,7 +2105,7 @@
         function updateUI() {
             // Обновить монеты и статистику
             coinsEl.textContent = Math.floor(coins).toLocaleString();
-            perClickEl.textContent = (perClick + upgrades.click.effect).toFixed(1);
+            perClickEl.textContent = ((perClick + upgrades.click.effect) * tapMultiplier).toFixed(1);
             levelEl.textContent = level;
             
             // Обновить информацию об улучшениях
@@ -2065,6 +2199,8 @@
                 usedPromoCodes,
                 walletConnected,
                 walletAddress,
+                walletType,
+                tapMultiplier,
                 quests
             };
             
@@ -2137,6 +2273,21 @@
             
             // Подключение кошелька
             connectWalletBtn.addEventListener('click', connectWallet);
+            changeWalletBtn.addEventListener('click', changeWallet);
+            
+            // Выбор типа кошелька
+            walletOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Убрать активный класс со всех опций
+                    walletOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // Добавить активный класс к выбранной опции
+                    option.classList.add('active');
+                    
+                    // Сохранить выбранный тип кошелька
+                    walletType = option.dataset.wallet;
+                });
+            });
         }
         
         // Загрузка игры при старте
