@@ -1441,7 +1441,7 @@
         }
         
         // ========== ИНИЦИАЛИЗАЦИЯ TONCONNECT ==========
-        const connector = new TonConnect.TonConnect({
+        const connector = new TonConnectSDK.TonConnect({
             manifestUrl: 'https://ton-connect.github.io/demo-dapp-with-react/tonconnect-manifest.json'
         });
         
@@ -2055,9 +2055,9 @@
                 const isConnected = await connector.restoreConnection();
                 
                 if (isConnected) {
-                    const wallet = connector.account;
+                    const wallet = connector.wallet;
                     updateWalletUI(wallet);
-                    showNotification(translations[language].walletConnected + ": " + wallet.provider);
+                    showNotification(translations[language].walletConnected + ": " + wallet.device.appName);
                 } else {
                     updateWalletUI(null);
                 }
@@ -2066,7 +2066,7 @@
                 connector.onStatusChange(wallet => {
                     if (wallet) {
                         updateWalletUI(wallet);
-                        showNotification(translations[language].walletConnected + ": " + wallet.provider);
+                        showNotification(translations[language].walletConnected + ": " + wallet.device.appName);
                     } else {
                         updateWalletUI(null);
                         showNotification(translations[language].walletDisconnected);
@@ -2100,7 +2100,7 @@
                 wallets.forEach(wallet => {
                     const walletItem = document.createElement('div');
                     walletItem.classList.add('wallet-item');
-                    walletItem.dataset.wallet = wallet.name;
+                    walletItem.dataset.wallet = wallet.appName;
                     
                     walletItem.innerHTML = `
                         <div class="wallet-icon" style="background-image: url('${wallet.imageUrl}')"></div>
@@ -2166,8 +2166,8 @@
         
         // Обновление интерфейса кошелька
         function updateWalletUI(wallet = null) {
-            if (wallet && wallet.address) {
-                const address = wallet.address;
+            if (wallet && wallet.account) {
+                const address = wallet.account.address;
                 const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 6)}`;
                 
                 walletStatusEl.innerHTML = `<span class="lang-wallet-status">${translations[language].walletConnected}</span>`;
@@ -2187,7 +2187,7 @@
         // Покупка товара
         async function buyItem(itemId, price) {
             try {
-                const wallet = connector.account;
+                const wallet = connector.wallet;
                 
                 if (!wallet) {
                     showNotification(translations[language].walletError);
@@ -2202,7 +2202,10 @@
                         {
                             address: merchantAddress,
                             amount: String(price * 1000000000), // Конвертация в нанокоины
-                            payload: itemId
+                            payload: {
+                                type: 'text',
+                                text: itemId
+                            }
                         }
                     ]
                 };
