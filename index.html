@@ -1346,7 +1346,7 @@
                     <button class="btn premium-btn" id="connect-wallet">
                         <i class="fas fa-wallet"></i> Подключить кошелек
                     </button>
-                    <button class="btn premium-btn" id="disconnect-wallet">
+                    <button class="btn premium-btn" id="disconnect-wallet" disabled>
                         <i class="fas fa-times"></i> Отключить кошелек
                     </button>
                     <div class="wallet-address" id="wallet-address"></div>
@@ -1487,8 +1487,8 @@
             </button>
             
             <div class="wallet-modal-header">
-                <h3>Connect your wallet</h3>
-                <p>Open Wallet in Telegram or select your wallet to connect</p>
+                <h3 class="lang-wallet-connect">Подключите кошелек</h3>
+                <p class="lang-wallet-desc">Откройте Tonkeeper или выберите другой кошелек</p>
             </div>
             
             <div class="wallets-list" id="wallets-list">
@@ -1518,11 +1518,11 @@
         
         // ========== ИНИЦИАЛИЗАЦИЯ TONCONNECT ==========
         const connector = new TonConnectSDK.TonConnect({
-            manifestUrl: 'https://kliker-test.vercel.app/tonconnect-manifest.json'
+            manifestUrl: 'https://ton-connect.github.io/demo-dapp-with-react/tonconnect-manifest.json'
         });
         
         // Реальный адрес для получения платежей (ЗАМЕНИТЕ НА ВАШ АДРЕС)
-        const merchantAddress = 'UQBGOyQ6PLnzk8Wb2jF1qoQXPOmBQtqE9ooNjhot5VWTZgjp';
+        const merchantAddress = 'EQABGOyQ6PLnzk8Wb2jF1qoQXPOmBQtqE9ooNjhot5VWTZgjp';
         
         // ========== ИНИЦИАЛИЗАЦИЯ ИГРЫ ==========
         
@@ -1616,7 +1616,9 @@
                 transactionSent: "Транзакция отправлена! Ожидайте подтверждения",
                 transactionCancelled: "Транзакция отменена",
                 transactionError: "Ошибка транзакции",
-                purchaseSuccess: "Покупка успешно завершена!"
+                purchaseSuccess: "Покупка успешно завершена!",
+                walletConnect: "Подключите кошелек",
+                walletDesc: "Откройте Tonkeeper или выберите другой кошелек"
             },
             en: {
                 coins: "Coins",
@@ -1668,7 +1670,9 @@
                 transactionSent: "Transaction sent! Await confirmation",
                 transactionCancelled: "Transaction cancelled",
                 transactionError: "Transaction error",
-                purchaseSuccess: "Purchase completed successfully!"
+                purchaseSuccess: "Purchase completed successfully!",
+                walletConnect: "Connect your wallet",
+                walletDesc: "Open Tonkeeper or select another wallet"
             }
         };
         
@@ -1740,6 +1744,10 @@
             document.getElementById('click-upgrade-cost').textContent = upgrades.click.cost;
             document.getElementById('auto-clicker-cost').textContent = upgrades.auto.cost;
             document.getElementById('critical-upgrade-cost').textContent = upgrades.critical.cost;
+            
+            // Обновляем текст в модальном окне кошелька
+            document.querySelector('.lang-wallet-connect').textContent = lang.walletConnect;
+            document.querySelector('.lang-wallet-desc').textContent = lang.walletDesc;
         }
         
         // Обновить шкалу энергии
@@ -2059,46 +2067,79 @@
         // Инициализация кошелька
         async function initWallet() {
             try {
-                const connected = await connector.restoreConnection();
-                if (connected) {
-                    updateWalletUI(connector.wallet);
-                }
+                // Восстановление сессии
+                const isConnected = await connector.restoreConnection();
                 
-                connector.onStatusChange(wallet => {
+                if (isConnected) {
+                    const wallet = connector.wallet;
                     updateWalletUI(wallet);
+                    showNotification(translations[language].walletConnected + ": " + wallet.device.appName);
+                } else {
+                    updateWalletUI(null);
+                }
+
+                // Обработчик изменения статуса
+                connector.onStatusChange(wallet => {
+                    if (wallet) {
+                        updateWalletUI(wallet);
+                        showNotification(translations[language].walletConnected + ": " + wallet.device.appName);
+                    } else {
+                        updateWalletUI(null);
+                        showNotification(translations[language].walletDisconnected);
+                    }
                 });
-            } catch (e) {
-                console.error('Wallet init error:', e);
+                
+            } catch (error) {
+                console.error("Wallet init error:", error);
                 showNotification(translations[language].walletError);
+            }
+        }
+        
+        // Загрузка списка доступных кошельков
+        async function loadWallets() {
+            try {
+                const wallets = await connector.getWallets();
+                return wallets;
+            } catch (error) {
+                console.error("Error loading wallets:", error);
+                showNotification(translations[language].walletError);
+                return [];
             }
         }
         
         // Показать модальное окно выбора кошелька
         async function showWalletModal() {
             try {
-                const wallets = await connector.getWallets();
+                const wallets = await loadWallets();
                 walletsList.innerHTML = '';
                 
                 wallets.forEach(wallet => {
                     const walletItem = document.createElement('div');
                     walletItem.classList.add('wallet-item');
-                    walletItem.dataset.jsBridgeKey = wallet.jsBridgeKey;
+                    walletItem.dataset.wallet = wallet.appName;
                     
                     walletItem.innerHTML = `
                         <div class="wallet-icon" style="background-image: url('${wallet.imageUrl}')"></div>
                         <div class="wallet-info">
                             <div class="wallet-name">${wallet.name}</div>
-                            <div class="wallet-description">${wallet.about || 'TON Wallet'}</div>
+                            <div class="wallet-description">${wallet.tondns || 'TON Wallet'}</div>
                         </div>
                     `;
                     
-                    walletItem.addEventListener('click', () => connectWallet(wallet));
+                    walletItem.addEventListener('click', async () => {
+                        const success = await connectWallet(wallet);
+                        if (success) {
+                            walletModal.classList.remove('active');
+                        }
+                    });
+                    
                     walletsList.appendChild(walletItem);
                 });
                 
                 walletModal.classList.add('active');
-            } catch (e) {
-                console.error('Error loading wallets:', e);
+                
+            } catch (error) {
+                console.error("Error showing wallet modal:", error);
                 showNotification(translations[language].walletError);
             }
         }
@@ -2106,18 +2147,24 @@
         // Подключение кошелька
         async function connectWallet(wallet) {
             try {
-                const connectionSource = {
+                await connector.connect({
+                    jsBridgeKey: wallet.jsBridgeKey,
                     universalLink: wallet.universalLink,
-                    bridgeUrl: wallet.bridgeUrl,
-                    jsBridgeKey: wallet.jsBridgeKey
-                };
+                    bridgeUrl: wallet.bridgeUrl
+                });
+                return true;
+            } catch (error) {
+                console.error("Connection error:", error);
                 
-                await connector.connect(connectionSource);
-                showNotification(translations[language].walletConnected);
-                walletModal.classList.remove('active');
-            } catch (e) {
-                console.error('Connection error:', e);
-                showNotification(translations[language].walletError);
+                // Проверка специфических ошибок
+                if (error.message.includes('Timeout')) {
+                    showNotification("Таймаут подключения. Попробуйте снова");
+                } else if (error.message.includes('User rejected')) {
+                    showNotification("Подключение отменено пользователем");
+                } else {
+                    showNotification("Ошибка подключения: " + error.message);
+                }
+                return false;
             }
         }
         
@@ -2127,8 +2174,8 @@
                 await connector.disconnect();
                 updateWalletUI(null);
                 showNotification(translations[language].walletDisconnected);
-            } catch (e) {
-                console.error('Disconnect error:', e);
+            } catch (error) {
+                console.error("Disconnect error:", error);
                 showNotification(translations[language].walletError);
             }
         }
@@ -2139,13 +2186,13 @@
                 const address = wallet.account.address;
                 const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 6)}`;
                 
-                walletStatusEl.textContent = language === 'ru' ? 'Кошелек подключен' : 'Wallet connected';
+                walletStatusEl.textContent = translations[language].walletConnected;
                 walletStatusEl.style.color = "#00f2fe";
                 walletAddressEl.textContent = shortAddress;
                 connectWalletBtn.disabled = true;
                 disconnectWalletBtn.disabled = false;
             } else {
-                walletStatusEl.textContent = language === 'ru' ? 'Кошелек не подключен' : 'Wallet not connected';
+                walletStatusEl.textContent = translations[language].walletDisconnected;
                 walletStatusEl.style.color = "#ff6b6b";
                 walletAddressEl.textContent = '';
                 connectWalletBtn.disabled = false;
@@ -2159,19 +2206,18 @@
                 const wallet = connector.wallet;
                 
                 if (!wallet) {
-                    showNotification(language === 'ru' ? 
-                        "Сначала подключите кошелек" : 
-                        "Connect wallet first"
-                    );
+                    showNotification(translations[language].walletError);
                     return;
                 }
                 
+                showNotification(translations[language].transactionSent);
+                
                 const transaction = {
-                    validUntil: Math.floor(Date.now() / 1000) + 300,
+                    validUntil: Math.floor(Date.now() / 1000) + 600, // 10 минут
                     messages: [
                         {
                             address: merchantAddress,
-                            amount: String(price * 1000000000),
+                            amount: String(price * 1000000000), // Конвертация в нанокоины
                             payload: itemId
                         }
                     ]
@@ -2186,10 +2232,10 @@
                     showNotification(translations[language].transactionCancelled);
                 }
                 
-            } catch (e) {
-                console.error('Transaction error:', e);
+            } catch (error) {
+                console.error('Transaction error:', error);
                 
-                if (e.message === 'User rejects transaction') {
+                if (error.message === 'User rejects transaction') {
                     showNotification(translations[language].transactionCancelled);
                 } else {
                     showNotification(translations[language].transactionError);
