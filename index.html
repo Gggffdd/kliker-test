@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FG BOT</title>
+    <title>FG BOT - Telegram Stars Shop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -40,19 +40,6 @@
             align-items: center;
             flex-direction: column;
             padding: 20px;
-        }
-        
-        .desktop-block h2 {
-            color: #ff6b6b;
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-        
-        .desktop-block p {
-            color: #4facfe;
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin-bottom: 30px;
         }
         
         .crypto-bg {
@@ -120,7 +107,7 @@
             right: 0;
             background: rgba(15, 23, 42, 0.95);
             padding: 8px;
-            z-index: 1000; /* Повышен z-index */
+            z-index: 1000;
             box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
             border-top: 1px solid rgba(79, 172, 254, 0.3);
             backdrop-filter: blur(10px);
@@ -616,122 +603,6 @@
             min-height: 60px;
         }
         
-        @media (max-width: 600px) {
-            .container {
-                padding: 15px;
-                border-radius: 15px;
-                margin-bottom: 100px;
-            }
-            
-            .stats {
-                flex-direction: row;
-                align-items: center;
-                padding: 10px;
-                gap: 5px;
-            }
-            
-            .stat-card {
-                width: 30%;
-                min-width: auto;
-                padding: 8px;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            .tabs {
-                flex-wrap: wrap;
-            }
-            
-            .tab {
-                flex: 0 0 30%;
-                margin-bottom: 5px;
-                min-width: 70px;
-                padding: 8px 0;
-                font-size: 0.7rem;
-            }
-            
-            .quest-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .bottom-nav {
-                padding: 5px;
-            }
-            
-            #coin {
-                width: 180px;
-                height: 180px;
-                font-size: 2.8rem;
-            }
-            
-            .daily-rewards {
-                gap: 5px;
-            }
-            
-            .reward-day {
-                width: 60px;
-                height: 90px;
-                padding: 10px 5px;
-            }
-            
-            .shop-items {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .btn {
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
-            border: none;
-            color: #1a2a6c;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin: 5px;
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
-            font-size: 1rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
-        }
-        
-        .btn:active {
-            transform: translateY(1px);
-        }
-        
-        .btn:disabled {
-            background: rgba(100, 100, 100, 0.5);
-            cursor: not-allowed;
-        }
-        
-        .btn i {
-            margin-right: 8px;
-        }
-        
-        .telegram-btn {
-            background: linear-gradient(45deg, #0088cc, #00aced);
-        }
-        
-        .chat-btn {
-            background: linear-gradient(45deg, #25d366, #128c7e);
-        }
-        
-        .upgrade-btn {
-            background: linear-gradient(45deg, #9c27b0, #673ab7);
-        }
-        
-        .premium-btn {
-            background: linear-gradient(45deg, #ffb300, #ff6b00);
-        }
-        
         .settings-modal {
             display: none;
             position: fixed;
@@ -930,29 +801,55 @@
             backdrop-filter: blur(5px);
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .btn {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+            color: #1a2a6c;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .pulse-animation {
-            animation: pulse 2s infinite;
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
         }
         
-        @keyframes glow {
-            0% { box-shadow: 0 0 5px #4facfe; }
-            50% { box-shadow: 0 0 20px #4facfe; }
-            100% { box-shadow: 0 0 5px #4facfe; }
+        .btn:active {
+            transform: translateY(1px);
         }
         
-        .glow {
-            animation: glow 3s infinite;
+        .btn:disabled {
+            background: rgba(100, 100, 100, 0.5);
+            cursor: not-allowed;
         }
         
-        .star-icon {
-            color: #ffd700;
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .telegram-btn {
+            background: linear-gradient(45deg, #0088cc, #00aced);
+        }
+        
+        .chat-btn {
+            background: linear-gradient(45deg, #25d366, #128c7e);
+        }
+        
+        .upgrade-btn {
+            background: linear-gradient(45deg, #9c27b0, #673ab7);
+        }
+        
+        .premium-btn {
+            background: linear-gradient(45deg, #ffb300, #ff6b00);
         }
         
         .stars-section {
@@ -986,6 +883,356 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+        }
+        
+        /* Стили для премиум магазина */
+        .shop-item {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            transform: scale(1);
+        }
+        
+        .shop-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+            z-index: 10;
+        }
+        
+        .shop-item.purchasing {
+            animation: purchase-pulse 1.5s ease-in-out;
+        }
+        
+        @keyframes purchase-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+            50% { transform: scale(1.1); box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+        }
+        
+        .stars-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .flying-star {
+            position: absolute;
+            color: #ffd700;
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            animation: flyStar 1.5s ease-out forwards;
+        }
+        
+        @keyframes flyStar {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0.3); opacity: 0; }
+        }
+        
+        .purchase-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1001;
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .purchase-modal.active {
+            display: flex;
+        }
+        
+        .purchase-content {
+            background: linear-gradient(135deg, #1a2a6c, #2c5364);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+            border: 2px solid #ffd700;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .purchase-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        .purchase-title {
+            color: #ffd700;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .purchase-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+        }
+        
+        .purchase-item i {
+            font-size: 2.5rem;
+            color: #ffd700;
+        }
+        
+        .purchase-details {
+            text-align: left;
+        }
+        
+        .purchase-item-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        
+        .purchase-item-price {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #ffd700;
+            font-size: 1.3rem;
+            margin-top: 5px;
+        }
+        
+        .purchase-balance {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .balance-label {
+            color: #a0a0ff;
+        }
+        
+        .balance-value {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .purchase-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .confirm-purchase {
+            flex: 1;
+            background: linear-gradient(45deg, #00c853, #009624);
+            border: none;
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .confirm-purchase:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .cancel-purchase {
+            flex: 1;
+            background: linear-gradient(45deg, #ff5252, #b33939);
+            border: none;
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .confirm-purchase:hover:not(:disabled), 
+        .cancel-purchase:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .purchase-history {
+            margin-top: 30px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .history-title {
+            color: #ffd700;
+            margin-bottom: 10px;
+            text-align: left;
+            font-size: 1.2rem;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            margin-bottom: 8px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .history-item-name {
+            color: #ffffff;
+        }
+        
+        .history-item-price {
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .no-history {
+            color: #a0a0ff;
+            padding: 20px;
+            font-style: italic;
+        }
+        
+        .purchase-success {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid #00c853;
+            box-shadow: 0 0 30px rgba(0, 200, 83, 0.5);
+            z-index: 1002;
+        }
+        
+        .purchase-success.active {
+            display: block;
+            animation: success-appear 0.5s ease-out;
+        }
+        
+        @keyframes success-appear {
+            0% { opacity: 0; transform: translate(-50%, -40%); }
+            100% { opacity: 1; transform: translate(-50%, -50%); }
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: #00c853;
+            margin-bottom: 20px;
+            animation: success-icon 1s ease-in-out;
+        }
+        
+        @keyframes success-icon {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .success-text {
+            font-size: 1.5rem;
+            color: #00c853;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+                border-radius: 15px;
+                margin-bottom: 100px;
+            }
+            
+            .stats {
+                flex-direction: row;
+                align-items: center;
+                padding: 10px;
+                gap: 5px;
+            }
+            
+            .stat-card {
+                width: 30%;
+                min-width: auto;
+                padding: 8px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 0 0 30%;
+                margin-bottom: 5px;
+                min-width: 70px;
+                padding: 8px 0;
+                font-size: 0.7rem;
+            }
+            
+            .quest-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .bottom-nav {
+                padding: 5px;
+            }
+            
+            #coin {
+                width: 180px;
+                height: 180px;
+                font-size: 2.8rem;
+            }
+            
+            .daily-rewards {
+                gap: 5px;
+            }
+            
+            .reward-day {
+                width: 60px;
+                height: 90px;
+                padding: 10px 5px;
+            }
+            
+            .shop-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .purchase-content {
+                padding: 20px 15px;
+            }
+            
+            .purchase-buttons {
+                flex-direction: column;
+            }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1305,6 +1552,68 @@
     <div class="notification" id="notification"></div>
     <div class="save-notice" id="save-notice"><span class="lang-game-saved">Игра сохранена!</span></div>
 
+    <!-- Звездная анимация -->
+    <div class="stars-animation" id="stars-animation"></div>
+    
+    <!-- Модальное окно покупки -->
+    <div class="purchase-modal" id="purchase-modal">
+        <div class="purchase-content">
+            <h2 class="purchase-title"><i class="fas fa-shopping-cart"></i> <span class="lang-confirm-purchase">Подтверждение покупки</span></h2>
+            
+            <div class="purchase-item">
+                <i id="purchase-item-icon"></i>
+                <div class="purchase-details">
+                    <div class="purchase-item-name" id="purchase-item-name"></div>
+                    <div class="purchase-item-price">
+                        <i class="fas fa-star star-icon"></i>
+                        <span id="purchase-item-price"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="purchase-balance">
+                <div class="balance-label lang-your-balance">Ваш баланс:</div>
+                <div class="balance-value">
+                    <i class="fas fa-star star-icon"></i>
+                    <span id="purchase-balance-value"></span>
+                </div>
+            </div>
+            
+            <div class="purchase-balance">
+                <div class="balance-label lang-after-purchase">После покупки:</div>
+                <div class="balance-value">
+                    <i class="fas fa-star star-icon"></i>
+                    <span id="purchase-after-value"></span>
+                </div>
+            </div>
+            
+            <div class="purchase-buttons">
+                <button class="confirm-purchase" id="confirm-purchase">
+                    <i class="fas fa-check"></i> <span class="lang-confirm">Подтвердить</span>
+                </button>
+                <button class="cancel-purchase" id="cancel-purchase">
+                    <i class="fas fa-times"></i> <span class="lang-cancel">Отмена</span>
+                </button>
+            </div>
+            
+            <div class="purchase-history">
+                <div class="history-title"><i class="fas fa-history"></i> <span class="lang-purchase-history">История покупок</span></div>
+                <div id="purchase-history-container">
+                    <!-- История будет добавляться динамически -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Успешная покупка -->
+    <div class="purchase-success" id="purchase-success">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="success-text lang-purchase-success">Покупка успешна!</div>
+        <div class="lang-item-activated">Товар активирован</div>
+    </div>
+
     <script>
         // ========== ИНИЦИАЛИЗАЦИЯ ИГРЫ ==========
         
@@ -1320,11 +1629,11 @@
         let language = 'ru';
         let usedPromoCodes = [];
         let tapMultiplier = 1;
-        
-        // Telegram Stars
         let telegramStars = 0;
         let tgWebApp = null;
         let isTelegramWebApp = false;
+        let purchaseHistory = [];
+        let currentPurchaseItem = null;
         
         let quests = {
             telegram: { completed: false, reward: 500 },
@@ -1422,7 +1731,17 @@
                 starsInfo: "Ваши звёзды из Telegram. Используйте их для покупки улучшений!",
                 starsPurchaseSuccess: "Звёзды успешно списаны!",
                 starsPurchaseFailed: "Ошибка списания звёзд",
-                realStarsInfo: "Реальные звёзды Telegram. Вывод доступен разработчику."
+                realStarsInfo: "Реальные звёзды Telegram. Вывод доступен разработчику.",
+                confirmPurchase: "Подтверждение покупки",
+                yourBalance: "Ваш баланс:",
+                afterPurchase: "После покупки:",
+                confirm: "Подтвердить",
+                cancel: "Отмена",
+                purchaseHistory: "История покупок",
+                noPurchaseHistory: "История покупок пуста",
+                purchaseSuccess: "Покупка успешна!",
+                itemActivated: "Товар активирован",
+                activated: "активирован"
             },
             en: {
                 coins: "Coins",
@@ -1493,7 +1812,17 @@
                 starsInfo: "Your Telegram Stars. Use them to buy upgrades!",
                 starsPurchaseSuccess: "Stars successfully deducted!",
                 starsPurchaseFailed: "Failed to deduct stars",
-                realStarsInfo: "Real Telegram Stars. Withdrawal available to developer."
+                realStarsInfo: "Real Telegram Stars. Withdrawal available to developer.",
+                confirmPurchase: "Purchase Confirmation",
+                yourBalance: "Your balance:",
+                afterPurchase: "After purchase:",
+                confirm: "Confirm",
+                cancel: "Cancel",
+                purchaseHistory: "Purchase History",
+                noPurchaseHistory: "No purchase history",
+                purchaseSuccess: "Purchase successful!",
+                itemActivated: "Item activated",
+                activated: "activated"
             }
         };
         
@@ -1528,6 +1857,17 @@
         const buyItemBtns = document.querySelectorAll('.buy-item');
         const refreshStarsBtn = document.getElementById('refresh-stars-btn');
         const starsInfoEl = document.querySelector('.stars-info');
+        const purchaseModal = document.getElementById('purchase-modal');
+        const purchaseItemIcon = document.getElementById('purchase-item-icon');
+        const purchaseItemName = document.getElementById('purchase-item-name');
+        const purchaseItemPrice = document.getElementById('purchase-item-price');
+        const purchaseBalanceValue = document.getElementById('purchase-balance-value');
+        const purchaseAfterValue = document.getElementById('purchase-after-value');
+        const confirmPurchaseBtn = document.getElementById('confirm-purchase');
+        const cancelPurchaseBtn = document.getElementById('cancel-purchase');
+        const purchaseHistoryContainer = document.getElementById('purchase-history-container');
+        const purchaseSuccess = document.getElementById('purchase-success');
+        const starsAnimation = document.getElementById('stars-animation');
 
         // Создание крипто-частиц
         function createParticles() {
@@ -1601,7 +1941,14 @@
                 };
                 telegramStars = gameData.telegramStars || 0;
                 
+                // Загрузка истории покупок
+                const savedHistory = localStorage.getItem('purchaseHistory');
+                if (savedHistory) {
+                    purchaseHistory = JSON.parse(savedHistory);
+                }
+                
                 updateQuestButtons();
+                renderPurchaseHistory();
                 
                 languageSelect.value = language;
                 updateLanguage();
@@ -1942,7 +2289,7 @@
         }
         
         // Покупка товара за звезды
-        function buyItem(itemId, price) {
+        function buyItem(itemId, price, name, iconClass) {
             if (!isTelegramWebApp) {
                 showNotification(translations[language].tgStarsError);
                 return;
@@ -1955,46 +2302,210 @@
                 return;
             }
             
-            // Эмуляция списания звезд через Telegram API
+            // Анимация звезд
+            createStarsAnimation();
+            
+            // Эмуляция запроса к Telegram API
             tgStarsBalanceEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${lang.starsLoading}`;
             
             setTimeout(() => {
-                // В реальном приложении здесь будет запрос к вашему серверу
-                // который выполнит списание через Telegram Bot API
-                
+                // Успешное списание
                 telegramStars -= price;
-                tgStarsBalanceEl.textContent = telegramStars;
-                starsEl.textContent = telegramStars;
                 
-                switch (itemId) {
-                    case 'tap-multiplier':
-                        tapMultiplier = 2;
-                        break;
-                    case 'gold-pack':
-                        coins += 50000;
-                        break;
-                    case 'energy-boost':
-                        maxEnergy = 1000000;
-                        energy = maxEnergy;
-                        break;
-                    case 'click-booster':
-                        perClick += 10;
-                        break;
-                    case 'auto-clicker-pro':
-                        upgrades.auto.effect += 5;
-                        break;
-                }
+                // Добавляем в историю
+                addToPurchaseHistory(itemId, name, price);
                 
+                // Применяем эффект покупки
+                applyPurchaseEffect(itemId);
+                
+                // Обновляем UI
                 updateUI();
+                
+                // Показываем успех
+                showPurchaseSuccess();
+                
+                // Сохраняем игру
                 saveGame();
-                showNotification(lang.purchaseSuccess);
                 
-                // Звёзды будут переведены на ваш счёт разработчика
-                // и доступны для вывода через Telegram Business
-                
-            }, 1500);
+                // Закрываем модальное окно
+                purchaseModal.classList.remove('active');
+            }, 2000);
         }
 
+        // Показать модальное окно покупки
+        function showPurchaseModal(itemId, price, name, iconClass) {
+            currentPurchaseItem = { id: itemId, price, name, iconClass };
+            
+            purchaseItemIcon.className = iconClass;
+            purchaseItemName.textContent = name;
+            purchaseItemPrice.textContent = price.toLocaleString();
+            purchaseBalanceValue.textContent = telegramStars.toLocaleString();
+            
+            const afterPurchase = telegramStars - price;
+            purchaseAfterValue.textContent = afterPurchase.toLocaleString();
+            
+            // Изменяем цвет если недостаточно средств
+            if (afterPurchase < 0) {
+                purchaseAfterValue.style.color = '#ff6b6b';
+                confirmPurchaseBtn.disabled = true;
+            } else {
+                purchaseAfterValue.style.color = '#ffd700';
+                confirmPurchaseBtn.disabled = false;
+            }
+            
+            purchaseModal.classList.add('active');
+        }
+        
+        // Обработка покупки
+        function processPurchase() {
+            if (!currentPurchaseItem) return;
+            
+            const { id, price, name, iconClass } = currentPurchaseItem;
+            buyItem(id, price, name, iconClass);
+        }
+        
+        // Создать анимацию звезд
+        function createStarsAnimation() {
+            starsAnimation.style.display = 'block';
+            starsAnimation.innerHTML = '';
+            
+            const startX = purchaseModal.getBoundingClientRect().left + purchaseModal.offsetWidth / 2;
+            const startY = purchaseModal.getBoundingClientRect().top + purchaseModal.offsetHeight / 2;
+            
+            const endX = document.querySelector('.star-balance').getBoundingClientRect().left + 30;
+            const endY = document.querySelector('.star-balance').getBoundingClientRect().top + 15;
+            
+            // Создаем 10 звезд
+            for (let i = 0; i < 10; i++) {
+                const star = document.createElement('div');
+                star.className = 'flying-star';
+                star.innerHTML = '<i class="fas fa-star"></i>';
+                star.style.left = `${startX}px`;
+                star.style.top = `${startY}px`;
+                
+                // Рандомное смещение
+                const tx = endX - startX + (Math.random() * 40 - 20);
+                const ty = endY - startY + (Math.random() * 40 - 20);
+                
+                star.style.setProperty('--tx', `${tx}px`);
+                star.style.setProperty('--ty', `${ty}px`);
+                
+                starsAnimation.appendChild(star);
+                
+                // Удаляем звезду после анимации
+                setTimeout(() => {
+                    star.remove();
+                }, 1500);
+            }
+            
+            // Скрываем контейнер после анимации
+            setTimeout(() => {
+                starsAnimation.style.display = 'none';
+            }, 1600);
+        }
+        
+        // Применить эффект покупки
+        function applyPurchaseEffect(itemId) {
+            const shopItem = document.querySelector(`.shop-item[data-id="${itemId}"]`);
+            
+            // Добавляем класс для анимации
+            shopItem.classList.add('purchasing');
+            setTimeout(() => shopItem.classList.remove('purchasing'), 1500);
+            
+            const lang = translations[language];
+            
+            // Применяем эффект в зависимости от купленного товара
+            switch (itemId) {
+                case 'tap-multiplier':
+                    tapMultiplier = 2;
+                    showNotification(lang.item1 + ' ' + lang.activated);
+                    break;
+                case 'gold-pack':
+                    coins += 50000;
+                    showNotification('+50 000 ' + lang.coins);
+                    break;
+                case 'energy-boost':
+                    maxEnergy = 1000000;
+                    energy = maxEnergy;
+                    showNotification(lang.energyRestored);
+                    break;
+                case 'click-booster':
+                    perClick += 10;
+                    showNotification(lang.upgradeSuccess);
+                    break;
+                case 'protection':
+                    // Флаг защиты
+                    showNotification(lang.item5 + ' ' + lang.activated);
+                    break;
+                case 'auto-clicker-pro':
+                    upgrades.auto.effect += 5;
+                    showNotification(lang.autoClickerActive);
+                    startAutoClicker();
+                    break;
+            }
+        }
+        
+        // Показать сообщение об успешной покупке
+        function showPurchaseSuccess() {
+            purchaseSuccess.classList.add('active');
+            
+            setTimeout(() => {
+                purchaseSuccess.classList.remove('active');
+            }, 3000);
+        }
+        
+        // Добавить покупку в историю
+        function addToPurchaseHistory(itemId, name, price) {
+            const timestamp = Date.now();
+            const date = new Date(timestamp).toLocaleString();
+            
+            purchaseHistory.unshift({
+                id: itemId,
+                name,
+                price,
+                timestamp
+            });
+            
+            // Сохраняем историю в localStorage
+            localStorage.setItem('purchaseHistory', JSON.stringify(purchaseHistory));
+            
+            // Обновляем отображение истории
+            renderPurchaseHistory();
+        }
+        
+        // Отобразить историю покупок
+        function renderPurchaseHistory() {
+            if (purchaseHistory.length === 0) {
+                purchaseHistoryContainer.innerHTML = `
+                    <div class="no-history">
+                        <i class="fas fa-history"></i> 
+                        <span class="lang-no-purchase-history">${translations[language].noPurchaseHistory}</span>
+                    </div>
+                `;
+                return;
+            }
+            
+            let historyHTML = '';
+            
+            // Отображаем последние 5 покупок
+            const recentPurchases = purchaseHistory.slice(0, 5);
+            
+            recentPurchases.forEach(purchase => {
+                const date = new Date(purchase.timestamp).toLocaleString();
+                
+                historyHTML += `
+                    <div class="history-item">
+                        <div class="history-item-name">${purchase.name}</div>
+                        <div class="history-item-price">
+                            <i class="fas fa-star"></i> ${purchase.price}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            purchaseHistoryContainer.innerHTML = historyHTML;
+        }
+        
         // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
         
         // Обновление UI
@@ -2055,6 +2566,7 @@
                 "Are you sure you want to reset the game? All progress will be lost!"
             )) {
                 localStorage.removeItem('cryptoTapSave');
+                localStorage.removeItem('purchaseHistory');
                 location.reload();
             }
         }
@@ -2080,6 +2592,28 @@
             };
             
             localStorage.setItem('cryptoTapSave', JSON.stringify(gameData));
+        }
+        
+        // Инициализация магазина
+        function initPremiumShop() {
+            // Обработчики для кнопок покупки
+            document.querySelectorAll('.shop-item').forEach(item => {
+                const buyButton = item.querySelector('.buy-item');
+                buyButton.addEventListener('click', function() {
+                    const itemId = item.dataset.id;
+                    const price = parseInt(item.dataset.price);
+                    const itemName = item.querySelector('h3').textContent;
+                    const itemIcon = item.querySelector('i').className;
+                    
+                    showPurchaseModal(itemId, price, itemName, itemIcon);
+                });
+            });
+            
+            // Обработчики для модального окна покупки
+            confirmPurchaseBtn.addEventListener('click', processPurchase);
+            cancelPurchaseBtn.addEventListener('click', () => {
+                purchaseModal.classList.remove('active');
+            });
         }
         
         // ========== ИНИЦИАЛИЗАЦИЯ ==========
@@ -2139,16 +2673,6 @@
             buyAutoBtn.addEventListener('click', () => buyUpgrade('auto'));
             buyCriticalBtn.addEventListener('click', () => buyUpgrade('critical'));
             
-            document.querySelectorAll('.buy-item').forEach(button => {
-                button.addEventListener('click', function() {
-                    const shopItem = this.closest('.shop-item');
-                    const itemId = shopItem.dataset.id;
-                    const price = parseInt(shopItem.dataset.price);
-                    
-                    buyItem(itemId, price);
-                });
-            });
-            
             refreshStarsBtn.addEventListener('click', updateStarsBalance);
         }
         
@@ -2160,6 +2684,8 @@
             updateQuestButtons();
             initTelegramWebApp();
             updateStarsBalance();
+            initPremiumShop();
+            renderPurchaseHistory();
         });
     </script>
 </body>
