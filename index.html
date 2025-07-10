@@ -1025,6 +1025,125 @@
             </div>
         </div>
         
+        <div id="quests" class="tab-content">
+            <div class="quests-section">
+                <h3><i class="fas fa-tasks"></i> <span class="lang-quests-title">Система заданий</span></h3>
+                <p class="lang-quests-desc">Выполняйте задания, чтобы получать бонусы</p>
+                
+                <div class="quest-grid">
+                    <div class="quest" id="telegram-quest">
+                        <i class="fab fa-telegram"></i>
+                        <h3 class="lang-quest1">Подписка на Telegram</h3>
+                        <p class="lang-quest1Desc">Подпишитесь на наш канал и получите бонусные монеты</p>
+                        <button class="btn telegram-btn" id="telegram-btn">
+                            <i class="fab fa-telegram"></i> <span class="lang-join-telegram">Присоединиться</span>
+                        </button>
+                        <div class="quest-reward">
+                            <i class="fas fa-coins"></i> <span>+500 монет</span>
+                        </div>
+                    </div>
+                    <div class="quest" id="chat-quest">
+                        <i class="fas fa-comments"></i>
+                        <h3 class="lang-quest2">Вход в чат</h3>
+                        <p class="lang-quest2Desc">Присоединитесь к нашему чату и получите бонус</p>
+                        <button class="btn chat-btn" id="chat-btn">
+                            <i class="fas fa-comments"></i> <span class="lang-join-chat">Войти в чат</span>
+                        </button>
+                        <div class="quest-reward">
+                            <i class="fas fa-coins"></i> <span>+1000 монет</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="bonuses" class="tab-content">
+            <div class="quests-section">
+                <h3><i class="fas fa-calendar-day"></i> <span class="lang-daily-title">Ежедневные награды</span></h3>
+                <p class="lang-daily-desc">Заходите ежедневно, чтобы получать награды!</p>
+                <div class="daily-rewards">
+                    <div class="reward-day" id="day1">
+                        <i class="fas fa-coins"></i>
+                        <div class="reward-amount">100</div>
+                    </div>
+                    <div class="reward-day" id="day2">
+                        <i class="fas fa-coins"></i>
+                        <div class="reward-amount">250</div>
+                    </div>
+                    <div class="reward-day" id="day3">
+                        <i class="fas fa-coins"></i>
+                        <div class="reward-amount">500</div>
+                    </div>
+                    <div class="reward-day" id="day4">
+                        <i class="fas fa-coins"></i>
+                        <div class="reward-amount">1000</div>
+                    </div>
+                    <div class="reward-day" id="day5">
+                        <i class="fas fa-star star-icon"></i>
+                        <div class="reward-amount">10★</div>
+                    </div>
+                </div>
+                <p id="daily-status" class="lang-daily-available">Сегодняшняя награда доступна!</p>
+                <button class="btn" id="daily-btn">
+                    <i class="fas fa-gift"></i> <span class="lang-claim-daily">Получить награду</span>
+                </button>
+            </div>
+        </div>
+        
+        <div id="upgrades" class="tab-content">
+            <div class="quests-section">
+                <h3><i class="fas fa-arrow-up"></i> <span class="lang-upgrades-title">Улучшения</span></h3>
+                <p class="lang-upgrades-desc">Улучшайте свои возможности для увеличения дохода</p>
+                
+                <div class="quest-grid">
+                    <div class="quest" id="click-upgrade">
+                        <i class="fas fa-hand-pointer"></i>
+                        <h3 class="lang-upgrade1">Улучшение клика</h3>
+                        <p class="lang-upgrade1Desc">Увеличивает количество монет за каждый клик</p>
+                        <div class="quest-reward">
+                            <i class="fas fa-coins"></i> <span id="click-upgrade-cost">1500</span> монет
+                        </div>
+                        <div class="quest-reward">
+                            +<span id="click-upgrade-effect">1</span> монет за клик
+                        </div>
+                        <button class="btn upgrade-btn" id="buy-click-btn">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy-upgrade">Купить улучшение</span>
+                        </button>
+                    </div>
+                    
+                    <div class="quest" id="auto-clicker">
+                        <i class="fas fa-robot"></i>
+                        <h3 class="lang-upgrade2">Автокликер</h3>
+                        <p class="lang-upgrade2Desc">Автоматически кликает за вас каждую секунду</p>
+                        <div class="quest-reward">
+                            <i class="fas fa-coins"></i> <span id="auto-clicker-cost">15000</span> монет
+                        </div>
+                        <div class="quest-reward">
+                            +<span id="auto-clicker-effect">1</span> клик/сек
+                        </div>
+                        <button class="btn upgrade-btn" id="buy-auto-btn">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy-upgrade">Купить улучшение</span>
+                        </button>
+                    </div>
+                    
+                    <div class="quest" id="critical-upgrade">
+                        <i class="fas fa-bolt"></i>
+                        <h3 class="lang-upgrade3">Критический удар</h3>
+                        <p class="lang-upgrade3Desc">Шанс получить двойные монеты за клик</p>
+                        <div class="quest-reward">
+                            <i class="fas fa-coins"></i> <span id="critical-upgrade-cost">7500</span> монет
+                        </div>
+                        <div class="quest-reward">
+                            <span id="critical-upgrade-effect">1</span>% шанс крита
+                        </div>
+                        <button class="btn upgrade-btn" id="buy-critical-btn">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy-upgrade">Купить улучшение</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div id="premium" class="tab-content">
             <div class="premium-shop">
                 <h3><i class="fas fa-star star-icon"></i> <span class="lang-premium-shop">Магазин Звёзд</span></h3>
@@ -1122,6 +1241,15 @@
             <div class="tab active" data-tab="clicker">
                 <i class="fas fa-hand-pointer"></i> <span class="lang-tab-clicker">Кликер</span>
             </div>
+            <div class="tab" data-tab="quests">
+                <i class="fas fa-tasks"></i> <span class="lang-tab-quests">Задания</span>
+            </div>
+            <div class="tab" data-tab="bonuses">
+                <i class="fas fa-gift"></i> <span class="lang-tab-bonuses">Бонусы</span>
+            </div>
+            <div class="tab" data-tab="upgrades">
+                <i class="fas fa-arrow-up"></i> <span class="lang-tab-upgrades">Улучшения</span>
+            </div>
             <div class="tab" data-tab="premium">
                 <i class="fas fa-star star-icon"></i> <span class="lang-tab-premium">Звёзды</span>
             </div>
@@ -1162,9 +1290,6 @@
     <div class="save-notice" id="save-notice"><span class="lang-game-saved">Игра сохранена!</span></div>
 
     <script>
-        // ========== ИНИЦИАЛИЗАЦИЯ TONCONNECT ==========
-        // Удалена полностью
-        
         // ========== ИНИЦИАЛИЗАЦИЯ ИГРЫ ==========
         
         // Состояние игры
@@ -1180,6 +1305,15 @@
         let usedPromoCodes = [];
         let tapMultiplier = 1;
         
+        // Telegram Stars
+        let telegramStars = 0;
+        let tgWebApp = null;
+        
+        let quests = {
+            telegram: { completed: false, reward: 500 },
+            chat: { completed: false, reward: 1000 }
+        };
+        
         // Система энергии
         let energy = 1000;
         let maxEnergy = 1000;
@@ -1192,10 +1326,6 @@
         };
         
         let autoClickerInterval;
-        
-        // Telegram Stars
-        let telegramStars = 0;
-        let tgWebApp = null;
         
         // Промокоды
         const promoCodes = {
@@ -1211,14 +1341,41 @@
                 perClick: "За клик",
                 level: "Уровень",
                 stars: "Звёзды",
-                premiumShop: "Магазин Звёзд",
-                premiumDesc: "Покупайте уникальные предметы за звёзды из Telegram",
+                questsTitle: "Система заданий",
+                questsDesc: "Выполняйте задания, чтобы получать бонусы",
+                quest1: "Подписка на Telegram",
+                quest1Desc: "Подпишитесь на наш канал и получите бонусные монеты",
+                quest2: "Вход в чат",
+                quest2Desc: "Присоединитесь к нашему чату и получите бонус",
+                joinTelegram: "Присоединиться",
+                joinChat: "Войти в чат",
+                dailyTitle: "Ежедневные награды",
+                dailyDesc: "Заходите ежедневно, чтобы получать награды!",
+                dailyAvailable: "Сегодняшняя награда доступна!",
+                claimDaily: "Получить награду",
+                tabClicker: "Кликер",
+                tabQuests: "Задания",
+                tabUpgrades: "Улучшения",
+                tabBonuses: "Бонусы",
+                tabPremium: "Звёзды",
                 settingsTitle: "Настройки",
                 languageLabel: "Язык:",
                 promoLabel: "Промокод:",
                 activatePromo: "Активировать промокод",
                 resetGame: "Сбросить игру",
                 gameSaved: "Игра сохранена!",
+                claimed: "Выполнено",
+                telegramSuccess: "Вы получили бонус за подписку!",
+                chatSuccess: "Вы получили бонус за вход в чат!",
+                upgradesTitle: "Улучшения",
+                upgradesDesc: "Улучшайте свои возможности для увеличения дохода",
+                upgrade1: "Улучшение клика",
+                upgrade1Desc: "Увеличивает количество монет за каждый клик",
+                upgrade2: "Автокликер",
+                upgrade2Desc: "Автоматически кликает за вас каждую секунду",
+                upgrade3: "Критический удар",
+                upgrade3Desc: "Шанс получить двойные монеты за клик",
+                buyUpgrade: "Купить улучшение",
                 upgradeSuccess: "Улучшение куплено!",
                 notEnoughCoins: "Недостаточно монет!",
                 notEnoughStars: "Недостаточно звёзд!",
@@ -1226,6 +1383,8 @@
                 autoClickerActive: "Автокликер активирован!",
                 noEnergy: "Недостаточно энергии!",
                 energyRestored: "Энергия восстановлена!",
+                premiumShop: "Магазин Звёзд",
+                premiumDesc: "Покупайте уникальные предметы за звёзды из Telegram",
                 item1: "Множитель тапа x2",
                 item1Desc: "Удваивает доход за каждый клик навсегда",
                 item2: "Золотой пакет",
@@ -1239,8 +1398,6 @@
                 item6: "Профессиональный кликер",
                 item6Desc: "+5 автокликеров навсегда",
                 buy: "Купить",
-                tabClicker: "Кликер",
-                tabPremium: "Звёзды",
                 purchaseSuccess: "Покупка успешно завершена!",
                 tgStarsError: "Ошибка получения звёзд из Telegram",
                 starsUpdated: "Баланс звёзд обновлён!"
@@ -1250,14 +1407,41 @@
                 perClick: "Per click",
                 level: "Level",
                 stars: "Stars",
-                premiumShop: "Stars Shop",
-                premiumDesc: "Buy unique items with Telegram Stars",
+                questsTitle: "Quest system",
+                questsDesc: "Complete quests to get bonuses",
+                quest1: "Subscribe to Telegram",
+                quest1Desc: "Subscribe to our channel and get bonus coins",
+                quest2: "Join the chat",
+                quest2Desc: "Join our chat and get a bonus",
+                joinTelegram: "Join",
+                joinChat: "Join Chat",
+                dailyTitle: "Daily Rewards",
+                dailyDesc: "Come daily to get rewards!",
+                dailyAvailable: "Today's reward is available!",
+                claimDaily: "Claim Reward",
+                tabClicker: "Clicker",
+                tabQuests: "Quests",
+                tabUpgrades: "Upgrades",
+                tabBonuses: "Bonuses",
+                tabPremium: "Stars",
                 settingsTitle: "Settings",
                 languageLabel: "Language:",
                 promoLabel: "Promo Code:",
                 activatePromo: "Activate Promo Code",
                 resetGame: "Reset Game",
                 gameSaved: "Game saved!",
+                claimed: "Claimed",
+                telegramSuccess: "You got bonus for subscription!",
+                chatSuccess: "You got bonus for joining chat!",
+                upgradesTitle: "Upgrades",
+                upgradesDesc: "Upgrade your abilities to increase income",
+                upgrade1: "Click Upgrade",
+                upgrade1Desc: "Increases coins per click",
+                upgrade2: "Auto Clicker",
+                upgrade2Desc: "Automatically clicks for you every second",
+                upgrade3: "Critical Hit",
+                upgrade3Desc: "Chance to get double coins per click",
+                buyUpgrade: "Buy Upgrade",
                 upgradeSuccess: "Upgrade purchased!",
                 notEnoughCoins: "Not enough coins!",
                 notEnoughStars: "Not enough stars!",
@@ -1265,6 +1449,8 @@
                 autoClickerActive: "Auto clicker activated!",
                 noEnergy: "Not enough energy!",
                 energyRestored: "Energy restored!",
+                premiumShop: "Stars Shop",
+                premiumDesc: "Buy unique items with Telegram Stars",
                 item1: "Tap multiplier x2",
                 item1Desc: "Doubles income per click forever",
                 item2: "Gold Pack",
@@ -1278,8 +1464,6 @@
                 item6: "Auto Clicker Pro",
                 item6Desc: "+5 auto clickers forever",
                 buy: "Buy",
-                tabClicker: "Clicker",
-                tabPremium: "Stars",
                 purchaseSuccess: "Purchase completed successfully!",
                 tgStarsError: "Error getting stars from Telegram",
                 starsUpdated: "Stars balance updated!"
@@ -1296,6 +1480,8 @@
         const notificationEl = document.getElementById('notification');
         const saveNoticeEl = document.getElementById('save-notice');
         const statsContainer = document.getElementById('stats-container');
+        const dailyBtn = document.getElementById('daily-btn');
+        const dailyStatus = document.getElementById('daily-status');
         const settingsBtn = document.getElementById('settings-btn');
         const settingsModal = document.getElementById('settings-modal');
         const closeSettings = document.getElementById('close-settings');
@@ -1304,6 +1490,8 @@
         const promoResult = document.getElementById('promo-result');
         const promoBtn = document.getElementById('promo-btn');
         const resetBtn = document.getElementById('reset-btn');
+        const telegramBtn = document.getElementById('telegram-btn');
+        const chatBtn = document.getElementById('chat-btn');
         const cryptoParticles = document.getElementById('crypto-particles');
         const buyClickBtn = document.getElementById('buy-click-btn');
         const buyAutoBtn = document.getElementById('buy-auto-btn');
@@ -1391,6 +1579,17 @@
                 language = gameData.language || 'ru';
                 usedPromoCodes = gameData.usedPromoCodes || [];
                 tapMultiplier = gameData.tapMultiplier || 1;
+                quests = gameData.quests || {
+                    telegram: { completed: false, reward: 500 },
+                    chat: { completed: false, reward: 1000 }
+                };
+                upgrades = gameData.upgrades || {
+                    click: { level: 0, cost: 1500, effect: 0 },
+                    auto: { level: 0, cost: 15000, effect: 0 },
+                    critical: { level: 0, cost: 7500, effect: 0 }
+                };
+                
+                updateQuestButtons();
                 
                 languageSelect.value = language;
                 updateLanguage();
@@ -1535,6 +1734,51 @@
             updateDailyRewards();
         }
         
+        // Обновить визуальное состояние ежедневных наград
+        function updateDailyRewards() {
+            for (let i = 1; i <= 5; i++) {
+                const dayEl = document.getElementById(`day${i}`);
+                dayEl.classList.remove('active', 'claimed');
+                
+                if (currentDay >= i) {
+                    dayEl.classList.add('claimed');
+                } else if (currentDay === i - 1) {
+                    dayEl.classList.add('active');
+                }
+            }
+        }
+        
+        // Получение ежедневной награды
+        function claimDailyBonus() {
+            const rewards = [100, 250, 500, 1000, 10];
+            const reward = rewards[Math.min(currentDay, rewards.length - 1)];
+            
+            if (currentDay === 4) {
+                // На 5-й день даем звезды
+                telegramStars += reward;
+                showNotification(
+                    language === 'ru' ? 
+                    `Получена ежедневная награда: ${reward} звёзд!` : 
+                    `Daily reward claimed: ${reward} stars!`
+                );
+            } else {
+                coins += reward;
+                totalCoins += reward;
+                showNotification(
+                    language === 'ru' ? 
+                    `Получена ежедневная награда: ${reward} монет!` : 
+                    `Daily reward claimed: ${reward} coins!`
+                );
+            }
+            
+            lastDailyReward = Date.now();
+            currentDay++;
+            
+            updateUI();
+            saveGame();
+            checkDailyReward();
+        }
+        
         // Активация промокода
         function activatePromo() {
             const promoCode = promoInput.value.trim().toUpperCase();
@@ -1595,6 +1839,40 @@
                 "Язык изменен на русский" : 
                 "Language changed to English"
             );
+        }
+        
+        // Обновить кнопки заданий
+        function updateQuestButtons() {
+            if (quests.telegram.completed) {
+                telegramBtn.disabled = true;
+                telegramBtn.innerHTML = `<i class="fas fa-check"></i> <span class="lang-claimed">${translations[language].claimed}</span>`;
+                document.getElementById('telegram-quest').classList.add('completed');
+            }
+            
+            if (quests.chat.completed) {
+                chatBtn.disabled = true;
+                chatBtn.innerHTML = `<i class="fas fa-check"></i> <span class="lang-claimed">${translations[language].claimed}</span>`;
+                document.getElementById('chat-quest').classList.add('completed');
+            }
+        }
+        
+        // Выполнение задания
+        function completeQuest(quest) {
+            if (!quests[quest].completed) {
+                coins += quests[quest].reward;
+                totalCoins += quests[quest].reward;
+                quests[quest].completed = true;
+                
+                showNotification(
+                    language === 'ru' ? 
+                    `Задание выполнено! Получено ${quests[quest].reward} монет!` : 
+                    `Quest completed! Received ${quests[quest].reward} coins!`
+                );
+                
+                updateQuestButtons();
+                updateUI();
+                saveGame();
+            }
         }
         
         // ========== TELEGRAM STARS ==========
@@ -1798,7 +2076,8 @@
                 maxEnergy,
                 language,
                 usedPromoCodes,
-                tapMultiplier
+                tapMultiplier,
+                quests
             };
             
             localStorage.setItem('cryptoTapSave', JSON.stringify(gameData));
@@ -1810,6 +2089,8 @@
         function initEventListeners() {
             coinContainer.addEventListener('click', handleCoinClick);
             coinContainer.addEventListener('touchstart', handleCoinClick, { passive: true });
+            
+            dailyBtn.addEventListener('click', claimDailyBonus);
             
             promoBtn.addEventListener('click', activatePromo);
             
@@ -1841,6 +2122,17 @@
                 });
             });
             
+            telegramBtn.addEventListener('click', () => {
+                window.open('https://t.me/gifteverydayyy', '_blank');
+                showNotification(translations[language].telegramSuccess);
+                completeQuest('telegram');
+            });
+            
+            chatBtn.addEventListener('click', () => {
+                showNotification(translations[language].chatSuccess);
+                completeQuest('chat');
+            });
+            
             buyClickBtn.addEventListener('click', () => buyUpgrade('click'));
             buyAutoBtn.addEventListener('click', () => buyUpgrade('auto'));
             buyCriticalBtn.addEventListener('click', () => buyUpgrade('critical'));
@@ -1861,6 +2153,7 @@
             createParticles();
             initEventListeners();
             loadGame();
+            updateQuestButtons();
             initTelegramWebApp();
         });
     </script>
