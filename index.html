@@ -532,20 +532,13 @@
             backdrop-filter: blur(5px);
         }
         
-        .star-balance {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 20px 0;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #ffd700;
-        }
-        
-        .star-balance i {
-            margin-right: 10px;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        .telegram-only {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
         }
         
         .shop-items {
@@ -1162,6 +1155,17 @@
             margin-bottom: 20px;
         }
         
+        .real-stars-badge {
+            background: linear-gradient(45deg, #ffd700, #ffb300);
+            color: #1a2a6c;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
@@ -1233,6 +1237,36 @@
             .purchase-buttons {
                 flex-direction: column;
             }
+            
+            .quest {
+                padding: 15px;
+            }
+            
+            .bonus-stat {
+                width: 100px;
+                padding: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tab span {
+                display: none;
+            }
+            
+            .tab i {
+                font-size: 1.5rem;
+                margin-bottom: 0;
+            }
+            
+            .stat-card {
+                width: 28%;
+                min-width: 0;
+                padding: 8px 5px;
+            }
+            
+            .stat-value {
+                font-size: 1.3rem;
+            }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1262,10 +1296,6 @@
             <div class="stat-card">
                 <div><i class="fas fa-mouse"></i> <span class="lang-per-click">За клик</span></div>
                 <div class="stat-value" id="per-click">1</div>
-            </div>
-            <div class="stat-card">
-                <div><i class="fas fa-star star-icon"></i> <span class="lang-stars">Звёзды</span></div>
-                <div class="stat-value" id="stars">0</div>
             </div>
         </div>
         
@@ -1407,89 +1437,85 @@
                 <h3><i class="fas fa-star star-icon"></i> <span class="lang-premium-shop">Магазин Звёзд</span></h3>
                 <p class="lang-premium-desc">Покупайте уникальные предметы за звёзды из Telegram</p>
                 
-                <div class="stars-section">
-                    <div class="stars-balance-container">
-                        <div class="tg-stars-balance">
-                            <i class="fas fa-star star-icon"></i> 
-                            <span id="tg-stars-balance">0</span>
-                        </div>
-                        <button class="btn refresh-stars-btn" id="refresh-stars-btn">
-                            <i class="fas fa-sync-alt"></i> <span class="lang-refresh-stars">Обновить баланс</span>
-                        </button>
-                    </div>
-                    <div class="stars-info">
-                        <span class="lang-stars-info">Ваши звёзды из Telegram. Используйте их для покупки улучшений!</span>
-                    </div>
+                <div class="telegram-only">
+                    <i class="fab fa-telegram" style="color: #0088cc; font-size: 2rem;"></i>
+                    <p><span class="lang-telegram-only">Товары в этом разделе можно приобрести только через Telegram</span></p>
                 </div>
                 
                 <div class="shop-items">
-                    <div class="shop-item" data-id="tap-multiplier" data-price="50">
+                    <div class="shop-item" data-id="tap-multiplier" data-price="50" data-name="Множитель тапа x2" data-desc="Удваивает доход за каждый клик навсегда">
                         <i class="fas fa-sync-alt"></i>
                         <h3 class="lang-item1">Множитель тапа x2</h3>
                         <div class="item-desc lang-item1-desc">Удваивает доход за каждый клик навсегда</div>
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 50 звёзд
                         </div>
+                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
                     </div>
                     
-                    <div class="shop-item" data-id="gold-pack" data-price="20">
+                    <div class="shop-item" data-id="gold-pack" data-price="20" data-name="Золотой пакет" data-desc="+50 000 монет для вашей игры">
                         <i class="fas fa-coins"></i>
                         <h3 class="lang-item2">Золотой пакет</h3>
                         <div class="item-desc lang-item2-desc">+50 000 монет для вашей игры</div>
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 20 звёзд
                         </div>
+                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
                     </div>
                     
-                    <div class="shop-item" data-id="energy-boost" data-price="30">
+                    <div class="shop-item" data-id="energy-boost" data-price="30" data-name="Бриллиантовая энергия" data-desc="Бесконечная энергия на 24 часа">
                         <i class="fas fa-gem"></i>
                         <h3 class="lang-item3">Бриллиантовая энергия</h3>
                         <div class="item-desc lang-item3-desc">Бесконечная энергия на 24 часа</div>
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 30 звёзд
                         </div>
+                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
                     </div>
                     
-                    <div class="shop-item" data-id="click-booster" data-price="25">
+                    <div class="shop-item" data-id="click-booster" data-price="25" data-name="Бустер кликов" data-desc="+10 монет за клик на 12 часов">
                         <i class="fas fa-bolt"></i>
                         <h3 class="lang-item4">Бустер кликов</h3>
                         <div class="item-desc lang-item4-desc">+10 монет за клик на 12 часов</div>
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 25 звёзд
                         </div>
+                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
                     </div>
                     
-                    <div class="shop-item" data-id="protection" data-price="40">
+                    <div class="shop-item" data-id="protection" data-price="40" data-name="Защита от потерь" data-desc="Сохранение прогресса при сбросе">
                         <i class="fas fa-shield-alt"></i>
                         <h3 class="lang-item5">Защита от потерь</h3>
                         <div class="item-desc lang-item5-desc">Сохранение прогресса при сбросе</div>
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 40 звёзд
                         </div>
+                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
                     </div>
                     
-                    <div class="shop-item" data-id="auto-clicker-pro" data-price="60">
+                    <div class="shop-item" data-id="auto-clicker-pro" data-price="60" data-name="Профессиональный кликер" data-desc="+5 автокликеров навсегда">
                         <i class="fas fa-robot"></i>
                         <h3 class="lang-item6">Профессиональный кликер</h3>
                         <div class="item-desc lang-item6-desc">+5 автокликеров навсегда</div>
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 60 звёзд
                         </div>
+                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
@@ -1575,15 +1601,7 @@
                 <div class="balance-label lang-your-balance">Ваш баланс:</div>
                 <div class="balance-value">
                     <i class="fas fa-star star-icon"></i>
-                    <span id="purchase-balance-value"></span>
-                </div>
-            </div>
-            
-            <div class="purchase-balance">
-                <div class="balance-label lang-after-purchase">После покупки:</div>
-                <div class="balance-value">
-                    <i class="fas fa-star star-icon"></i>
-                    <span id="purchase-after-value"></span>
+                    <span id="purchase-balance-value">0</span>
                 </div>
             </div>
             
@@ -1629,7 +1647,6 @@
         let language = 'ru';
         let usedPromoCodes = [];
         let tapMultiplier = 1;
-        let telegramStars = 0;
         let tgWebApp = null;
         let isTelegramWebApp = false;
         let purchaseHistory = [];
@@ -1724,7 +1741,7 @@
                 item6Desc: "+5 автокликеров навсегда",
                 buy: "Купить",
                 purchaseSuccess: "Покупка успешно завершена!",
-                tgStarsError: "Ошибка получения звёзд из Telegram",
+                tgStarsError: "Магазин доступен только в Telegram",
                 starsUpdated: "Баланс звёзд обновлён!",
                 refreshStars: "Обновить баланс",
                 starsLoading: "Загрузка баланса...",
@@ -1741,7 +1758,9 @@
                 noPurchaseHistory: "История покупок пуста",
                 purchaseSuccess: "Покупка успешна!",
                 itemActivated: "Товар активирован",
-                activated: "активирован"
+                activated: "активирован",
+                telegramOnly: "Товары в этом разделе можно приобрести только через Telegram",
+                realStars: "Реальные звёзды"
             },
             en: {
                 coins: "Coins",
@@ -1805,7 +1824,7 @@
                 item6Desc: "+5 auto clickers forever",
                 buy: "Buy",
                 purchaseSuccess: "Purchase completed successfully!",
-                tgStarsError: "Error getting stars from Telegram",
+                tgStarsError: "Shop available only in Telegram",
                 starsUpdated: "Stars balance updated!",
                 refreshStars: "Refresh Balance",
                 starsLoading: "Loading balance...",
@@ -1822,7 +1841,9 @@
                 noPurchaseHistory: "No purchase history",
                 purchaseSuccess: "Purchase successful!",
                 itemActivated: "Item activated",
-                activated: "activated"
+                activated: "activated",
+                telegramOnly: "Items in this section can be purchased only through Telegram",
+                realStars: "Real Stars"
             }
         };
         
@@ -1831,7 +1852,6 @@
         const coinContainer = document.getElementById('coin-container');
         const coinsEl = document.getElementById('coins');
         const perClickEl = document.getElementById('per-click');
-        const starsEl = document.getElementById('stars');
         const notificationEl = document.getElementById('notification');
         const saveNoticeEl = document.getElementById('save-notice');
         const statsContainer = document.getElementById('stats-container');
@@ -1853,10 +1873,7 @@
         const buyCriticalBtn = document.getElementById('buy-critical-btn');
         const energyFill = document.getElementById('energy-fill');
         const energyText = document.getElementById('energy-text');
-        const tgStarsBalanceEl = document.getElementById('tg-stars-balance');
         const buyItemBtns = document.querySelectorAll('.buy-item');
-        const refreshStarsBtn = document.getElementById('refresh-stars-btn');
-        const starsInfoEl = document.querySelector('.stars-info');
         const purchaseModal = document.getElementById('purchase-modal');
         const purchaseItemIcon = document.getElementById('purchase-item-icon');
         const purchaseItemName = document.getElementById('purchase-item-name');
@@ -1898,11 +1915,6 @@
             });
             
             promoInput.placeholder = language === 'ru' ? "Введите промокод..." : "Enter promo code...";
-            
-            // Обновляем информацию о звездах
-            if (starsInfoEl) {
-                starsInfoEl.innerHTML = `<span class="lang-stars-info">${lang.starsInfo}</span>`;
-            }
         }
         
         // Обновить шкалу энергии
@@ -1939,7 +1951,6 @@
                     auto: { level: 0, cost: 15000, effect: 0 },
                     critical: { level: 0, cost: 7500, effect: 0 }
                 };
-                telegramStars = gameData.telegramStars || 0;
                 
                 // Загрузка истории покупок
                 const savedHistory = localStorage.getItem('purchaseHistory');
@@ -2236,18 +2247,23 @@
         
         // ========== TELEGRAM STARS ==========
         
-        // Инициализация Telegram Web App
+        // Инициализация Telegram WebApp
         function initTelegramWebApp() {
             try {
                 if (window.Telegram && window.Telegram.WebApp) {
                     tgWebApp = window.Telegram.WebApp;
                     isTelegramWebApp = true;
                     
-                    // Показываем информацию о реальных звездах
-                    starsInfoEl.innerHTML = `<span class="lang-stars-info">${translations[language].realStarsInfo}</span>`;
+                    // Расширяем WebApp для отображения всего интерфейса
+                    tgWebApp.expand();
                     
-                    // Получаем баланс звезд при запуске
-                    updateStarsBalance();
+                    // Устанавливаем цветовую схему
+                    tgWebApp.setHeaderColor('#0f2027');
+                    tgWebApp.setBackgroundColor('#0f2027');
+                    
+                    // Показываем кнопку оплаты в интерфейсе Telegram
+                    tgWebApp.MainButton.setText(translations[language].buy);
+                    tgWebApp.MainButton.show();
                 } else {
                     isTelegramWebApp = false;
                     console.log('Not running in Telegram WebApp');
@@ -2258,38 +2274,8 @@
             }
         }
         
-        // Обновить баланс звезд из Telegram
-        function updateStarsBalance() {
-            if (!isTelegramWebApp) {
-                // Если не в Telegram, используем сохраненные данные
-                tgStarsBalanceEl.textContent = telegramStars;
-                starsEl.textContent = telegramStars;
-                return;
-            }
-            
-            // Показываем статус загрузки
-            const lang = translations[language];
-            tgStarsBalanceEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${lang.starsLoading}`;
-            starsEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
-            
-            // Эмуляция запроса к Telegram API
-            setTimeout(() => {
-                // В реальном приложении здесь будет запрос к вашему серверу
-                // который получит реальный баланс через Telegram Bot API
-                
-                // Для демонстрации используем случайное значение
-                telegramStars = Math.floor(Math.random() * 1000) + 500;
-                
-                tgStarsBalanceEl.textContent = telegramStars;
-                starsEl.textContent = telegramStars;
-                
-                saveGame();
-                showNotification(lang.starsUpdated);
-            }, 1500);
-        }
-        
-        // Покупка товара за звезды
-        function buyItem(itemId, price, name, iconClass) {
+        // Покупка товара за реальные Telegram Stars
+        function buyWithRealStars(item) {
             if (!isTelegramWebApp) {
                 showNotification(translations[language].tgStarsError);
                 return;
@@ -2297,111 +2283,42 @@
             
             const lang = translations[language];
             
-            if (telegramStars < price) {
-                showNotification(lang.notEnoughStars);
-                return;
-            }
+            // Создаем инвойс для Telegram
+            const invoice = {
+                title: item.name,
+                description: item.desc,
+                currency: "XTR", // Код валюты для Telegram Stars
+                prices: [{ 
+                    label: `${item.price} Stars`, 
+                    amount: (item.price * 100).toString() // Цена в минимальных единицах (1 звезда = 100 единиц)
+                }],
+                payload: JSON.stringify({
+                    itemId: item.id,
+                    userId: tgWebApp.initDataUnsafe.user?.id
+                })
+            };
             
-            // Анимация звезд
-            createStarsAnimation();
-            
-            // Эмуляция запроса к Telegram API
-            tgStarsBalanceEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${lang.starsLoading}`;
-            
-            setTimeout(() => {
-                // Успешное списание
-                telegramStars -= price;
-                
-                // Добавляем в историю
-                addToPurchaseHistory(itemId, name, price);
-                
-                // Применяем эффект покупки
-                applyPurchaseEffect(itemId);
-                
-                // Обновляем UI
-                updateUI();
-                
-                // Показываем успех
-                showPurchaseSuccess();
-                
-                // Сохраняем игру
-                saveGame();
-                
-                // Закрываем модальное окно
-                purchaseModal.classList.remove('active');
-            }, 2000);
-        }
-
-        // Показать модальное окно покупки
-        function showPurchaseModal(itemId, price, name, iconClass) {
-            currentPurchaseItem = { id: itemId, price, name, iconClass };
-            
-            purchaseItemIcon.className = iconClass;
-            purchaseItemName.textContent = name;
-            purchaseItemPrice.textContent = price.toLocaleString();
-            purchaseBalanceValue.textContent = telegramStars.toLocaleString();
-            
-            const afterPurchase = telegramStars - price;
-            purchaseAfterValue.textContent = afterPurchase.toLocaleString();
-            
-            // Изменяем цвет если недостаточно средств
-            if (afterPurchase < 0) {
-                purchaseAfterValue.style.color = '#ff6b6b';
-                confirmPurchaseBtn.disabled = true;
-            } else {
-                purchaseAfterValue.style.color = '#ffd700';
-                confirmPurchaseBtn.disabled = false;
-            }
-            
-            purchaseModal.classList.add('active');
-        }
-        
-        // Обработка покупки
-        function processPurchase() {
-            if (!currentPurchaseItem) return;
-            
-            const { id, price, name, iconClass } = currentPurchaseItem;
-            buyItem(id, price, name, iconClass);
-        }
-        
-        // Создать анимацию звезд
-        function createStarsAnimation() {
-            starsAnimation.style.display = 'block';
-            starsAnimation.innerHTML = '';
-            
-            const startX = purchaseModal.getBoundingClientRect().left + purchaseModal.offsetWidth / 2;
-            const startY = purchaseModal.getBoundingClientRect().top + purchaseModal.offsetHeight / 2;
-            
-            const endX = document.querySelector('.star-balance').getBoundingClientRect().left + 30;
-            const endY = document.querySelector('.star-balance').getBoundingClientRect().top + 15;
-            
-            // Создаем 10 звезд
-            for (let i = 0; i < 10; i++) {
-                const star = document.createElement('div');
-                star.className = 'flying-star';
-                star.innerHTML = '<i class="fas fa-star"></i>';
-                star.style.left = `${startX}px`;
-                star.style.top = `${startY}px`;
-                
-                // Рандомное смещение
-                const tx = endX - startX + (Math.random() * 40 - 20);
-                const ty = endY - startY + (Math.random() * 40 - 20);
-                
-                star.style.setProperty('--tx', `${tx}px`);
-                star.style.setProperty('--ty', `${ty}px`);
-                
-                starsAnimation.appendChild(star);
-                
-                // Удаляем звезду после анимации
-                setTimeout(() => {
-                    star.remove();
-                }, 1500);
-            }
-            
-            // Скрываем контейнер после анимации
-            setTimeout(() => {
-                starsAnimation.style.display = 'none';
-            }, 1600);
+            // Открываем платежный интерфейс Telegram
+            tgWebApp.openInvoice(invoice, function(status) {
+                if (status === 'paid') {
+                    // Применяем эффект товара
+                    applyPurchaseEffect(item.id);
+                    
+                    // Добавляем в историю покупок
+                    addToPurchaseHistory(item.id, item.name, item.price);
+                    
+                    // Сохраняем игру
+                    saveGame();
+                    
+                    // Показываем успешное сообщение
+                    showPurchaseSuccess();
+                    
+                    // Анимация звезд
+                    createStarsAnimation();
+                } else {
+                    showNotification(lang.purchaseFailed);
+                }
+            });
         }
         
         // Применить эффект покупки
@@ -2443,15 +2360,48 @@
                     startAutoClicker();
                     break;
             }
+            
+            updateUI();
         }
         
-        // Показать сообщение об успешной покупке
-        function showPurchaseSuccess() {
-            purchaseSuccess.classList.add('active');
+        // Создать анимацию звезд
+        function createStarsAnimation() {
+            starsAnimation.style.display = 'block';
+            starsAnimation.innerHTML = '';
             
+            const startX = window.innerWidth / 2;
+            const startY = window.innerHeight / 2;
+            
+            const endX = document.querySelector('.tab[data-tab="premium"]').getBoundingClientRect().left + 20;
+            const endY = document.querySelector('.tab[data-tab="premium"]').getBoundingClientRect().top + 20;
+            
+            // Создаем 20 звезд
+            for (let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.className = 'flying-star';
+                star.innerHTML = '<i class="fas fa-star"></i>';
+                star.style.left = `${startX}px`;
+                star.style.top = `${startY}px`;
+                
+                // Рандомное смещение
+                const tx = endX - startX + (Math.random() * 40 - 20);
+                const ty = endY - startY + (Math.random() * 40 - 20);
+                
+                star.style.setProperty('--tx', `${tx}px`);
+                star.style.setProperty('--ty', `${ty}px`);
+                
+                starsAnimation.appendChild(star);
+                
+                // Удаляем звезду после анимации
+                setTimeout(() => {
+                    star.remove();
+                }, 1500);
+            }
+            
+            // Скрываем контейнер после анимации
             setTimeout(() => {
-                purchaseSuccess.classList.remove('active');
-            }, 3000);
+                starsAnimation.style.display = 'none';
+            }, 1600);
         }
         
         // Добавить покупку в историю
@@ -2512,7 +2462,6 @@
         function updateUI() {
             coinsEl.textContent = Math.floor(coins).toLocaleString();
             perClickEl.textContent = (perClick + upgrades.click.effect) * tapMultiplier;
-            starsEl.textContent = telegramStars;
             
             document.getElementById('click-upgrade-cost').textContent = upgrades.click.cost;
             document.getElementById('click-upgrade-effect').textContent = upgrades.click.effect;
@@ -2587,8 +2536,7 @@
                 language,
                 usedPromoCodes,
                 tapMultiplier,
-                quests,
-                telegramStars
+                quests
             };
             
             localStorage.setItem('cryptoTapSave', JSON.stringify(gameData));
@@ -2602,17 +2550,17 @@
                 buyButton.addEventListener('click', function() {
                     const itemId = item.dataset.id;
                     const price = parseInt(item.dataset.price);
-                    const itemName = item.querySelector('h3').textContent;
-                    const itemIcon = item.querySelector('i').className;
+                    const name = item.dataset.name;
+                    const desc = item.dataset.desc;
                     
-                    showPurchaseModal(itemId, price, itemName, itemIcon);
+                    // Для покупки используем реальные Telegram Stars
+                    buyWithRealStars({
+                        id: itemId,
+                        name: name,
+                        desc: desc,
+                        price: price
+                    });
                 });
-            });
-            
-            // Обработчики для модального окна покупки
-            confirmPurchaseBtn.addEventListener('click', processPurchase);
-            cancelPurchaseBtn.addEventListener('click', () => {
-                purchaseModal.classList.remove('active');
             });
         }
         
@@ -2672,8 +2620,6 @@
             buyClickBtn.addEventListener('click', () => buyUpgrade('click'));
             buyAutoBtn.addEventListener('click', () => buyUpgrade('auto'));
             buyCriticalBtn.addEventListener('click', () => buyUpgrade('critical'));
-            
-            refreshStarsBtn.addEventListener('click', updateStarsBalance);
         }
         
         // Загрузка игры при старте
@@ -2683,7 +2629,6 @@
             loadGame();
             updateQuestButtons();
             initTelegramWebApp();
-            updateStarsBalance();
             initPremiumShop();
             renderPurchaseHistory();
         });
