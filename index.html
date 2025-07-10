@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FG BOT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -545,27 +545,20 @@
             backdrop-filter: blur(5px);
         }
         
-        .wallet-section {
-            background: rgba(20, 30, 50, 0.8);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: center;
+        .star-balance {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffd700;
         }
         
-        .wallet-status {
-            margin: 15px 0;
-            font-size: 1.1rem;
-        }
-        
-        .wallet-address {
-            font-family: monospace;
-            background: rgba(0,0,0,0.3);
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin: 10px 0;
-            word-break: break-all;
-            font-size: 0.9rem;
+        .star-balance i {
+            margin-right: 10px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
         }
         
         .shop-items {
@@ -608,13 +601,12 @@
             justify-content: center;
             margin: 15px 0;
             font-weight: bold;
-            color: #ffb300;
+            color: #ffd700;
         }
         
-        .shop-item .price img {
-            width: 24px;
-            height: 24px;
+        .shop-item .price i {
             margin-right: 5px;
+            color: #ffd700;
         }
         
         .shop-item .item-desc {
@@ -958,146 +950,39 @@
             animation: glow 3s infinite;
         }
         
-        .ton-icon {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, #0088cc, #00aced);
-            border-radius: 50%;
-            margin-right: 5px;
-            position: relative;
-            overflow: hidden;
+        .star-icon {
+            color: #ffd700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
         }
         
-        .ton-icon::before {
-            content: 'T';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
-        /* Модальное окно выбора кошелька */
-        .wallet-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1001;
-            backdrop-filter: blur(5px);
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .wallet-modal.active {
-            display: flex;
-            opacity: 1;
-        }
-        
-        .wallet-modal-content {
-            background: rgba(15, 23, 42, 0.95);
-            width: 90%;
-            max-width: 400px;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s;
-            border: 1px solid rgba(79, 172, 254, 0.3);
-        }
-        
-        .wallet-modal.active .wallet-modal-content {
-            transform: translateY(0);
-        }
-        
-        .wallet-modal-header {
+        .stars-section {
             text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .wallet-modal-header h3 {
-            color: #4facfe;
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .wallet-modal-header p {
-            color: #a0a0ff;
-            font-size: 0.9rem;
-        }
-        
-        .wallets-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-height: 60vh;
-            overflow-y: auto;
-            padding: 5px;
-        }
-        
-        .wallet-item {
-            background: rgba(20, 30, 50, 0.8);
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.7);
             border-radius: 15px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid rgba(79, 172, 254, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
-        .wallet-item:hover {
-            transform: translateY(-3px);
-            background: rgba(79, 172, 254, 0.2);
-            border-color: #4facfe;
-        }
-        
-        .wallet-icon {
-            width: 40px;
-            height: 40px;
-            margin-right: 15px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-        
-        .wallet-info {
-            flex-grow: 1;
-        }
-        
-        .wallet-name {
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 5px;
-        }
-        
-        .wallet-description {
-            font-size: 0.8rem;
-            color: #a0a0ff;
-        }
-        
-        .wallet-modal-footer {
-            text-align: center;
-            margin-top: 20px;
-            color: #a0a0ff;
+        .stars-info {
             font-size: 0.9rem;
+            margin-bottom: 15px;
+            color: #a0a0ff;
+        }
+        
+        .tg-stars-balance {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #ffd700;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="desktop-block">
-        <h2>FG Bot доступен только на мобильных устройствах!</h2>
-        <p>Пожалуйста, откройте эту страницу на вашем смартфоне или планшете для доступа к игре.</p>
+        <h2>FG Bot доступен только в Telegram!</h2>
+        <p>Пожалуйста, откройте этот бот в мобильном приложении Telegram.</p>
     </div>
     
     <div class="crypto-bg"></div>
@@ -1121,8 +1006,8 @@
                 <div class="stat-value" id="per-click">2</div>
             </div>
             <div class="stat-card">
-                <div><i class="fas fa-star"></i> <span class="lang-level">Уровень</span></div>
-                <div class="stat-value" id="level">1</div>
+                <div><i class="fas fa-star star-icon"></i> <span class="lang-stars">Звёзды</span></div>
+                <div class="stat-value" id="stars">0</div>
             </div>
         </div>
         
@@ -1140,209 +1025,88 @@
             </div>
         </div>
         
-        <div id="quests" class="tab-content">
-            <div class="quests-section">
-                <h3><i class="fas fa-tasks"></i> <span class="lang-quests-title">Система заданий</span></h3>
-                <p class="lang-quests-desc">Выполняйте задания, чтобы получать бонусы</p>
-                
-                <div class="quest-grid">
-                    <div class="quest" id="telegram-quest">
-                        <i class="fab fa-telegram"></i>
-                        <h3 class="lang-quest1">Подписка на Telegram</h3>
-                        <p class="lang-quest1Desc">Подпишитесь на наш канал и получите бонусные монеты</p>
-                        <button class="btn telegram-btn" id="telegram-btn">
-                            <i class="fab fa-telegram"></i> <span class="lang-join-telegram">Присоединиться</span>
-                        </button>
-                        <div class="quest-reward">
-                            <i class="fas fa-gift"></i> <span>+500 монет</span>
-                        </div>
-                    </div>
-                    <div class="quest" id="chat-quest">
-                        <i class="fas fa-comments"></i>
-                        <h3 class="lang-quest2">Вход в чат</h3>
-                        <p class="lang-quest2Desc">Присоединитесь к нашему чату и получите бонус</p>
-                        <button class="btn chat-btn" id="chat-btn">
-                            <i class="fas fa-comments"></i> <span class="lang-join-chat">Войти в чат</span>
-                        </button>
-                        <div class="quest-reward">
-                            <i class="fas fa-gift"></i> <span>+1000 монет</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div id="bonuses" class="tab-content">
-            <div class="quests-section">
-                <h3><i class="fas fa-calendar-day"></i> <span class="lang-daily-title">Ежедневные награды</span></h3>
-                <p class="lang-daily-desc">Заходите ежедневно, чтобы получать награды!</p>
-                <div class="daily-rewards">
-                    <div class="reward-day" id="day1">
-                        <i class="fas fa-coins"></i>
-                        <div class="reward-amount">100</div>
-                    </div>
-                    <div class="reward-day" id="day2">
-                        <i class="fas fa-coins"></i>
-                        <div class="reward-amount">250</div>
-                    </div>
-                    <div class="reward-day" id="day3">
-                        <i class="fas fa-coins"></i>
-                        <div class="reward-amount">500</div>
-                    </div>
-                    <div class="reward-day" id="day4">
-                        <i class="fas fa-coins"></i>
-                        <div class="reward-amount">1000</div>
-                    </div>
-                    <div class="reward-day" id="day5">
-                        <i class="fas fa-coins"></i>
-                        <div class="reward-amount">2000</div>
-                    </div>
-                </div>
-                <p id="daily-status" class="lang-daily-available">Сегодняшняя награда доступна!</p>
-                <button class="btn" id="daily-btn">
-                    <i class="fas fa-gift"></i> <span class="lang-claim-daily">Получить награду</span>
-                </button>
-            </div>
-        </div>
-        
-        <div id="upgrades" class="tab-content">
-            <div class="quests-section">
-                <h3><i class="fas fa-arrow-up"></i> <span class="lang-upgrades-title">Улучшения</span></h3>
-                <p class="lang-upgrades-desc">Улучшайте свои возможности для увеличения дохода</p>
-                
-                <div class="quest-grid">
-                    <div class="quest" id="click-upgrade">
-                        <i class="fas fa-hand-pointer"></i>
-                        <h3 class="lang-upgrade1">Улучшение клика</h3>
-                        <p class="lang-upgrade1Desc">Увеличивает количество монет за каждый клик</p>
-                        <div class="quest-reward">
-                            <i class="fas fa-coins"></i> <span id="click-upgrade-cost">1500</span> монет
-                        </div>
-                        <div class="quest-reward">
-                            +<span id="click-upgrade-effect">1</span> монет за клик
-                        </div>
-                        <button class="btn upgrade-btn" id="buy-click-btn">
-                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy-upgrade">Купить улучшение</span>
-                        </button>
-                    </div>
-                    
-                    <div class="quest" id="auto-clicker">
-                        <i class="fas fa-robot"></i>
-                        <h3 class="lang-upgrade2">Автокликер</h3>
-                        <p class="lang-upgrade2Desc">Автоматически кликает за вас каждую секунду</p>
-                        <div class="quest-reward">
-                            <i class="fas fa-coins"></i> <span id="auto-clicker-cost">15000</span> монет
-                        </div>
-                        <div class="quest-reward">
-                            +<span id="auto-clicker-effect">1</span> клик/сек
-                        </div>
-                        <button class="btn upgrade-btn" id="buy-auto-btn">
-                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy-upgrade">Купить улучшение</span>
-                        </button>
-                    </div>
-                    
-                    <div class="quest" id="critical-upgrade">
-                        <i class="fas fa-bolt"></i>
-                        <h3 class="lang-upgrade3">Критический удар</h3>
-                        <p class="lang-upgrade3Desc">Шанс получить двойные монеты за клик</p>
-                        <div class="quest-reward">
-                            <i class="fas fa-coins"></i> <span id="critical-upgrade-cost">7500</span> монет
-                        </div>
-                        <div class="quest-reward">
-                            <span id="critical-upgrade-effect">1</span>% шанс крита
-                        </div>
-                        <button class="btn upgrade-btn" id="buy-critical-btn">
-                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy-upgrade">Купить улучшение</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
         <div id="premium" class="tab-content">
             <div class="premium-shop">
-                <h3><i class="fas fa-crown"></i> <span class="lang-premium-shop">Премиум Магазин</span></h3>
-                <p class="lang-premium-desc">Покупайте уникальные предметы за Toncoin</p>
+                <h3><i class="fas fa-star star-icon"></i> <span class="lang-premium-shop">Магазин Звёзд</span></h3>
+                <p class="lang-premium-desc">Покупайте уникальные предметы за звёзды из Telegram</p>
                 
-                <div class="wallet-section">
-                    <h4 class="lang-wallet-connect">Подключение кошелька</h4>
-                    <div class="wallet-status" id="wallet-status"><span class="lang-wallet-status">Кошелек отключен</span></div>
-                    <button class="btn premium-btn" id="connect-wallet">
-                        <i class="fas fa-wallet"></i> <span class="lang-connect-wallet">Подключить кошелек</span>
-                    </button>
-                    <button class="btn premium-btn" id="disconnect-wallet" disabled>
-                        <i class="fas fa-times"></i> <span class="lang-disconnect-wallet">Отключить кошелек</span>
-                    </button>
-                    <div class="wallet-address" id="wallet-address"></div>
+                <div class="stars-section">
+                    <div class="tg-stars-balance">
+                        <i class="fas fa-star star-icon"></i> 
+                        <span id="tg-stars-balance">Загрузка...</span>
+                    </div>
+                    <div class="stars-info">
+                        Ваши звёзды из Telegram. Используйте их для покупки улучшений!
+                    </div>
                 </div>
                 
                 <div class="shop-items">
-                    <div class="shop-item" data-id="tap-multiplier" data-price="0.5">
+                    <div class="shop-item" data-id="tap-multiplier" data-price="50">
                         <i class="fas fa-sync-alt"></i>
                         <h3 class="lang-item1">Множитель тапа x2</h3>
                         <div class="item-desc lang-item1-desc">Удваивает доход за каждый клик навсегда</div>
                         <div class="price">
-                            <div class="ton-icon"></div> 0.5 TON
+                            <i class="fas fa-star star-icon"></i> 50 звёзд
                         </div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
                     </div>
                     
-                    <div class="shop-item" data-id="gold-pack" data-price="0.5">
+                    <div class="shop-item" data-id="gold-pack" data-price="20">
                         <i class="fas fa-coins"></i>
                         <h3 class="lang-item2">Золотой пакет</h3>
                         <div class="item-desc lang-item2-desc">+50 000 монет для вашей игры</div>
                         <div class="price">
-                            <div class="ton-icon"></div> 0.5 TON
+                            <i class="fas fa-star star-icon"></i> 20 звёзд
                         </div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
                     </div>
                     
-                    <div class="shop-item" data-id="energy-boost" data-price="1.0">
+                    <div class="shop-item" data-id="energy-boost" data-price="30">
                         <i class="fas fa-gem"></i>
                         <h3 class="lang-item3">Бриллиантовая энергия</h3>
                         <div class="item-desc lang-item3-desc">Бесконечная энергия на 24 часа</div>
                         <div class="price">
-                            <div class="ton-icon"></div> 1.0 TON
+                            <i class="fas fa-star star-icon"></i> 30 звёзд
                         </div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
                     </div>
                     
-                    <div class="shop-item" data-id="click-booster" data-price="0.8">
+                    <div class="shop-item" data-id="click-booster" data-price="25">
                         <i class="fas fa-bolt"></i>
                         <h3 class="lang-item4">Бустер кликов</h3>
                         <div class="item-desc lang-item4-desc">+10 монет за клик на 12 часов</div>
                         <div class="price">
-                            <div class="ton-icon"></div> 0.8 TON
+                            <i class="fas fa-star star-icon"></i> 25 звёзд
                         </div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
                     </div>
                     
-                    <div class="shop-item" data-id="protection" data-price="1.5">
+                    <div class="shop-item" data-id="protection" data-price="40">
                         <i class="fas fa-shield-alt"></i>
                         <h3 class="lang-item5">Защита от потерь</h3>
                         <div class="item-desc lang-item5-desc">Сохранение прогресса при сбросе</div>
                         <div class="price">
-                            <div class="ton-icon"></div> 1.5 TON
+                            <i class="fas fa-star star-icon"></i> 40 звёзд
                         </div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
                     </div>
                     
-                    <div class="shop-item" data-id="auto-clicker-pro" data-price="2.0">
+                    <div class="shop-item" data-id="auto-clicker-pro" data-price="60">
                         <i class="fas fa-robot"></i>
                         <h3 class="lang-item6">Профессиональный кликер</h3>
                         <div class="item-desc lang-item6-desc">+5 автокликеров навсегда</div>
                         <div class="price">
-                            <div class="ton-icon"></div> 2.0 TON
+                            <i class="fas fa-star star-icon"></i> 60 звёзд
                         </div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
@@ -1358,17 +1122,8 @@
             <div class="tab active" data-tab="clicker">
                 <i class="fas fa-hand-pointer"></i> <span class="lang-tab-clicker">Кликер</span>
             </div>
-            <div class="tab" data-tab="quests">
-                <i class="fas fa-tasks"></i> <span class="lang-tab-quests">Задания</span>
-            </div>
-            <div class="tab" data-tab="upgrades">
-                <i class="fas fa-arrow-up"></i> <span class="lang-tab-upgrades">Улучшения</span>
-            </div>
-            <div class="tab" data-tab="bonuses">
-                <i class="fas fa-gift"></i> <span class="lang-tab-bonuses">Бонусы</span>
-            </div>
             <div class="tab" data-tab="premium">
-                <i class="fas fa-crown"></i> <span class="lang-tab-premium">Премиум</span>
+                <i class="fas fa-star star-icon"></i> <span class="lang-tab-premium">Звёзды</span>
             </div>
         </div>
     </div>
@@ -1403,50 +1158,12 @@
         </div>
     </div>
     
-    <!-- Модальное окно выбора кошелька -->
-    <div class="wallet-modal" id="wallet-modal">
-        <div class="wallet-modal-content">
-            <button class="close-btn" id="close-wallet-modal">
-                <i class="fas fa-times"></i>
-            </button>
-            
-            <div class="wallet-modal-header">
-                <h3 class="lang-wallet-connect-title">Подключите кошелек</h3>
-                <p class="lang-wallet-connect-desc">Откройте Tonkeeper или выберите другой кошелек</p>
-            </div>
-            
-            <div class="wallets-list" id="wallets-list">
-                <!-- Кошельки будут добавлены динамически -->
-            </div>
-            
-            <div class="wallet-modal-footer">
-                Powered by TonConnect
-            </div>
-        </div>
-    </div>
-    
     <div class="notification" id="notification"></div>
     <div class="save-notice" id="save-notice"><span class="lang-game-saved">Игра сохранена!</span></div>
 
     <script>
-        // ========== БЛОКИРОВКА ДОСТУПА НА КОМПЬЮТЕРАХ ==========
-        function isMobileDevice() {
-            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
-        }
-        
-        if (!isMobileDevice()) {
-            document.querySelector('.desktop-block').style.display = 'flex';
-            document.querySelector('.container').style.display = 'none';
-            document.querySelector('.bottom-nav').style.display = 'none';
-        }
-        
         // ========== ИНИЦИАЛИЗАЦИЯ TONCONNECT ==========
-        const connector = new TonConnectSDK.TonConnect({
-            manifestUrl: 'https://ton-connect.github.io/demo-dapp-with-react/tonconnect-manifest.json'
-        });
-        
-        // Реальный адрес для получения платежей
-        const merchantAddress = 'EQABGOyQ6PLnzk8Wb2jF1qoQXPOmBQtqE9ooNjhot5VWTZgjp';
+        // Удалена полностью
         
         // ========== ИНИЦИАЛИЗАЦИЯ ИГРЫ ==========
         
@@ -1461,12 +1178,7 @@
         let lastSave = Date.now();
         let language = 'ru';
         let usedPromoCodes = [];
-        let tapMultiplier = 1; // Множитель кликов
-        
-        let quests = {
-            telegram: { completed: false, reward: 500 },
-            chat: { completed: false, reward: 1000 }
-        };
+        let tapMultiplier = 1;
         
         // Система энергии
         let energy = 1000;
@@ -1481,6 +1193,10 @@
         
         let autoClickerInterval;
         
+        // Telegram Stars
+        let telegramStars = 0;
+        let tgWebApp = null;
+        
         // Промокоды
         const promoCodes = {
             "GOLDENSTART": { coins: 1000, message: {ru: "Стартовый бонус: +1000 монет!", en: "Starting bonus: +1000 coins!"} },
@@ -1494,61 +1210,22 @@
                 coins: "Монеты",
                 perClick: "За клик",
                 level: "Уровень",
-                questsTitle: "Система заданий",
-                questsDesc: "Выполняйте задания, чтобы получать бонусы",
-                quest1: "Подписка на Telegram",
-                quest1Desc: "Подпишитесь на наш канал и получите бонусные монеты",
-                quest2: "Вход в чат",
-                quest2Desc: "Присоединитесь к нашему чату и получите бонус",
-                joinTelegram: "Присоединиться",
-                joinChat: "Войти в чат",
-                dailyTitle: "Ежедневные награды",
-                dailyDesc: "Заходите ежедневно, чтобы получать награды!",
-                dailyAvailable: "Сегодняшняя награда доступна!",
-                claimDaily: "Получить награду",
-                tabClicker: "Кликер",
-                tabQuests: "Задания",
-                tabUpgrades: "Улучшения",
-                tabBonuses: "Бонусы",
-                tabPremium: "Премиум",
+                stars: "Звёзды",
+                premiumShop: "Магазин Звёзд",
+                premiumDesc: "Покупайте уникальные предметы за звёзды из Telegram",
                 settingsTitle: "Настройки",
                 languageLabel: "Язык:",
                 promoLabel: "Промокод:",
                 activatePromo: "Активировать промокод",
                 resetGame: "Сбросить игру",
                 gameSaved: "Игра сохранена!",
-                claimed: "Выполнено",
-                telegramSuccess: "Вы получили бонус за подписку!",
-                chatSuccess: "Вы получили бонус за вход в чат!",
-                upgradesTitle: "Улучшения",
-                upgradesDesc: "Улучшайте свои возможности для увеличения дохода",
-                upgrade1: "Улучшение клика",
-                upgrade1Desc: "Увеличивает количество монет за каждый клик",
-                upgrade2: "Автокликер",
-                upgrade2Desc: "Автоматически кликает за вас каждую секунду",
-                upgrade3: "Критический удар",
-                upgrade3Desc: "Шанс получить двойные монеты за клик",
-                buyUpgrade: "Купить улучшение",
                 upgradeSuccess: "Улучшение куплено!",
                 notEnoughCoins: "Недостаточно монет!",
+                notEnoughStars: "Недостаточно звёзд!",
                 criticalHit: "КРИТИЧЕСКИЙ УДАР!",
                 autoClickerActive: "Автокликер активирован!",
                 noEnergy: "Недостаточно энергии!",
                 energyRestored: "Энергия восстановлена!",
-                walletStatus: "Кошелек отключен",
-                walletConnected: "Кошелек подключен!",
-                walletDisconnected: "Кошелек отключен!",
-                walletError: "Ошибка подключения кошелька",
-                transactionSent: "Транзакция отправлена! Ожидайте подтверждения",
-                transactionCancelled: "Транзакция отменена",
-                transactionError: "Ошибка транзакции",
-                purchaseSuccess: "Покупка успешно завершена!",
-                walletConnectTitle: "Подключите кошелек",
-                walletConnectDesc: "Откройте Tonkeeper или выберите другой кошелек",
-                connectWallet: "Подключить кошелек",
-                disconnectWallet: "Отключить кошелек",
-                premiumShop: "Премиум Магазин",
-                premiumDesc: "Покупайте уникальные предметы за Toncoin",
                 item1: "Множитель тапа x2",
                 item1Desc: "Удваивает доход за каждый клик навсегда",
                 item2: "Золотой пакет",
@@ -1561,67 +1238,33 @@
                 item5Desc: "Сохранение прогресса при сбросе",
                 item6: "Профессиональный кликер",
                 item6Desc: "+5 автокликеров навсегда",
-                buy: "Купить"
+                buy: "Купить",
+                tabClicker: "Кликер",
+                tabPremium: "Звёзды",
+                purchaseSuccess: "Покупка успешно завершена!",
+                tgStarsError: "Ошибка получения звёзд из Telegram",
+                starsUpdated: "Баланс звёзд обновлён!"
             },
             en: {
                 coins: "Coins",
                 perClick: "Per click",
                 level: "Level",
-                questsTitle: "Quest system",
-                questsDesc: "Complete quests to get bonuses",
-                quest1: "Subscribe to Telegram",
-                quest1Desc: "Subscribe to our channel and get bonus coins",
-                quest2: "Join the chat",
-                quest2Desc: "Join our chat and get a bonus",
-                joinTelegram: "Join",
-                joinChat: "Join Chat",
-                dailyTitle: "Daily Rewards",
-                dailyDesc: "Come daily to get rewards!",
-                dailyAvailable: "Today's reward is available!",
-                claimDaily: "Claim Reward",
-                tabClicker: "Clicker",
-                tabQuests: "Quests",
-                tabUpgrades: "Upgrades",
-                tabBonuses: "Bonuses",
-                tabPremium: "Premium",
+                stars: "Stars",
+                premiumShop: "Stars Shop",
+                premiumDesc: "Buy unique items with Telegram Stars",
                 settingsTitle: "Settings",
                 languageLabel: "Language:",
                 promoLabel: "Promo Code:",
                 activatePromo: "Activate Promo Code",
                 resetGame: "Reset Game",
                 gameSaved: "Game saved!",
-                claimed: "Claimed",
-                telegramSuccess: "You got bonus for subscription!",
-                chatSuccess: "You got bonus for joining chat!",
-                upgradesTitle: "Upgrades",
-                upgradesDesc: "Upgrade your abilities to increase income",
-                upgrade1: "Click Upgrade",
-                upgrade1Desc: "Increases coins per click",
-                upgrade2: "Auto Clicker",
-                upgrade2Desc: "Automatically clicks for you every second",
-                upgrade3: "Critical Hit",
-                upgrade3Desc: "Chance to get double coins per click",
-                buyUpgrade: "Buy Upgrade",
                 upgradeSuccess: "Upgrade purchased!",
                 notEnoughCoins: "Not enough coins!",
+                notEnoughStars: "Not enough stars!",
                 criticalHit: "CRITICAL HIT!",
                 autoClickerActive: "Auto clicker activated!",
                 noEnergy: "Not enough energy!",
                 energyRestored: "Energy restored!",
-                walletStatus: "Wallet disconnected",
-                walletConnected: "Wallet connected!",
-                walletDisconnected: "Wallet disconnected!",
-                walletError: "Wallet connection error",
-                transactionSent: "Transaction sent! Await confirmation",
-                transactionCancelled: "Transaction cancelled",
-                transactionError: "Transaction error",
-                purchaseSuccess: "Purchase completed successfully!",
-                walletConnectTitle: "Connect your wallet",
-                walletConnectDesc: "Open Tonkeeper or select another wallet",
-                connectWallet: "Connect Wallet",
-                disconnectWallet: "Disconnect Wallet",
-                premiumShop: "Premium Shop",
-                premiumDesc: "Buy unique items for Toncoin",
                 item1: "Tap multiplier x2",
                 item1Desc: "Doubles income per click forever",
                 item2: "Gold Pack",
@@ -1634,7 +1277,12 @@
                 item5Desc: "Save progress on reset",
                 item6: "Auto Clicker Pro",
                 item6Desc: "+5 auto clickers forever",
-                buy: "Buy"
+                buy: "Buy",
+                tabClicker: "Clicker",
+                tabPremium: "Stars",
+                purchaseSuccess: "Purchase completed successfully!",
+                tgStarsError: "Error getting stars from Telegram",
+                starsUpdated: "Stars balance updated!"
             }
         };
         
@@ -1644,11 +1292,10 @@
         const coinsEl = document.getElementById('coins');
         const perClickEl = document.getElementById('per-click');
         const levelEl = document.getElementById('level');
+        const starsEl = document.getElementById('stars');
         const notificationEl = document.getElementById('notification');
         const saveNoticeEl = document.getElementById('save-notice');
         const statsContainer = document.getElementById('stats-container');
-        const dailyBtn = document.getElementById('daily-btn');
-        const dailyStatus = document.getElementById('daily-status');
         const settingsBtn = document.getElementById('settings-btn');
         const settingsModal = document.getElementById('settings-modal');
         const closeSettings = document.getElementById('close-settings');
@@ -1657,22 +1304,14 @@
         const promoResult = document.getElementById('promo-result');
         const promoBtn = document.getElementById('promo-btn');
         const resetBtn = document.getElementById('reset-btn');
-        const telegramBtn = document.getElementById('telegram-btn');
-        const chatBtn = document.getElementById('chat-btn');
         const cryptoParticles = document.getElementById('crypto-particles');
         const buyClickBtn = document.getElementById('buy-click-btn');
         const buyAutoBtn = document.getElementById('buy-auto-btn');
         const buyCriticalBtn = document.getElementById('buy-critical-btn');
         const energyFill = document.getElementById('energy-fill');
         const energyText = document.getElementById('energy-text');
-        const walletStatusEl = document.getElementById('wallet-status');
-        const walletAddressEl = document.getElementById('wallet-address');
-        const connectWalletBtn = document.getElementById('connect-wallet');
-        const disconnectWalletBtn = document.getElementById('disconnect-wallet');
+        const tgStarsBalanceEl = document.getElementById('tg-stars-balance');
         const buyItemBtns = document.querySelectorAll('.buy-item');
-        const walletModal = document.getElementById('wallet-modal');
-        const closeWalletModal = document.getElementById('close-wallet-modal');
-        const walletsList = document.getElementById('wallets-list');
 
         // Создание крипто-частиц
         function createParticles() {
@@ -1701,14 +1340,9 @@
                 }
             });
             
-            // Обновляем тексты в премиум магазине
+            // Обновляем тексты в магазине
             document.querySelectorAll('.lang-premium-shop').forEach(el => el.textContent = lang.premiumShop);
             document.querySelectorAll('.lang-premium-desc').forEach(el => el.textContent = lang.premiumDesc);
-            document.querySelectorAll('.lang-wallet-connect').forEach(el => el.textContent = lang.walletConnectTitle);
-            document.querySelectorAll('.lang-wallet-connect-desc').forEach(el => el.textContent = lang.walletConnectDesc);
-            document.querySelectorAll('.lang-connect-wallet').forEach(el => el.textContent = lang.connectWallet);
-            document.querySelectorAll('.lang-disconnect-wallet').forEach(el => el.textContent = lang.disconnectWallet);
-            document.querySelectorAll('.lang-wallet-status').forEach(el => el.textContent = lang.walletStatus);
             
             // Обновляем названия товаров
             document.querySelectorAll('.lang-item1').forEach(el => el.textContent = lang.item1);
@@ -1757,17 +1391,6 @@
                 language = gameData.language || 'ru';
                 usedPromoCodes = gameData.usedPromoCodes || [];
                 tapMultiplier = gameData.tapMultiplier || 1;
-                quests = gameData.quests || {
-                    telegram: { completed: false, reward: 500 },
-                    chat: { completed: false, reward: 1000 }
-                };
-                upgrades = gameData.upgrades || {
-                    click: { level: 0, cost: 1500, effect: 0 },
-                    auto: { level: 0, cost: 15000, effect: 0 },
-                    critical: { level: 0, cost: 7500, effect: 0 }
-                };
-                
-                updateQuestButtons();
                 
                 languageSelect.value = language;
                 updateLanguage();
@@ -1782,8 +1405,6 @@
             } else {
                 saveGame();
             }
-            
-            initWallet();
         }
         
         // Обработчик клика по монете
@@ -1793,7 +1414,6 @@
                 return;
             }
             
-            // ФИКС: Убрано умножение на tapMultiplier здесь
             let baseCoins = perClick + upgrades.click.effect;
             let isCritical = false;
             
@@ -1806,7 +1426,6 @@
                 showNotification(translations[language].criticalHit);
             }
             
-            // Применяем множитель ТОЛЬКО один раз
             coins += baseCoins * tapMultiplier;
             totalCoins += baseCoins * tapMultiplier;
             energy--;
@@ -1916,40 +1535,6 @@
             updateDailyRewards();
         }
         
-        // Обновить визуальное состояние ежедневных наград
-        function updateDailyRewards() {
-            for (let i = 1; i <= 5; i++) {
-                const dayEl = document.getElementById(`day${i}`);
-                dayEl.classList.remove('active', 'claimed');
-                
-                if (currentDay >= i) {
-                    dayEl.classList.add('claimed');
-                } else if (currentDay === i - 1) {
-                    dayEl.classList.add('active');
-                }
-            }
-        }
-        
-        // Получение ежедневной награды
-        function claimDailyBonus() {
-            const rewards = [100, 250, 500, 1000, 2000];
-            const reward = rewards[Math.min(currentDay, rewards.length - 1)];
-            
-            coins += reward;
-            totalCoins += reward;
-            lastDailyReward = Date.now();
-            currentDay++;
-            
-            showNotification(
-                language === 'ru' ? 
-                `Получена ежедневная награда: ${reward} монет!` : 
-                `Daily reward claimed: ${reward} coins!`
-            );
-            updateUI();
-            saveGame();
-            checkDailyReward();
-        }
-        
         // Активация промокода
         function activatePromo() {
             const promoCode = promoInput.value.trim().toUpperCase();
@@ -2012,226 +1597,62 @@
             );
         }
         
-        // Обновить кнопки заданий
-        function updateQuestButtons() {
-            if (quests.telegram.completed) {
-                telegramBtn.disabled = true;
-                telegramBtn.innerHTML = `<i class="fas fa-check"></i> <span class="lang-claimed">${translations[language].claimed}</span>`;
-                document.getElementById('telegram-quest').classList.add('completed');
+        // ========== TELEGRAM STARS ==========
+        
+        // Инициализация Telegram Web App
+        function initTelegramWebApp() {
+            try {
+                tgWebApp = window.Telegram.WebApp;
+                
+                // Показываем основную кнопку
+                tgWebApp.MainButton
+                    .setText(language === 'ru' ? 'Купить звёзды' : 'Buy Stars')
+                    .show()
+                    .onClick(() => {
+                        // Открываем страницу покупки звезд
+                        tgWebApp.openInvoice('https://t.me/gifteverydayyy', (status) => {
+                            if (status === 'paid') {
+                                updateStarsBalance();
+                                showNotification(translations[language].purchaseSuccess);
+                            }
+                        });
+                    });
+                
+                // Получаем баланс звезд при запуске
+                updateStarsBalance();
+                
+            } catch (e) {
+                console.error('Telegram Web App not available:', e);
+                tgStarsBalanceEl.textContent = translations[language].tgStarsError;
+            }
+        }
+        
+        // Обновить баланс звезд из Telegram
+        function updateStarsBalance() {
+            if (!tgWebApp) return;
+            
+            // Эмуляция запроса к серверу для получения баланса
+            // В реальном приложении здесь должен быть запрос к вашему серверу
+            setTimeout(() => {
+                telegramStars = Math.floor(Math.random() * 100) + 50; // Рандомное значение для демо
+                tgStarsBalanceEl.textContent = telegramStars;
+                starsEl.textContent = telegramStars;
+                showNotification(translations[language].starsUpdated);
+            }, 1000);
+        }
+        
+        // Покупка товара за звезды
+        function buyItem(itemId, price) {
+            if (telegramStars < price) {
+                showNotification(translations[language].notEnoughStars);
+                return;
             }
             
-            if (quests.chat.completed) {
-                chatBtn.disabled = true;
-                chatBtn.innerHTML = `<i class="fas fa-check"></i> <span class="lang-claimed">${translations[language].claimed}</span>`;
-                document.getElementById('chat-quest').classList.add('completed');
-            }
-        }
-        
-        // Выполнение задания
-        function completeQuest(quest) {
-            if (!quests[quest].completed) {
-                coins += quests[quest].reward;
-                totalCoins += quests[quest].reward;
-                quests[quest].completed = true;
-                
-                showNotification(
-                    language === 'ru' ? 
-                    `Задание выполнено! Получено ${quests[quest].reward} монет!` : 
-                    `Quest completed! Received ${quests[quest].reward} coins!`
-                );
-                
-                updateQuestButtons();
-                updateUI();
-                saveGame();
-            }
-        }
-        
-        // ========== TONCONNECT ФУНКЦИИ ==========
-        
-        // Инициализация кошелька
-        async function initWallet() {
-            try {
-                // Восстановление сессии
-                const isConnected = await connector.restoreConnection();
-                
-                if (isConnected) {
-                    const wallet = connector.wallet;
-                    updateWalletUI(wallet);
-                    showNotification(translations[language].walletConnected + ": " + wallet.device.appName);
-                } else {
-                    updateWalletUI(null);
-                }
-
-                // Обработчик изменения статуса
-                connector.onStatusChange(wallet => {
-                    if (wallet) {
-                        updateWalletUI(wallet);
-                        showNotification(translations[language].walletConnected + ": " + wallet.device.appName);
-                    } else {
-                        updateWalletUI(null);
-                        showNotification(translations[language].walletDisconnected);
-                    }
-                });
-                
-            } catch (error) {
-                console.error("Wallet init error:", error);
-                showNotification(translations[language].walletError);
-            }
-        }
-        
-        // Загрузка списка доступных кошельков
-        async function loadWallets() {
-            try {
-                const wallets = await connector.getWallets();
-                return wallets;
-            } catch (error) {
-                console.error("Error loading wallets:", error);
-                showNotification(translations[language].walletError);
-                return [];
-            }
-        }
-        
-        // Показать модальное окно выбора кошелька
-        async function showWalletModal() {
-            try {
-                const wallets = await loadWallets();
-                walletsList.innerHTML = '';
-                
-                wallets.forEach(wallet => {
-                    const walletItem = document.createElement('div');
-                    walletItem.classList.add('wallet-item');
-                    walletItem.dataset.wallet = wallet.appName;
-                    
-                    walletItem.innerHTML = `
-                        <div class="wallet-icon" style="background-image: url('${wallet.imageUrl}')"></div>
-                        <div class="wallet-info">
-                            <div class="wallet-name">${wallet.name}</div>
-                            <div class="wallet-description">${wallet.tondns || 'TON Wallet'}</div>
-                        </div>
-                    `;
-                    
-                    walletItem.addEventListener('click', async () => {
-                        const success = await connectWallet(wallet);
-                        if (success) {
-                            walletModal.classList.remove('active');
-                        }
-                    });
-                    
-                    walletsList.appendChild(walletItem);
-                });
-                
-                walletModal.classList.add('active');
-                
-            } catch (error) {
-                console.error("Error showing wallet modal:", error);
-                showNotification(translations[language].walletError);
-            }
-        }
-        
-        // Подключение кошелька
-        async function connectWallet(wallet) {
-            try {
-                await connector.connect({
-                    jsBridgeKey: wallet.jsBridgeKey,
-                    universalLink: wallet.universalLink,
-                    bridgeUrl: wallet.bridgeUrl
-                });
-                return true;
-            } catch (error) {
-                console.error("Connection error:", error);
-                
-                // Проверка специфических ошибок
-                if (error.message.includes('Timeout')) {
-                    showNotification("Таймаут подключения. Попробуйте снова");
-                } else if (error.message.includes('User rejected')) {
-                    showNotification("Подключение отменено пользователем");
-                } else {
-                    showNotification("Ошибка подключения: " + error.message);
-                }
-                return false;
-            }
-        }
-        
-        // Отключение кошелька
-        async function disconnectWallet() {
-            try {
-                await connector.disconnect();
-                updateWalletUI(null);
-                showNotification(translations[language].walletDisconnected);
-            } catch (error) {
-                console.error("Disconnect error:", error);
-                showNotification(translations[language].walletError);
-            }
-        }
-        
-        // Обновление интерфейса кошелька
-        function updateWalletUI(wallet = null) {
-            if (wallet && wallet.account) {
-                const address = wallet.account.address;
-                const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 6)}`;
-                
-                walletStatusEl.innerHTML = `<span class="lang-wallet-status">${translations[language].walletConnected}</span>`;
-                walletStatusEl.style.color = "#00f2fe";
-                walletAddressEl.textContent = shortAddress;
-                connectWalletBtn.disabled = true;
-                disconnectWalletBtn.disabled = false;
-            } else {
-                walletStatusEl.innerHTML = `<span class="lang-wallet-status">${translations[language].walletDisconnected}</span>`;
-                walletStatusEl.style.color = "#ff6b6b";
-                walletAddressEl.textContent = '';
-                connectWalletBtn.disabled = false;
-                disconnectWalletBtn.disabled = true;
-            }
-        }
-        
-        // Покупка товара
-        async function buyItem(itemId, price) {
-            try {
-                const wallet = connector.wallet;
-                
-                if (!wallet) {
-                    showNotification(translations[language].walletError);
-                    return;
-                }
-                
-                showNotification(translations[language].transactionSent);
-                
-                const transaction = {
-                    validUntil: Math.floor(Date.now() / 1000) + 600, // 10 минут
-                    messages: [
-                        {
-                            address: merchantAddress,
-                            amount: String(price * 1000000000), // Конвертация в нанокоины
-                            payload: {
-                                type: 'text',
-                                text: itemId
-                            }
-                        }
-                    ]
-                };
-                
-                const result = await connector.sendTransaction(transaction);
-                
-                if (result) {
-                    handleSuccessfulPurchase(itemId);
-                    showNotification(translations[language].purchaseSuccess);
-                } else {
-                    showNotification(translations[language].transactionCancelled);
-                }
-                
-            } catch (error) {
-                console.error('Transaction error:', error);
-                
-                if (error.message === 'User rejects transaction') {
-                    showNotification(translations[language].transactionCancelled);
-                } else {
-                    showNotification(translations[language].transactionError);
-                }
-            }
-        }
-        
-        // Обработка успешной покупки
-        function handleSuccessfulPurchase(itemId) {
+            // Эмуляция списания звезд
+            telegramStars -= price;
+            tgStarsBalanceEl.textContent = telegramStars;
+            starsEl.textContent = telegramStars;
+            
             switch (itemId) {
                 case 'tap-multiplier':
                     tapMultiplier = 2;
@@ -2288,6 +1709,7 @@
             coinsEl.textContent = Math.floor(coins).toLocaleString();
             perClickEl.textContent = ((perClick + upgrades.click.effect) * tapMultiplier).toFixed(1);
             levelEl.textContent = level;
+            starsEl.textContent = telegramStars;
             
             document.getElementById('click-upgrade-cost').textContent = upgrades.click.cost;
             document.getElementById('click-upgrade-effect').textContent = upgrades.click.effect;
@@ -2376,8 +1798,7 @@
                 maxEnergy,
                 language,
                 usedPromoCodes,
-                tapMultiplier,
-                quests
+                tapMultiplier
             };
             
             localStorage.setItem('cryptoTapSave', JSON.stringify(gameData));
@@ -2389,8 +1810,6 @@
         function initEventListeners() {
             coinContainer.addEventListener('click', handleCoinClick);
             coinContainer.addEventListener('touchstart', handleCoinClick, { passive: true });
-            
-            dailyBtn.addEventListener('click', claimDailyBonus);
             
             promoBtn.addEventListener('click', activatePromo);
             
@@ -2422,33 +1841,15 @@
                 });
             });
             
-            telegramBtn.addEventListener('click', () => {
-                window.open('https://t.me/gifteverydayyy', '_blank');
-                showNotification(translations[language].telegramSuccess);
-                completeQuest('telegram');
-            });
-            
-            chatBtn.addEventListener('click', () => {
-                showNotification(translations[language].chatSuccess);
-                completeQuest('chat');
-            });
-            
             buyClickBtn.addEventListener('click', () => buyUpgrade('click'));
             buyAutoBtn.addEventListener('click', () => buyUpgrade('auto'));
             buyCriticalBtn.addEventListener('click', () => buyUpgrade('critical'));
-            
-            connectWalletBtn.addEventListener('click', showWalletModal);
-            disconnectWalletBtn.addEventListener('click', disconnectWallet);
-            
-            closeWalletModal.addEventListener('click', () => {
-                walletModal.classList.remove('active');
-            });
             
             document.querySelectorAll('.buy-item').forEach(button => {
                 button.addEventListener('click', function() {
                     const shopItem = this.closest('.shop-item');
                     const itemId = shopItem.dataset.id;
-                    const price = parseFloat(shopItem.dataset.price);
+                    const price = parseInt(shopItem.dataset.price);
                     
                     buyItem(itemId, price);
                 });
@@ -2460,7 +1861,7 @@
             createParticles();
             initEventListeners();
             loadGame();
-            updateQuestButtons();
+            initTelegramWebApp();
         });
     </script>
 </body>
