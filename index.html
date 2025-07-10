@@ -1591,6 +1591,16 @@
                 </div>
             </div>
             
+            <div class="purchase-balance">
+                <div class="balance-label lang-your-balance">Ваш баланс:</div>
+                <div class="balance-value" id="purchase-balance-value">0</div>
+            </div>
+            
+            <div class="purchase-balance">
+                <div class="balance-label lang-after-purchase">После покупки:</div>
+                <div class="balance-value" id="purchase-after-value">0</div>
+            </div>
+            
             <div class="purchase-buttons">
                 <button class="confirm-purchase" id="confirm-purchase">
                     <i class="fas fa-check"></i> <span class="lang-confirm">Подтвердить</span>
@@ -1637,6 +1647,7 @@
         let isTelegramWebApp = false;
         let purchaseHistory = [];
         let currentPurchaseItem = null;
+        let userStars = 0;
         
         let quests = {
             telegram: { completed: false, reward: 500 },
@@ -2246,6 +2257,17 @@
                     // Устанавливаем цветовую схему
                     tgWebApp.setHeaderColor('#0f2027');
                     tgWebApp.setBackgroundColor('#0f2027');
+                    
+                    // Получаем баланс пользователя
+                    tgWebApp.CloudStorage.getUserStars().then(result => {
+                        if (result && result.stars) {
+                            userStars = result.stars;
+                            purchaseBalanceValue.textContent = userStars;
+                        }
+                    });
+                    
+                    // Обработчик закрытия платежного окна
+                    Telegram.WebApp.onEvent('invoiceClosed', handleInvoiceClosed);
                 } else {
                     isTelegramWebApp = false;
                     console.log('Not running in Telegram WebApp');
@@ -2256,14 +2278,47 @@
             }
         }
         
-        // Покупка товара за реальные Telegram Stars
+        // Обработчик закрытия платежного окна
+        function handleInvoiceClosed(event) {
+            if (event.status === 'paid') {
+                // Применяем эффект товара
+                applyPurchaseEffect(currentPurchaseItem.id);
+                
+                // Добавляем в историю покупок
+                addToPurchaseHistory(
+                    currentPurchaseItem.id,
+                    currentPurchaseItem.name,
+                    currentPurchaseItem.price
+                );
+                
+                // Обновляем баланс пользователя
+                userStars -= currentPurchaseItem.price;
+                purchaseBalanceValue.textContent = userStars;
+                
+                // Показываем успешное сообщение
+                showPurchaseSuccess();
+                
+                // Анимация звезд
+                createStarsAnimation();
+                
+                // Сохраняем игру
+                saveGame();
+            } else if (event.status === 'cancelled') {
+                showNotification(translations[language].cancel);
+            } else if (event.status === 'failed') {
+                showNotification(translations[language].starsPurchaseFailed);
+            }
+        }
+        
+        // Купить за реальные Telegram Stars
         function buyWithRealStars(item) {
-            if (!isTelegramWebApp) {
-                showNotification(translations[language].tgStarsError);
+            const lang = translations[language];
+            
+            // Проверяем, достаточно ли у пользователя звезд
+            if (userStars < item.price) {
+                showNotification(lang.notEnoughStars);
                 return;
             }
-            
-            const lang = translations[language];
             
             // Создаем инвойс для Telegram
             const invoice = {
@@ -2281,28 +2336,7 @@
             };
             
             // Открываем платежный интерфейс Telegram
-            tgWebApp.openInvoice(invoice, function(status) {
-                if (status === 'paid') {
-                    // Применяем эффект товара
-                    applyPurchaseEffect(item.id);
-                    
-                    // Добавляем в историю покупок
-                    addToPurchaseHistory(item.id, item.name, item.price);
-                    
-                    // Сохраняем игру
-                    saveGame();
-                    
-                    // Показываем успешное сообщение
-                    showPurchaseSuccess();
-                    
-                    // Анимация звезд
-                    createStarsAnimation();
-                } else if (status === 'cancelled') {
-                    showNotification(lang.cancel);
-                } else if (status === 'failed') {
-                    showNotification(lang.starsPurchaseFailed);
-                }
-            });
+            tgWebApp.openInvoice(invoice);
         }
         
         // Применить эффект покупки
@@ -2434,6 +2468,7 @@
                         <div class="history-item-name">${purchase.name}</div>
                         <div class="history-item-price">
                             <i class="fas fa-star"></i> ${purchase.price}
+                            <div class="real-stars-badge">${translations[language].realStars}</div>
                         </div>
                     </div>
                 `;
@@ -2528,24 +2563,43 @@
             localStorage.setItem('cryptoTapSave', JSON.stringify(gameData));
         }
         
+        // Показать успешную покупку
+        function showPurchaseSuccess() {
+            purchaseSuccess.classList.add('active');
+            setTimeout(() => {
+                purchaseSuccess.classList.remove('active');
+            }, 3000);
+        }
+        
         // Инициализация магазина
         function initPremiumShop() {
             // Обработчики для кнопок покупки
-            document.querySelectorAll('.shop-item').forEach(item => {
-                const buyButton = item.querySelector('.buy-item');
-                buyButton.addEventListener('click', function() {
-                    const itemId = item.dataset.id;
-                    const price = parseInt(item.dataset.price);
-                    const name = item.dataset.name;
-                    const desc = item.dataset.desc;
+            document.querySelectorAll('.buy-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const shopItem = this.closest('.shop-item');
+                    const itemId = shopItem.dataset.id;
+                    const price = parseInt(shopItem.dataset.price);
+                    const name = shopItem.dataset.name;
+                    const desc = shopItem.dataset.desc;
                     
-                    // Для покупки используем реальные Telegram Stars
-                    buyWithRealStars({
-                        id: itemId,
-                        name: name,
-                        desc: desc,
-                        price: price
-                    });
+                    // Запоминаем текущий товар
+                    currentPurchaseItem = { id: itemId, name, price, desc };
+                    
+                    // Заполняем модальное окно покупки
+                    purchaseItemIcon.className = shopItem.querySelector('i').className;
+                    purchaseItemIcon.style.fontSize = '2.5rem';
+                    purchaseItemName.textContent = name;
+                    purchaseItemPrice.textContent = price;
+                    
+                    // Обновляем историю покупок
+                    renderPurchaseHistory();
+                    
+                    // Обновляем баланс
+                    purchaseBalanceValue.textContent = userStars;
+                    purchaseAfterValue.textContent = userStars - price;
+                    
+                    // Показываем модальное окно
+                    purchaseModal.classList.add('active');
                 });
             });
         }
@@ -2606,6 +2660,25 @@
             buyClickBtn.addEventListener('click', () => buyUpgrade('click'));
             buyAutoBtn.addEventListener('click', () => buyUpgrade('auto'));
             buyCriticalBtn.addEventListener('click', () => buyUpgrade('critical'));
+            
+            // Обработчики для кнопок покупки
+            confirmPurchaseBtn.addEventListener('click', () => {
+                if (!currentPurchaseItem) return;
+                
+                if (isTelegramWebApp) {
+                    // Покупка через Telegram Stars
+                    buyWithRealStars(currentPurchaseItem);
+                } else {
+                    // Для тестирования вне Telegram
+                    showNotification(translations[language].tgStarsError);
+                }
+                
+                purchaseModal.classList.remove('active');
+            });
+            
+            cancelPurchaseBtn.addEventListener('click', () => {
+                purchaseModal.classList.remove('active');
+            });
         }
         
         // Загрузка игры при старте
