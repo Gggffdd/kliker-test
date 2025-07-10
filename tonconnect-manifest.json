@@ -1,8 +1,5 @@
 {
-  "url": "https://kliker-test.vercel.app/",
+  "url": "https://yourdomain.com",
   "name": "FG BOT",
-  "iconUrl": "https://yapx.ru/image/Z0SaR",
-  "termsOfUseUrl": "https://your-app.com/terms",
-  "privacyPolicyUrl": "https://your-app.com/privacy",
-  "description": "The best app in TON ecosystem"
+  "iconUrl": "https://yourdomain.com/icon.png"
 }
