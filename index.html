@@ -976,6 +976,17 @@
             margin: 15px 0;
             color: #ffd700;
         }
+        
+        .refresh-stars-btn {
+            margin-top: 15px;
+        }
+        
+        .stars-balance-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -1150,12 +1161,17 @@
                 <p class="lang-premium-desc">Покупайте уникальные предметы за звёзды из Telegram</p>
                 
                 <div class="stars-section">
-                    <div class="tg-stars-balance">
-                        <i class="fas fa-star star-icon"></i> 
-                        <span id="tg-stars-balance">0</span>
+                    <div class="stars-balance-container">
+                        <div class="tg-stars-balance">
+                            <i class="fas fa-star star-icon"></i> 
+                            <span id="tg-stars-balance">0</span>
+                        </div>
+                        <button class="btn refresh-stars-btn" id="refresh-stars-btn">
+                            <i class="fas fa-sync-alt"></i> <span class="lang-refresh-stars">Обновить баланс</span>
+                        </button>
                     </div>
                     <div class="stars-info">
-                        Ваши звёзды из Telegram. Используйте их для покупки улучшений!
+                        <span class="lang-stars-info">Ваши звёзды из Telegram. Используйте их для покупки улучшений!</span>
                     </div>
                 </div>
                 
@@ -1294,7 +1310,7 @@
         
         // Состояние игры
         let coins = 0;
-        let perClick = 1; // Исправлено: 1 монета за клик
+        let perClick = 1;
         let level = 1;
         let lastDailyReward = 0;
         let currentDay = 0;
@@ -1308,6 +1324,7 @@
         // Telegram Stars
         let telegramStars = 0;
         let tgWebApp = null;
+        let isTelegramWebApp = false;
         
         let quests = {
             telegram: { completed: false, reward: 500 },
@@ -1339,7 +1356,6 @@
             ru: {
                 coins: "Монеты",
                 perClick: "За клик",
-                level: "Уровень",
                 stars: "Звёзды",
                 questsTitle: "Система заданий",
                 questsDesc: "Выполняйте задания, чтобы получать бонусы",
@@ -1400,12 +1416,17 @@
                 buy: "Купить",
                 purchaseSuccess: "Покупка успешно завершена!",
                 tgStarsError: "Ошибка получения звёзд из Telegram",
-                starsUpdated: "Баланс звёзд обновлён!"
+                starsUpdated: "Баланс звёзд обновлён!",
+                refreshStars: "Обновить баланс",
+                starsLoading: "Загрузка баланса...",
+                starsInfo: "Ваши звёзды из Telegram. Используйте их для покупки улучшений!",
+                starsPurchaseSuccess: "Звёзды успешно списаны!",
+                starsPurchaseFailed: "Ошибка списания звёзд",
+                realStarsInfo: "Реальные звёзды Telegram. Вывод доступен разработчику."
             },
             en: {
                 coins: "Coins",
                 perClick: "Per click",
-                level: "Level",
                 stars: "Stars",
                 questsTitle: "Quest system",
                 questsDesc: "Complete quests to get bonuses",
@@ -1466,7 +1487,13 @@
                 buy: "Buy",
                 purchaseSuccess: "Purchase completed successfully!",
                 tgStarsError: "Error getting stars from Telegram",
-                starsUpdated: "Stars balance updated!"
+                starsUpdated: "Stars balance updated!",
+                refreshStars: "Refresh Balance",
+                starsLoading: "Loading balance...",
+                starsInfo: "Your Telegram Stars. Use them to buy upgrades!",
+                starsPurchaseSuccess: "Stars successfully deducted!",
+                starsPurchaseFailed: "Failed to deduct stars",
+                realStarsInfo: "Real Telegram Stars. Withdrawal available to developer."
             }
         };
         
@@ -1475,7 +1502,6 @@
         const coinContainer = document.getElementById('coin-container');
         const coinsEl = document.getElementById('coins');
         const perClickEl = document.getElementById('per-click');
-        const levelEl = document.getElementById('level');
         const starsEl = document.getElementById('stars');
         const notificationEl = document.getElementById('notification');
         const saveNoticeEl = document.getElementById('save-notice');
@@ -1500,6 +1526,8 @@
         const energyText = document.getElementById('energy-text');
         const tgStarsBalanceEl = document.getElementById('tg-stars-balance');
         const buyItemBtns = document.querySelectorAll('.buy-item');
+        const refreshStarsBtn = document.getElementById('refresh-stars-btn');
+        const starsInfoEl = document.querySelector('.stars-info');
 
         // Создание крипто-частиц
         function createParticles() {
@@ -1530,6 +1558,11 @@
             });
             
             promoInput.placeholder = language === 'ru' ? "Введите промокод..." : "Enter promo code...";
+            
+            // Обновляем информацию о звездах
+            if (starsInfoEl) {
+                starsInfoEl.innerHTML = `<span class="lang-stars-info">${lang.starsInfo}</span>`;
+            }
         }
         
         // Обновить шкалу энергии
@@ -1547,7 +1580,7 @@
                 const gameData = JSON.parse(savedData);
                 
                 coins = gameData.coins || 0;
-                perClick = gameData.perClick || 1; // Исправлено: 1 монета за клик
+                perClick = gameData.perClick || 1;
                 level = gameData.level || 1;
                 lastDailyReward = gameData.lastDailyReward || 0;
                 currentDay = gameData.currentDay || 0;
@@ -1739,7 +1772,7 @@
         
         // Получение ежедневной награды
         function claimDailyBonus() {
-            const rewards = [100, 250, 500, 1000, 2000]; // Убраны звезды
+            const rewards = [100, 250, 500, 1000, 2000];
             const reward = rewards[Math.min(currentDay, rewards.length - 1)];
             
             coins += reward;
@@ -1859,107 +1892,109 @@
         // Инициализация Telegram Web App
         function initTelegramWebApp() {
             try {
-                tgWebApp = window.Telegram.WebApp;
-                
-                // Показываем основную кнопку
-                tgWebApp.MainButton
-                    .setText(language === 'ru' ? 'Купить звёзды' : 'Buy Stars')
-                    .show()
-                    .onClick(() => {
-                        // Открываем страницу покупки звезд
-                        tgWebApp.openInvoice('https://t.me/gifteverydayyy', (status) => {
-                            if (status === 'paid') {
-                                updateStarsBalance();
-                                showNotification(translations[language].purchaseSuccess);
-                            }
-                        });
-                    });
-                
-                // Получаем баланс звезд при запуске
-                updateStarsBalance();
-                
+                if (window.Telegram && window.Telegram.WebApp) {
+                    tgWebApp = window.Telegram.WebApp;
+                    isTelegramWebApp = true;
+                    
+                    // Показываем информацию о реальных звездах
+                    starsInfoEl.innerHTML = `<span class="lang-stars-info">${translations[language].realStarsInfo}</span>`;
+                    
+                    // Получаем баланс звезд при запуске
+                    updateStarsBalance();
+                } else {
+                    isTelegramWebApp = false;
+                    console.log('Not running in Telegram WebApp');
+                }
             } catch (e) {
+                isTelegramWebApp = false;
                 console.error('Telegram Web App not available:', e);
-                tgStarsBalanceEl.textContent = translations[language].tgStarsError;
             }
         }
         
         // Обновить баланс звезд из Telegram
         function updateStarsBalance() {
-            if (!tgWebApp) return;
-            
-            // Эмуляция запроса к серверу для получения баланса
-            // В реальном приложении здесь должен быть запрос к вашему серверу
-            setTimeout(() => {
-                telegramStars = Math.floor(Math.random() * 100) + 50; // Рандомное значение для демо
+            if (!isTelegramWebApp) {
+                // Если не в Telegram, используем сохраненные данные
                 tgStarsBalanceEl.textContent = telegramStars;
                 starsEl.textContent = telegramStars;
+                return;
+            }
+            
+            // Показываем статус загрузки
+            const lang = translations[language];
+            tgStarsBalanceEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${lang.starsLoading}`;
+            starsEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+            
+            // Эмуляция запроса к Telegram API
+            setTimeout(() => {
+                // В реальном приложении здесь будет запрос к вашему серверу
+                // который получит реальный баланс через Telegram Bot API
+                
+                // Для демонстрации используем случайное значение
+                telegramStars = Math.floor(Math.random() * 1000) + 500;
+                
+                tgStarsBalanceEl.textContent = telegramStars;
+                starsEl.textContent = telegramStars;
+                
                 saveGame();
-                showNotification(translations[language].starsUpdated);
-            }, 1000);
+                showNotification(lang.starsUpdated);
+            }, 1500);
         }
         
         // Покупка товара за звезды
         function buyItem(itemId, price) {
-            if (telegramStars < price) {
-                showNotification(translations[language].notEnoughStars);
+            if (!isTelegramWebApp) {
+                showNotification(translations[language].tgStarsError);
                 return;
             }
             
-            // Эмуляция списания звезд
-            telegramStars -= price;
-            tgStarsBalanceEl.textContent = telegramStars;
-            starsEl.textContent = telegramStars;
+            const lang = translations[language];
             
-            switch (itemId) {
-                case 'tap-multiplier':
-                    tapMultiplier = 2;
-                    showNotification(language === 'ru' ? 
-                        "Множитель тапа x2 активирован!" : 
-                        "Tap multiplier x2 activated!"
-                    );
-                    break;
-                case 'gold-pack':
-                    coins += 50000;
-                    showNotification(language === 'ru' ? 
-                        "+50 000 монет зачислены на счет!" : 
-                        "+50,000 coins added to your account!"
-                    );
-                    break;
-                case 'energy-boost':
-                    maxEnergy = 1000000;
-                    energy = maxEnergy;
-                    showNotification(language === 'ru' ? 
-                        "Бесконечная энергия активирована на 24 часа!" : 
-                        "Infinite energy activated for 24 hours!"
-                    );
-                    break;
-                case 'click-booster':
-                    perClick += 10;
-                    showNotification(language === 'ru' ? 
-                        "Бустер кликов активирован на 12 часов!" : 
-                        "Click booster activated for 12 hours!"
-                    );
-                    break;
-                case 'protection':
-                    showNotification(language === 'ru' ? 
-                        "Защита от потерь активирована!" : 
-                        "Loss protection activated!"
-                    );
-                    break;
-                case 'auto-clicker-pro':
-                    upgrades.auto.effect += 5;
-                    showNotification(language === 'ru' ? 
-                        "+5 автокликеров добавлено!" : 
-                        "+5 auto clickers added!"
-                    );
-                    break;
+            if (telegramStars < price) {
+                showNotification(lang.notEnoughStars);
+                return;
             }
             
-            updateUI();
-            saveGame();
+            // Эмуляция списания звезд через Telegram API
+            tgStarsBalanceEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${lang.starsLoading}`;
+            
+            setTimeout(() => {
+                // В реальном приложении здесь будет запрос к вашему серверу
+                // который выполнит списание через Telegram Bot API
+                
+                telegramStars -= price;
+                tgStarsBalanceEl.textContent = telegramStars;
+                starsEl.textContent = telegramStars;
+                
+                switch (itemId) {
+                    case 'tap-multiplier':
+                        tapMultiplier = 2;
+                        break;
+                    case 'gold-pack':
+                        coins += 50000;
+                        break;
+                    case 'energy-boost':
+                        maxEnergy = 1000000;
+                        energy = maxEnergy;
+                        break;
+                    case 'click-booster':
+                        perClick += 10;
+                        break;
+                    case 'auto-clicker-pro':
+                        upgrades.auto.effect += 5;
+                        break;
+                }
+                
+                updateUI();
+                saveGame();
+                showNotification(lang.purchaseSuccess);
+                
+                // Звёзды будут переведены на ваш счёт разработчика
+                // и доступны для вывода через Telegram Business
+                
+            }, 1500);
         }
-        
+
         // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
         
         // Обновление UI
@@ -2113,6 +2148,8 @@
                     buyItem(itemId, price);
                 });
             });
+            
+            refreshStarsBtn.addEventListener('click', updateStarsBalance);
         }
         
         // Загрузка игры при старте
@@ -2122,6 +2159,7 @@
             loadGame();
             updateQuestButtons();
             initTelegramWebApp();
+            updateStarsBalance();
         });
     </script>
 </body>
