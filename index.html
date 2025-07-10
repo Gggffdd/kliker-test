@@ -1450,7 +1450,6 @@
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 50 звёзд
                         </div>
-                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
@@ -1463,7 +1462,6 @@
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 20 звёзд
                         </div>
-                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
@@ -1476,7 +1474,6 @@
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 30 звёзд
                         </div>
-                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
@@ -1489,7 +1486,6 @@
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 25 звёзд
                         </div>
-                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
@@ -1502,7 +1498,6 @@
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 40 звёзд
                         </div>
-                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
@@ -1515,7 +1510,6 @@
                         <div class="price">
                             <i class="fas fa-star star-icon"></i> 60 звёзд
                         </div>
-                        <div class="real-stars-badge lang-real-stars">Реальные звёзды</div>
                         <button class="btn premium-btn buy-item">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
                         </button>
@@ -1594,14 +1588,6 @@
                         <i class="fas fa-star star-icon"></i>
                         <span id="purchase-item-price"></span>
                     </div>
-                </div>
-            </div>
-            
-            <div class="purchase-balance">
-                <div class="balance-label lang-your-balance">Ваш баланс:</div>
-                <div class="balance-value">
-                    <i class="fas fa-star star-icon"></i>
-                    <span id="purchase-balance-value">0</span>
                 </div>
             </div>
             
@@ -2260,10 +2246,6 @@
                     // Устанавливаем цветовую схему
                     tgWebApp.setHeaderColor('#0f2027');
                     tgWebApp.setBackgroundColor('#0f2027');
-                    
-                    // Показываем кнопку оплаты в интерфейсе Telegram
-                    tgWebApp.MainButton.setText(translations[language].buy);
-                    tgWebApp.MainButton.show();
                 } else {
                     isTelegramWebApp = false;
                     console.log('Not running in Telegram WebApp');
@@ -2315,8 +2297,10 @@
                     
                     // Анимация звезд
                     createStarsAnimation();
-                } else {
-                    showNotification(lang.purchaseFailed);
+                } else if (status === 'cancelled') {
+                    showNotification(lang.cancel);
+                } else if (status === 'failed') {
+                    showNotification(lang.starsPurchaseFailed);
                 }
             });
         }
@@ -2326,8 +2310,10 @@
             const shopItem = document.querySelector(`.shop-item[data-id="${itemId}"]`);
             
             // Добавляем класс для анимации
-            shopItem.classList.add('purchasing');
-            setTimeout(() => shopItem.classList.remove('purchasing'), 1500);
+            if (shopItem) {
+                shopItem.classList.add('purchasing');
+                setTimeout(() => shopItem.classList.remove('purchasing'), 1500);
+            }
             
             const lang = translations[language];
             
