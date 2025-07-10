@@ -120,7 +120,7 @@
             right: 0;
             background: rgba(15, 23, 42, 0.95);
             padding: 8px;
-            z-index: 100;
+            z-index: 1000; /* Повышен z-index */
             box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
             border-top: 1px solid rgba(79, 172, 254, 0.3);
             backdrop-filter: blur(10px);
@@ -332,7 +332,7 @@
             pointer-events: none;
             animation: float-up 1.5s forwards;
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-            z-index: 10;
+            z-index: 1000;
             font-family: 'Poppins', sans-serif;
         }
         
@@ -344,11 +344,11 @@
         
         @keyframes float-up {
             0% { 
-                transform: translateY(0) scale(1); 
+                transform: translate(-50%, -50%) scale(1); 
                 opacity: 1; 
             }
             100% { 
-                transform: translateY(-100px) scale(0.5); 
+                transform: translate(-50%, -150px) scale(0.5); 
                 opacity: 0; 
             }
         }
@@ -1003,7 +1003,7 @@
             </div>
             <div class="stat-card">
                 <div><i class="fas fa-mouse"></i> <span class="lang-per-click">За клик</span></div>
-                <div class="stat-value" id="per-click">2</div>
+                <div class="stat-value" id="per-click">1</div>
             </div>
             <div class="stat-card">
                 <div><i class="fas fa-star star-icon"></i> <span class="lang-stars">Звёзды</span></div>
@@ -1079,8 +1079,8 @@
                         <div class="reward-amount">1000</div>
                     </div>
                     <div class="reward-day" id="day5">
-                        <i class="fas fa-star star-icon"></i>
-                        <div class="reward-amount">10★</div>
+                        <i class="fas fa-coins"></i>
+                        <div class="reward-amount">2000</div>
                     </div>
                 </div>
                 <p id="daily-status" class="lang-daily-available">Сегодняшняя награда доступна!</p>
@@ -1152,7 +1152,7 @@
                 <div class="stars-section">
                     <div class="tg-stars-balance">
                         <i class="fas fa-star star-icon"></i> 
-                        <span id="tg-stars-balance">Загрузка...</span>
+                        <span id="tg-stars-balance">0</span>
                     </div>
                     <div class="stars-info">
                         Ваши звёзды из Telegram. Используйте их для покупки улучшений!
@@ -1294,7 +1294,7 @@
         
         // Состояние игры
         let coins = 0;
-        let perClick = 2;
+        let perClick = 1; // Исправлено: 1 монета за клик
         let level = 1;
         let lastDailyReward = 0;
         let currentDay = 0;
@@ -1330,7 +1330,7 @@
         // Промокоды
         const promoCodes = {
             "GOLDENSTART": { coins: 1000, message: {ru: "Стартовый бонус: +1000 монет!", en: "Starting bonus: +1000 coins!"} },
-            "CLICKER": { perClick: 2, message: {ru: "Бонус: +2 монеты за клик!", en: "Bonus: +2 coins per click!"} },
+            "CLICKER": { perClick: 1, message: {ru: "Бонус: +1 монета за клик!", en: "Bonus: +1 coin per click!"} },
             "CRYPTO": { coins: 5000, message: {ru: "Крипто бонус: +5000 монет!", en: "Crypto bonus: +5000 coins!"} }
         };
         
@@ -1503,6 +1503,7 @@
 
         // Создание крипто-частиц
         function createParticles() {
+            cryptoParticles.innerHTML = '';
             for (let i = 0; i < 20; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
@@ -1528,30 +1529,7 @@
                 }
             });
             
-            // Обновляем тексты в магазине
-            document.querySelectorAll('.lang-premium-shop').forEach(el => el.textContent = lang.premiumShop);
-            document.querySelectorAll('.lang-premium-desc').forEach(el => el.textContent = lang.premiumDesc);
-            
-            // Обновляем названия товаров
-            document.querySelectorAll('.lang-item1').forEach(el => el.textContent = lang.item1);
-            document.querySelectorAll('.lang-item1-desc').forEach(el => el.textContent = lang.item1Desc);
-            document.querySelectorAll('.lang-item2').forEach(el => el.textContent = lang.item2);
-            document.querySelectorAll('.lang-item2-desc').forEach(el => el.textContent = lang.item2Desc);
-            document.querySelectorAll('.lang-item3').forEach(el => el.textContent = lang.item3);
-            document.querySelectorAll('.lang-item3-desc').forEach(el => el.textContent = lang.item3Desc);
-            document.querySelectorAll('.lang-item4').forEach(el => el.textContent = lang.item4);
-            document.querySelectorAll('.lang-item4-desc').forEach(el => el.textContent = lang.item4Desc);
-            document.querySelectorAll('.lang-item5').forEach(el => el.textContent = lang.item5);
-            document.querySelectorAll('.lang-item5-desc').forEach(el => el.textContent = lang.item5Desc);
-            document.querySelectorAll('.lang-item6').forEach(el => el.textContent = lang.item6);
-            document.querySelectorAll('.lang-item6-desc').forEach(el => el.textContent = lang.item6Desc);
-            document.querySelectorAll('.lang-buy').forEach(el => el.textContent = lang.buy);
-            
             promoInput.placeholder = language === 'ru' ? "Введите промокод..." : "Enter promo code...";
-            
-            document.getElementById('click-upgrade-cost').textContent = upgrades.click.cost;
-            document.getElementById('auto-clicker-cost').textContent = upgrades.auto.cost;
-            document.getElementById('critical-upgrade-cost').textContent = upgrades.critical.cost;
         }
         
         // Обновить шкалу энергии
@@ -1569,7 +1547,7 @@
                 const gameData = JSON.parse(savedData);
                 
                 coins = gameData.coins || 0;
-                perClick = gameData.perClick || 2;
+                perClick = gameData.perClick || 1; // Исправлено: 1 монета за клик
                 level = gameData.level || 1;
                 lastDailyReward = gameData.lastDailyReward || 0;
                 currentDay = gameData.currentDay || 0;
@@ -1588,6 +1566,7 @@
                     auto: { level: 0, cost: 15000, effect: 0 },
                     critical: { level: 0, cost: 7500, effect: 0 }
                 };
+                telegramStars = gameData.telegramStars || 0;
                 
                 updateQuestButtons();
                 
@@ -1625,13 +1604,14 @@
                 showNotification(translations[language].criticalHit);
             }
             
-            coins += baseCoins * tapMultiplier;
-            totalCoins += baseCoins * tapMultiplier;
+            const coinsEarned = baseCoins * tapMultiplier;
+            coins += coinsEarned;
+            totalCoins += coinsEarned;
             energy--;
             
             updateUI();
             
-            createClickAnimation(e.clientX, e.clientY, baseCoins * tapMultiplier, isCritical);
+            createClickAnimation(e, coinsEarned, isCritical);
             
             coinEl.style.transform = 'scale(0.95) rotate(15deg)';
             setTimeout(() => {
@@ -1643,6 +1623,31 @@
                 showSaveNotice();
                 lastSave = Date.now();
             }
+        }
+        
+        // Создание анимации клика
+        function createClickAnimation(event, amount, isCritical) {
+            let x, y;
+            
+            if (event.touches && event.touches[0]) {
+                x = event.touches[0].clientX;
+                y = event.touches[0].clientY;
+            } else {
+                x = event.clientX;
+                y = event.clientY;
+            }
+            
+            const anim = document.createElement('div');
+            anim.className = 'coin-click' + (isCritical ? ' critical' : '');
+            anim.textContent = `+${amount}`;
+            anim.style.left = `${x}px`;
+            anim.style.top = `${y}px`;
+            
+            document.body.appendChild(anim);
+            
+            setTimeout(() => {
+                anim.remove();
+            }, 1500);
         }
         
         // Покупка улучшения
@@ -1672,8 +1677,6 @@
                         break;
                 }
                 
-                checkLevel();
-                
                 updateUI();
                 saveGame();
                 showNotification(translations[language].upgradeSuccess);
@@ -1693,20 +1696,6 @@
                     updateUI();
                 }
             }, 1000);
-        }
-        
-        // Проверить уровень игрока
-        function checkLevel() {
-            const newLevel = Math.floor(totalCoins / 5000) + 1;
-            
-            if (newLevel > level) {
-                level = newLevel;
-                showNotification(
-                    language === 'ru' ? 
-                    `Новый уровень: ${level}!` : 
-                    `New level: ${level}!`
-                );
-            }
         }
         
         // Проверка ежедневной награды
@@ -1750,29 +1739,19 @@
         
         // Получение ежедневной награды
         function claimDailyBonus() {
-            const rewards = [100, 250, 500, 1000, 10];
+            const rewards = [100, 250, 500, 1000, 2000]; // Убраны звезды
             const reward = rewards[Math.min(currentDay, rewards.length - 1)];
             
-            if (currentDay === 4) {
-                // На 5-й день даем звезды
-                telegramStars += reward;
-                showNotification(
-                    language === 'ru' ? 
-                    `Получена ежедневная награда: ${reward} звёзд!` : 
-                    `Daily reward claimed: ${reward} stars!`
-                );
-            } else {
-                coins += reward;
-                totalCoins += reward;
-                showNotification(
-                    language === 'ru' ? 
-                    `Получена ежедневная награда: ${reward} монет!` : 
-                    `Daily reward claimed: ${reward} coins!`
-                );
-            }
+            coins += reward;
+            totalCoins += reward;
+            showNotification(
+                language === 'ru' ? 
+                `Получена ежедневная награда: ${reward} монет!` : 
+                `Daily reward claimed: ${reward} coins!`
+            );
             
             lastDailyReward = Date.now();
-            currentDay++;
+            currentDay = Math.min(currentDay + 1, 4);
             
             updateUI();
             saveGame();
@@ -1915,6 +1894,7 @@
                 telegramStars = Math.floor(Math.random() * 100) + 50; // Рандомное значение для демо
                 tgStarsBalanceEl.textContent = telegramStars;
                 starsEl.textContent = telegramStars;
+                saveGame();
                 showNotification(translations[language].starsUpdated);
             }, 1000);
         }
@@ -1985,8 +1965,7 @@
         // Обновление UI
         function updateUI() {
             coinsEl.textContent = Math.floor(coins).toLocaleString();
-            perClickEl.textContent = ((perClick + upgrades.click.effect) * tapMultiplier).toFixed(1);
-            levelEl.textContent = level;
+            perClickEl.textContent = (perClick + upgrades.click.effect) * tapMultiplier;
             starsEl.textContent = telegramStars;
             
             document.getElementById('click-upgrade-cost').textContent = upgrades.click.cost;
@@ -2001,22 +1980,6 @@
             buyCriticalBtn.disabled = coins < upgrades.critical.cost;
             
             updateEnergyBar();
-        }
-        
-        // Анимация клика
-        function createClickAnimation(x, y, amount, isCritical) {
-            const anim = document.createElement('div');
-            anim.className = 'coin-click' + (isCritical ? ' critical' : '');
-            anim.textContent = `+${amount}`;
-            anim.style.left = `${x}px`;
-            anim.style.top = `${y}px`;
-            anim.style.position = 'fixed';
-            
-            document.body.appendChild(anim);
-            
-            setTimeout(() => {
-                anim.remove();
-            }, 1500);
         }
         
         // Показать уведомление
@@ -2077,7 +2040,8 @@
                 language,
                 usedPromoCodes,
                 tapMultiplier,
-                quests
+                quests,
+                telegramStars
             };
             
             localStorage.setItem('cryptoTapSave', JSON.stringify(gameData));
@@ -2088,7 +2052,10 @@
         // Инициализация обработчиков событий
         function initEventListeners() {
             coinContainer.addEventListener('click', handleCoinClick);
-            coinContainer.addEventListener('touchstart', handleCoinClick, { passive: true });
+            coinContainer.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                handleCoinClick(e);
+            }, { passive: false });
             
             dailyBtn.addEventListener('click', claimDailyBonus);
             
