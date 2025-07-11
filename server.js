@@ -1,85 +1,55 @@
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
-const app = express();
 
+const app = express();
 app.use(bodyParser.json());
 
-// Конфигурация бота
-const BOT_TOKEN = '8098501828:AAFNGBZIQ6KoIgihZRlB8HwGoDwmThZ9egI';
-const TELEGRAM_API = 'https://api.telegram.org/bot' + BOT_TOKEN;
+const CRYPTO_BOT_TOKEN = '428290:AAW532c6iYZ0vr7zuBQtj4hi8UGBzofeKby'; // Замените на ваш API-ключ
+const CRYPTO_BOT_API = 'https://pay.crypt.bot/api';
 
-// Получение баланса звезд
-app.post('/get-stars-balance', async (req, res) => {
+// Создание инвойса
+app.post('/createInvoice', async (req, res) => {
+    const { amount, currency, coinsAmount } = req.body;
+
     try {
-        const userId = req.body.user_id;
-        
-        const response = await axios.post(`${TELEGRAM_API}/getStarTransactions`, {
-            user_id: userId,
-            offset: 0,
-            limit: 1
+        const response = await axios.post(`${CRYPTO_BOT_API}/createInvoice`, {
+            asset: currency,
+            amount: amount.toString(),
+            description: `Пополнение на ${coinsAmount} монет`,
+        }, {
+            headers: { 'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN }
         });
-        
-        // Последняя транзакция содержит текущий баланс
-        const lastTransaction = response.data.result.transactions[0];
-        const balance = lastTransaction ? lastTransaction.star_count : 0;
-        
+
         res.json({
-            ok: true,
-            balance: balance
+            success: true,
+            invoiceId: response.data.result.invoice_id,
+            payUrl: response.data.result.pay_url,
+            address: response.data.result.address,
         });
     } catch (error) {
-        console.error('Balance error:', error.response?.data || error.message);
-        res.status(500).json({
-            ok: false,
-            description: 'Error fetching star balance'
-        });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
-// Обработка покупки
-app.post('/process-purchase', async (req, res) => {
+// Проверка статуса платежа
+app.get('/checkInvoice/:invoiceId', async (req, res) => {
+    const { invoiceId } = req.params;
+
     try {
-        const { user_id, item_id, price } = req.body;
-        
-        // Создаем транзакцию списания
-        const response = await axios.post(`${TELEGRAM_API}/refundStarTransaction`, {
-            user_id: user_id,
-            telegram_charge_id: `purchase_${Date.now()}`,
-            amount: price
+        const response = await axios.get(`${CRYPTO_BOT_API}/getInvoices?invoice_ids=${invoiceId}`, {
+            headers: { 'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN }
         });
-        
-        if (response.data.ok) {
-            // Получаем новый баланс
-            const balanceResponse = await axios.post(`${TELEGRAM_API}/getStarTransactions`, {
-                user_id: user_id,
-                offset: 0,
-                limit: 1
-            });
-            
-            const lastTransaction = balanceResponse.data.result.transactions[0];
-            const newBalance = lastTransaction ? lastTransaction.star_count : 0;
-            
-            res.json({
-                ok: true,
-                new_balance: newBalance
-            });
-        } else {
-            res.status(400).json({
-                ok: false,
-                description: response.data.description || 'Purchase failed'
-            });
-        }
+
+        const invoice = response.data.result.items[0];
+        res.json({
+            status: invoice.status, // "active", "paid" или "expired"
+            amount: invoice.amount,
+            currency: invoice.asset,
+        });
     } catch (error) {
-        console.error('Purchase error:', error.response?.data || error.message);
-        res.status(500).json({
-            ok: false,
-            description: 'Error processing purchase'
-        });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+app.listen(3000, () => console.log('Сервер запущен на порту 3000'));
