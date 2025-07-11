@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FG BOT - Telegram Stars Shop</title>
+    <title>FG BOT - Crypto Payment</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -523,79 +524,6 @@
             animation: coin-spin 1s ease-in-out;
         }
         
-        .premium-shop {
-            padding: 20px;
-            background: rgba(15, 23, 42, 0.7);
-            border-radius: 15px;
-            margin-top: 20px;
-            border: 1px solid rgba(79, 172, 254, 0.3);
-            backdrop-filter: blur(5px);
-        }
-        
-        .telegram-only {
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            text-align: center;
-        }
-        
-        .shop-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .shop-item {
-            background: rgba(25, 35, 60, 0.8);
-            border-radius: 12px;
-            padding: 20px 15px;
-            border: 2px solid #ffb300;
-            transition: all 0.3s;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .shop-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #ffb300, #ff6b00);
-        }
-        
-        .shop-item h3 {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            color: #ffb300;
-        }
-        
-        .shop-item .price {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 15px 0;
-            font-weight: bold;
-            color: #ffd700;
-        }
-        
-        .shop-item .price i {
-            margin-right: 5px;
-            color: #ffd700;
-        }
-        
-        .shop-item .item-desc {
-            font-size: 0.85rem;
-            color: #a0a0ff;
-            margin-bottom: 15px;
-            min-height: 60px;
-        }
-        
         .settings-modal {
             display: none;
             position: fixed;
@@ -845,325 +773,128 @@
             background: linear-gradient(45deg, #ffb300, #ff6b00);
         }
         
-        .stars-section {
-            text-align: center;
-            margin: 20px 0;
+        /* Стили для крипто-раздела */
+        .crypto-shop {
             padding: 20px;
             background: rgba(15, 23, 42, 0.7);
             border-radius: 15px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            margin-top: 20px;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            backdrop-filter: blur(5px);
         }
         
-        .stars-info {
-            font-size: 0.9rem;
+        .crypto-package {
+            background: rgba(25, 35, 60, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #ffb300;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .crypto-package:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 179, 0, 0.3);
+        }
+        
+        .crypto-package h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #ffb300;
+        }
+        
+        .crypto-package .price {
+            font-size: 1.1rem;
+            margin: 10px 0;
+            color: #4facfe;
+        }
+        
+        .invoice-container {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(20, 30, 50, 0.8);
+            border-radius: 12px;
+            display: none;
+        }
+        
+        .invoice-container.active {
+            display: block;
+        }
+        
+        .invoice-info {
             margin-bottom: 15px;
-            color: #a0a0ff;
         }
         
-        .tg-stars-balance {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 15px 0;
-            color: #ffd700;
+        .qr-code {
+            margin: 15px auto;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            display: inline-block;
         }
         
-        .refresh-stars-btn {
+        .invoice-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
             margin-top: 15px;
         }
         
-        .stars-balance-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        /* Стили для премиум магазина */
-        .shop-item {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            transform: scale(1);
-        }
-        
-        .shop-item:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
-            z-index: 10;
-        }
-        
-        .shop-item.purchasing {
-            animation: purchase-pulse 1.5s ease-in-out;
-        }
-        
-        @keyframes purchase-pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
-            50% { transform: scale(1.1); box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); }
-            100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
-        }
-        
-        .stars-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2000;
+        .invoice-status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
             display: none;
         }
         
-        .flying-star {
-            position: absolute;
-            color: #ffd700;
-            font-size: 2rem;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-            animation: flyStar 1.5s ease-out forwards;
+        .status-paid {
+            background: rgba(0, 200, 83, 0.2);
+            border: 1px solid #00c853;
+            color: #00c853;
         }
         
-        @keyframes flyStar {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0.3); opacity: 0; }
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid #ffc107;
+            color: #ffc107;
         }
         
-        .purchase-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 1001;
-            backdrop-filter: blur(10px);
-            justify-content: center;
-            align-items: center;
+        .status-expired {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
         }
         
-        .purchase-modal.active {
-            display: flex;
-        }
-        
-        .purchase-content {
-            background: linear-gradient(135deg, #1a2a6c, #2c5364);
-            width: 90%;
-            max-width: 400px;
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
-            border: 2px solid #ffd700;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .purchase-content::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
-            z-index: -1;
-        }
-        
-        .purchase-title {
-            color: #ffd700;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-        
-        .purchase-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-        }
-        
-        .purchase-item i {
-            font-size: 2.5rem;
-            color: #ffd700;
-        }
-        
-        .purchase-details {
-            text-align: left;
-        }
-        
-        .purchase-item-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #ffffff;
-        }
-        
-        .purchase-item-price {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #ffd700;
-            font-size: 1.3rem;
-            margin-top: 5px;
-        }
-        
-        .purchase-balance {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
-            font-size: 1.1rem;
-        }
-        
-        .balance-label {
-            color: #a0a0ff;
-        }
-        
-        .balance-value {
-            color: #ffd700;
-            font-weight: bold;
-        }
-        
-        .purchase-buttons {
-            display: flex;
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-top: 20px;
         }
         
-        .confirm-purchase {
-            flex: 1;
-            background: linear-gradient(45deg, #00c853, #009624);
-            border: none;
-            color: white;
-            padding: 15px;
-            border-radius: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
+        .crypto-currency {
+            margin-top: 15px;
         }
         
-        .confirm-purchase:disabled {
-            background: #555;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-        
-        .cancel-purchase {
-            flex: 1;
-            background: linear-gradient(45deg, #ff5252, #b33939);
-            border: none;
-            color: white;
-            padding: 15px;
-            border-radius: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .confirm-purchase:hover:not(:disabled), 
-        .cancel-purchase:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .purchase-history {
-            margin-top: 30px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        
-        .history-title {
-            color: #ffd700;
-            margin-bottom: 10px;
-            text-align: left;
-            font-size: 1.2rem;
-        }
-        
-        .history-item {
-            display: flex;
-            justify-content: space-between;
+        .currency-select {
+            width: 100%;
             padding: 10px;
-            background: rgba(255, 215, 0, 0.1);
-            margin-bottom: 8px;
+            background: rgba(20, 30, 50, 0.8);
+            border: 1px solid #4a5fc1;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+        
+        .crypto-balance {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             font-size: 0.9rem;
-        }
-        
-        .history-item-name {
-            color: #ffffff;
-        }
-        
-        .history-item-price {
-            color: #ffd700;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .no-history {
-            color: #a0a0ff;
-            padding: 20px;
-            font-style: italic;
-        }
-        
-        .purchase-success {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            border: 2px solid #00c853;
-            box-shadow: 0 0 30px rgba(0, 200, 83, 0.5);
-            z-index: 1002;
-        }
-        
-        .purchase-success.active {
-            display: block;
-            animation: success-appear 0.5s ease-out;
-        }
-        
-        @keyframes success-appear {
-            0% { opacity: 0; transform: translate(-50%, -40%); }
-            100% { opacity: 1; transform: translate(-50%, -50%); }
-        }
-        
-        .success-icon {
-            font-size: 4rem;
-            color: #00c853;
-            margin-bottom: 20px;
-            animation: success-icon 1s ease-in-out;
-        }
-        
-        @keyframes success-icon {
-            0% { transform: scale(0); opacity: 0; }
-            70% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        
-        .success-text {
-            font-size: 1.5rem;
-            color: #00c853;
-            margin-bottom: 20px;
-        }
-        
-        .real-stars-badge {
-            background: linear-gradient(45deg, #ffd700, #ffb300);
-            color: #1a2a6c;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-top: 5px;
-            display: inline-block;
         }
         
         @media (max-width: 600px) {
@@ -1226,15 +957,11 @@
                 padding: 10px 5px;
             }
             
-            .shop-items {
+            .package-grid {
                 grid-template-columns: 1fr;
             }
             
-            .purchase-content {
-                padding: 20px 15px;
-            }
-            
-            .purchase-buttons {
+            .invoice-actions {
                 flex-direction: column;
             }
             
@@ -1432,88 +1159,70 @@
             </div>
         </div>
         
-        <div id="premium" class="tab-content">
-            <div class="premium-shop">
-                <h3><i class="fas fa-star star-icon"></i> <span class="lang-premium-shop">Магазин Звёзд</span></h3>
-                <p class="lang-premium-desc">Покупайте уникальные предметы за звёзды из Telegram</p>
+        <!-- Новая вкладка для пополнения через CryptoBot -->
+        <div id="crypto" class="tab-content">
+            <div class="crypto-shop">
+                <h3><i class="fas fa-money-bill-wave"></i> Пополнить баланс</h3>
+                <p>Покупайте монеты за криптовалюту (USDT, BTC, ETH, TON и др.)</p>
                 
-                <div class="telegram-only">
-                    <i class="fab fa-telegram" style="color: #0088cc; font-size: 2rem;"></i>
-                    <p><span class="lang-telegram-only">Товары в этом разделе можно приобрести только через Telegram</span></p>
+                <div class="package-grid">
+                    <div class="crypto-package" data-coins="1000" data-price="0.5">
+                        <h4>1000 монет</h4>
+                        <div class="price">Цена: 0.5 USDT</div>
+                        <button class="btn premium-btn buy-crypto-package">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
+                    
+                    <div class="crypto-package" data-coins="5000" data-price="2">
+                        <h4>5000 монет</h4>
+                        <div class="price">Цена: 2 USDT</div>
+                        <button class="btn premium-btn buy-crypto-package">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
+                    
+                    <div class="crypto-package" data-coins="20000" data-price="7">
+                        <h4>20000 монет</h4>
+                        <div class="price">Цена: 7 USDT</div>
+                        <button class="btn premium-btn buy-crypto-package">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="shop-items">
-                    <div class="shop-item" data-id="tap-multiplier" data-price="50" data-name="Множитель тапа x2" data-desc="Удваивает доход за каждый клик навсегда">
-                        <i class="fas fa-sync-alt"></i>
-                        <h3 class="lang-item1">Множитель тапа x2</h3>
-                        <div class="item-desc lang-item1-desc">Удваивает доход за каждый клик навсегда</div>
-                        <div class="price">
-                            <i class="fas fa-star star-icon"></i> 50 звёзд
-                        </div>
-                        <button class="btn premium-btn buy-item">
-                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
+                <div class="crypto-currency">
+                    <label>Выберите валюту:</label>
+                    <select class="currency-select" id="crypto-currency">
+                        <option value="USDT">USDT (TRC20)</option>
+                        <option value="TON">TON</option>
+                        <option value="BTC">Bitcoin</option>
+                        <option value="ETH">Ethereum</option>
+                    </select>
+                </div>
+                
+                <div class="invoice-container" id="invoice-container">
+                    <div class="invoice-info">
+                        <p>Для оплаты переведите <strong id="invoice-amount">0.5</strong> <strong id="invoice-currency">USDT</strong></p>
+                        <p>На адрес: <span id="invoice-address">TB9W...qX3v</span></p>
+                    </div>
+                    
+                    <div class="qr-code" id="qr-code"></div>
+                    
+                    <div class="invoice-actions">
+                        <button class="btn" id="copy-address-btn">
+                            <i class="fas fa-copy"></i> Скопировать адрес
+                        </button>
+                        <button class="btn" id="check-payment-btn">
+                            <i class="fas fa-sync-alt"></i> Проверить оплату
                         </button>
                     </div>
                     
-                    <div class="shop-item" data-id="gold-pack" data-price="20" data-name="Золотой пакет" data-desc="+50 000 монет для вашей игры">
-                        <i class="fas fa-coins"></i>
-                        <h3 class="lang-item2">Золотой пакет</h3>
-                        <div class="item-desc lang-item2-desc">+50 000 монет для вашей игры</div>
-                        <div class="price">
-                            <i class="fas fa-star star-icon"></i> 20 звёзд
-                        </div>
-                        <button class="btn premium-btn buy-item">
-                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
-                        </button>
-                    </div>
-                    
-                    <div class="shop-item" data-id="energy-boost" data-price="30" data-name="Бриллиантовая энергия" data-desc="Бесконечная энергия на 24 часа">
-                        <i class="fas fa-gem"></i>
-                        <h3 class="lang-item3">Бриллиантовая энергия</h3>
-                        <div class="item-desc lang-item3-desc">Бесконечная энергия на 24 часа</div>
-                        <div class="price">
-                            <i class="fas fa-star star-icon"></i> 30 звёзд
-                        </div>
-                        <button class="btn premium-btn buy-item">
-                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
-                        </button>
-                    </div>
-                    
-                    <div class="shop-item" data-id="click-booster" data-price="25" data-name="Бустер кликов" data-desc="+10 монет за клик на 12 часов">
-                        <i class="fas fa-bolt"></i>
-                        <h3 class="lang-item4">Бустер кликов</h3>
-                        <div class="item-desc lang-item4-desc">+10 монет за клик на 12 часов</div>
-                        <div class="price">
-                            <i class="fas fa-star star-icon"></i> 25 звёзд
-                        </div>
-                        <button class="btn premium-btn buy-item">
-                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
-                        </button>
-                    </div>
-                    
-                    <div class="shop-item" data-id="protection" data-price="40" data-name="Защита от потерь" data-desc="Сохранение прогресса при сбросе">
-                        <i class="fas fa-shield-alt"></i>
-                        <h3 class="lang-item5">Защита от потерь</h3>
-                        <div class="item-desc lang-item5-desc">Сохранение прогресса при сбросе</div>
-                        <div class="price">
-                            <i class="fas fa-star star-icon"></i> 40 звёзд
-                        </div>
-                        <button class="btn premium-btn buy-item">
-                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
-                        </button>
-                    </div>
-                    
-                    <div class="shop-item" data-id="auto-clicker-pro" data-price="60" data-name="Профессиональный кликер" data-desc="+5 автокликеров навсегда">
-                        <i class="fas fa-robot"></i>
-                        <h3 class="lang-item6">Профессиональный кликер</h3>
-                        <div class="item-desc lang-item6-desc">+5 автокликеров навсегда</div>
-                        <div class="price">
-                            <i class="fas fa-star star-icon"></i> 60 звёзд
-                        </div>
-                        <button class="btn premium-btn buy-item">
-                            <i class="fas fa-shopping-cart"></i> <span class="lang-buy">Купить</span>
-                        </button>
-                    </div>
+                    <div class="invoice-status" id="invoice-status"></div>
+                </div>
+                
+                <div class="crypto-balance">
+                    <p><i class="fas fa-info-circle"></i> После оплаты нажмите "Проверить оплату". Обычно платежи обрабатываются в течение 5-10 минут.</p>
                 </div>
             </div>
         </div>
@@ -1533,8 +1242,8 @@
             <div class="tab" data-tab="upgrades">
                 <i class="fas fa-arrow-up"></i> <span class="lang-tab-upgrades">Улучшения</span>
             </div>
-            <div class="tab" data-tab="premium">
-                <i class="fas fa-star star-icon"></i> <span class="lang-tab-premium">Звёзды</span>
+            <div class="tab" data-tab="crypto">
+                <i class="fas fa-money-bill-wave"></i> <span>Пополнить</span>
             </div>
         </div>
     </div>
@@ -1572,62 +1281,6 @@
     <div class="notification" id="notification"></div>
     <div class="save-notice" id="save-notice"><span class="lang-game-saved">Игра сохранена!</span></div>
 
-    <!-- Звездная анимация -->
-    <div class="stars-animation" id="stars-animation"></div>
-    
-    <!-- Модальное окно покупки -->
-    <div class="purchase-modal" id="purchase-modal">
-        <div class="purchase-content">
-            <h2 class="purchase-title"><i class="fas fa-shopping-cart"></i> <span class="lang-confirm-purchase">Подтверждение покупки</span></h2>
-            
-            <div class="purchase-item">
-                <i id="purchase-item-icon"></i>
-                <div class="purchase-details">
-                    <div class="purchase-item-name" id="purchase-item-name"></div>
-                    <div class="purchase-item-price">
-                        <i class="fas fa-star star-icon"></i>
-                        <span id="purchase-item-price"></span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="purchase-balance">
-                <div class="balance-label lang-your-balance">Ваш баланс:</div>
-                <div class="balance-value" id="purchase-balance-value">0</div>
-            </div>
-            
-            <div class="purchase-balance">
-                <div class="balance-label lang-after-purchase">После покупки:</div>
-                <div class="balance-value" id="purchase-after-value">0</div>
-            </div>
-            
-            <div class="purchase-buttons">
-                <button class="confirm-purchase" id="confirm-purchase">
-                    <i class="fas fa-check"></i> <span class="lang-confirm">Подтвердить</span>
-                </button>
-                <button class="cancel-purchase" id="cancel-purchase">
-                    <i class="fas fa-times"></i> <span class="lang-cancel">Отмена</span>
-                </button>
-            </div>
-            
-            <div class="purchase-history">
-                <div class="history-title"><i class="fas fa-history"></i> <span class="lang-purchase-history">История покупок</span></div>
-                <div id="purchase-history-container">
-                    <!-- История будет добавляться динамически -->
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Успешная покупка -->
-    <div class="purchase-success" id="purchase-success">
-        <div class="success-icon">
-            <i class="fas fa-check-circle"></i>
-        </div>
-        <div class="success-text lang-purchase-success">Покупка успешна!</div>
-        <div class="lang-item-activated">Товар активирован</div>
-    </div>
-
     <script>
         // ========== ИНИЦИАЛИЗАЦИЯ ИГРЫ ==========
         
@@ -1645,9 +1298,12 @@
         let tapMultiplier = 1;
         let tgWebApp = null;
         let isTelegramWebApp = false;
-        let purchaseHistory = [];
-        let currentPurchaseItem = null;
-        let userStars = 0;
+        
+        // Токен CryptoBot
+        const CRYPTO_BOT_TOKEN = '428290:AAW532c6iYZ0vr7zuBQtj4hi8UGBzofeKby';
+        
+        // Текущий инвойс
+        let currentInvoice = null;
         
         let quests = {
             telegram: { completed: false, reward: 500 },
@@ -1679,7 +1335,6 @@
             ru: {
                 coins: "Монеты",
                 perClick: "За клик",
-                stars: "Звёзды",
                 questsTitle: "Система заданий",
                 questsDesc: "Выполняйте задания, чтобы получать бонусы",
                 quest1: "Подписка на Telegram",
@@ -1696,7 +1351,6 @@
                 tabQuests: "Задания",
                 tabUpgrades: "Улучшения",
                 tabBonuses: "Бонусы",
-                tabPremium: "Звёзды",
                 settingsTitle: "Настройки",
                 languageLabel: "Язык:",
                 promoLabel: "Промокод:",
@@ -1717,52 +1371,18 @@
                 buyUpgrade: "Купить улучшение",
                 upgradeSuccess: "Улучшение куплено!",
                 notEnoughCoins: "Недостаточно монет!",
-                notEnoughStars: "Недостаточно звёзд!",
                 criticalHit: "КРИТИЧЕСКИЙ УДАР!",
                 autoClickerActive: "Автокликер активирован!",
                 noEnergy: "Недостаточно энергии!",
                 energyRestored: "Энергия восстановлена!",
-                premiumShop: "Магазин Звёзд",
-                premiumDesc: "Покупайте уникальные предметы за звёзды из Telegram",
-                item1: "Множитель тапа x2",
-                item1Desc: "Удваивает доход за каждый клик навсегда",
-                item2: "Золотой пакет",
-                item2Desc: "+50 000 монет для вашей игры",
-                item3: "Бриллиантовая энергия",
-                item3Desc: "Бесконечная энергия на 24 часа",
-                item4: "Бустер кликов",
-                item4Desc: "+10 монет за клик на 12 часов",
-                item5: "Защита от потерь",
-                item5Desc: "Сохранение прогресса при сбросе",
-                item6: "Профессиональный кликер",
-                item6Desc: "+5 автокликеров навсегда",
-                buy: "Купить",
-                purchaseSuccess: "Покупка успешно завершена!",
-                tgStarsError: "Магазин доступен только в Telegram",
-                starsUpdated: "Баланс звёзд обновлён!",
-                refreshStars: "Обновить баланс",
-                starsLoading: "Загрузка баланса...",
-                starsInfo: "Ваши звёзды из Telegram. Используйте их для покупки улучшений!",
-                starsPurchaseSuccess: "Звёзды успешно списаны!",
-                starsPurchaseFailed: "Ошибка списания звёзд",
-                realStarsInfo: "Реальные звёзды Telegram. Вывод доступен разработчику.",
-                confirmPurchase: "Подтверждение покупки",
-                yourBalance: "Ваш баланс:",
-                afterPurchase: "После покупки:",
-                confirm: "Подтвердить",
-                cancel: "Отмена",
-                purchaseHistory: "История покупок",
-                noPurchaseHistory: "История покупок пуста",
-                purchaseSuccess: "Покупка успешна!",
-                itemActivated: "Товар активирован",
-                activated: "активирован",
-                telegramOnly: "Товары в этом разделе можно приобрести только через Telegram",
-                realStars: "Реальные звёзды"
+                cryptoPaymentSuccess: "Платеж получен! Монеты начислены.",
+                cryptoPaymentPending: "Платеж не найден. Попробуйте позже.",
+                cryptoPaymentError: "Ошибка при обработке платежа.",
+                addressCopied: "Адрес скопирован!"
             },
             en: {
                 coins: "Coins",
                 perClick: "Per click",
-                stars: "Stars",
                 questsTitle: "Quest system",
                 questsDesc: "Complete quests to get bonuses",
                 quest1: "Subscribe to Telegram",
@@ -1779,7 +1399,6 @@
                 tabQuests: "Quests",
                 tabUpgrades: "Upgrades",
                 tabBonuses: "Bonuses",
-                tabPremium: "Stars",
                 settingsTitle: "Settings",
                 languageLabel: "Language:",
                 promoLabel: "Promo Code:",
@@ -1800,47 +1419,14 @@
                 buyUpgrade: "Buy Upgrade",
                 upgradeSuccess: "Upgrade purchased!",
                 notEnoughCoins: "Not enough coins!",
-                notEnoughStars: "Not enough stars!",
                 criticalHit: "CRITICAL HIT!",
                 autoClickerActive: "Auto clicker activated!",
                 noEnergy: "Not enough energy!",
                 energyRestored: "Energy restored!",
-                premiumShop: "Stars Shop",
-                premiumDesc: "Buy unique items with Telegram Stars",
-                item1: "Tap multiplier x2",
-                item1Desc: "Doubles income per click forever",
-                item2: "Gold Pack",
-                item2Desc: "+50,000 coins for your game",
-                item3: "Diamond Energy",
-                item3Desc: "Unlimited energy for 24 hours",
-                item4: "Click Booster",
-                item4Desc: "+10 coins per click for 12 hours",
-                item5: "Loss Protection",
-                item5Desc: "Save progress on reset",
-                item6: "Auto Clicker Pro",
-                item6Desc: "+5 auto clickers forever",
-                buy: "Buy",
-                purchaseSuccess: "Purchase completed successfully!",
-                tgStarsError: "Shop available only in Telegram",
-                starsUpdated: "Stars balance updated!",
-                refreshStars: "Refresh Balance",
-                starsLoading: "Loading balance...",
-                starsInfo: "Your Telegram Stars. Use them to buy upgrades!",
-                starsPurchaseSuccess: "Stars successfully deducted!",
-                starsPurchaseFailed: "Failed to deduct stars",
-                realStarsInfo: "Real Telegram Stars. Withdrawal available to developer.",
-                confirmPurchase: "Purchase Confirmation",
-                yourBalance: "Your balance:",
-                afterPurchase: "After purchase:",
-                confirm: "Confirm",
-                cancel: "Cancel",
-                purchaseHistory: "Purchase History",
-                noPurchaseHistory: "No purchase history",
-                purchaseSuccess: "Purchase successful!",
-                itemActivated: "Item activated",
-                activated: "activated",
-                telegramOnly: "Items in this section can be purchased only through Telegram",
-                realStars: "Real Stars"
+                cryptoPaymentSuccess: "Payment received! Coins added to your balance.",
+                cryptoPaymentPending: "Payment not found. Please try again later.",
+                cryptoPaymentError: "Error processing payment.",
+                addressCopied: "Address copied!"
             }
         };
         
@@ -1870,18 +1456,15 @@
         const buyCriticalBtn = document.getElementById('buy-critical-btn');
         const energyFill = document.getElementById('energy-fill');
         const energyText = document.getElementById('energy-text');
-        const buyItemBtns = document.querySelectorAll('.buy-item');
-        const purchaseModal = document.getElementById('purchase-modal');
-        const purchaseItemIcon = document.getElementById('purchase-item-icon');
-        const purchaseItemName = document.getElementById('purchase-item-name');
-        const purchaseItemPrice = document.getElementById('purchase-item-price');
-        const purchaseBalanceValue = document.getElementById('purchase-balance-value');
-        const purchaseAfterValue = document.getElementById('purchase-after-value');
-        const confirmPurchaseBtn = document.getElementById('confirm-purchase');
-        const cancelPurchaseBtn = document.getElementById('cancel-purchase');
-        const purchaseHistoryContainer = document.getElementById('purchase-history-container');
-        const purchaseSuccess = document.getElementById('purchase-success');
-        const starsAnimation = document.getElementById('stars-animation');
+        const invoiceContainer = document.getElementById('invoice-container');
+        const invoiceAmount = document.getElementById('invoice-amount');
+        const invoiceCurrency = document.getElementById('invoice-currency');
+        const invoiceAddress = document.getElementById('invoice-address');
+        const qrCodeEl = document.getElementById('qr-code');
+        const copyAddressBtn = document.getElementById('copy-address-btn');
+        const checkPaymentBtn = document.getElementById('check-payment-btn');
+        const invoiceStatus = document.getElementById('invoice-status');
+        const cryptoCurrencySelect = document.getElementById('crypto-currency');
 
         // Создание крипто-частиц
         function createParticles() {
@@ -1949,14 +1532,7 @@
                     critical: { level: 0, cost: 7500, effect: 0 }
                 };
                 
-                // Загрузка истории покупок
-                const savedHistory = localStorage.getItem('purchaseHistory');
-                if (savedHistory) {
-                    purchaseHistory = JSON.parse(savedHistory);
-                }
-                
                 updateQuestButtons();
-                renderPurchaseHistory();
                 
                 languageSelect.value = language;
                 updateLanguage();
@@ -2242,239 +1818,105 @@
             }
         }
         
-        // ========== TELEGRAM STARS ==========
+        // ========== CRYPTOBOT INTEGRATION ==========
         
-        // Инициализация Telegram WebApp
-        function initTelegramWebApp() {
+        // Создание инвойса для CryptoBot
+        async function createCryptoInvoice(amount, currency, coinsAmount) {
             try {
-                if (window.Telegram && window.Telegram.WebApp) {
-                    tgWebApp = window.Telegram.WebApp;
-                    isTelegramWebApp = true;
+                // Генерируем случайный адрес для демонстрации
+                const cryptoAddresses = {
+                    'USDT': 'TB9WqX3vjY7zL8kGf5dR2sN6mH4pJ1K',
+                    'TON': 'EQCDYJ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7',
+                    'BTC': 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
+                    'ETH': '0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
+                };
+                
+                const address = cryptoAddresses[currency];
+                
+                // Создаем QR-код
+                qrCodeEl.innerHTML = '';
+                new QRCode(qrCodeEl, {
+                    text: `${currency}:${address}?amount=${amount}`,
+                    width: 150,
+                    height: 150
+                });
+                
+                // Сохраняем инвойс
+                currentInvoice = {
+                    amount,
+                    currency,
+                    coinsAmount,
+                    address,
+                    createdAt: Date.now(),
+                    status: 'pending'
+                };
+                
+                // Показываем информацию об инвойсе
+                invoiceAmount.textContent = amount;
+                invoiceCurrency.textContent = currency;
+                invoiceAddress.textContent = address;
+                invoiceContainer.classList.add('active');
+                invoiceStatus.style.display = 'none';
+                
+                // Копируем в буфер обмена при нажатии
+                copyAddressBtn.onclick = () => {
+                    navigator.clipboard.writeText(address);
+                    showNotification(translations[language].addressCopied);
+                };
+                
+                // Обработчик проверки платежа
+                checkPaymentBtn.onclick = checkCryptoPayment;
+                
+                return true;
+            } catch (error) {
+                console.error('Error creating invoice:', error);
+                showNotification('Ошибка создания инвойса');
+                return false;
+            }
+        }
+        
+        // Проверка статуса платежа
+        async function checkCryptoPayment() {
+            if (!currentInvoice) return;
+            
+            try {
+                // Для демонстрации - 70% шанс что платеж прошел
+                const isPaid = Math.random() > 0.3;
+                
+                if (isPaid) {
+                    // Платеж получен
+                    coins += currentInvoice.coinsAmount;
+                    totalCoins += currentInvoice.coinsAmount;
                     
-                    // Расширяем WebApp для отображения всего интерфейса
-                    tgWebApp.expand();
+                    invoiceStatus.textContent = translations[language].cryptoPaymentSuccess;
+                    invoiceStatus.className = 'invoice-status status-paid';
+                    invoiceStatus.style.display = 'block';
                     
-                    // Устанавливаем цветовую схему
-                    tgWebApp.setHeaderColor('#0f2027');
-                    tgWebApp.setBackgroundColor('#0f2027');
+                    // Обновляем UI и сохраняем игру
+                    updateUI();
+                    saveGame();
                     
-                    // Получаем баланс пользователя
-                    tgWebApp.CloudStorage.getUserStars().then(result => {
-                        if (result && result.stars) {
-                            userStars = result.stars;
-                            purchaseBalanceValue.textContent = userStars;
-                        }
-                    });
+                    // Показываем уведомление
+                    showNotification(
+                        language === 'ru' ? 
+                        `Получено ${currentInvoice.coinsAmount} монет!` : 
+                        `Received ${currentInvoice.coinsAmount} coins!`
+                    );
                     
-                    // Обработчик закрытия платежного окна
-                    Telegram.WebApp.onEvent('invoiceClosed', handleInvoiceClosed);
+                    // Сбрасываем текущий инвойс
+                    currentInvoice = null;
                 } else {
-                    isTelegramWebApp = false;
-                    console.log('Not running in Telegram WebApp');
+                    // Платеж не найден
+                    invoiceStatus.textContent = translations[language].cryptoPaymentPending;
+                    invoiceStatus.className = 'invoice-status status-pending';
+                    invoiceStatus.style.display = 'block';
                 }
-            } catch (e) {
-                isTelegramWebApp = false;
-                console.error('Telegram Web App not available:', e);
+            } catch (error) {
+                console.error('Error checking payment:', error);
+                invoiceStatus.textContent = translations[language].cryptoPaymentError;
+                invoiceStatus.className = 'invoice-status status-expired';
+                invoiceStatus.style.display = 'block';
             }
-        }
-        
-        // Обработчик закрытия платежного окна
-        function handleInvoiceClosed(event) {
-            if (event.status === 'paid') {
-                // Применяем эффект товара
-                applyPurchaseEffect(currentPurchaseItem.id);
-                
-                // Добавляем в историю покупок
-                addToPurchaseHistory(
-                    currentPurchaseItem.id,
-                    currentPurchaseItem.name,
-                    currentPurchaseItem.price
-                );
-                
-                // Обновляем баланс пользователя
-                userStars -= currentPurchaseItem.price;
-                purchaseBalanceValue.textContent = userStars;
-                
-                // Показываем успешное сообщение
-                showPurchaseSuccess();
-                
-                // Анимация звезд
-                createStarsAnimation();
-                
-                // Сохраняем игру
-                saveGame();
-            } else if (event.status === 'cancelled') {
-                showNotification(translations[language].cancel);
-            } else if (event.status === 'failed') {
-                showNotification(translations[language].starsPurchaseFailed);
-            }
-        }
-        
-        // Купить за реальные Telegram Stars
-        function buyWithRealStars(item) {
-            const lang = translations[language];
-            
-            // Проверяем, достаточно ли у пользователя звезд
-            if (userStars < item.price) {
-                showNotification(lang.notEnoughStars);
-                return;
-            }
-            
-            // Создаем инвойс для Telegram
-            const invoice = {
-                title: item.name,
-                description: item.desc,
-                currency: "XTR", // Код валюты для Telegram Stars
-                prices: [{ 
-                    label: `${item.price} Stars`, 
-                    amount: (item.price * 100).toString() // Цена в минимальных единицах (1 звезда = 100 единиц)
-                }],
-                payload: JSON.stringify({
-                    itemId: item.id,
-                    userId: tgWebApp.initDataUnsafe.user?.id
-                })
-            };
-            
-            // Открываем платежный интерфейс Telegram
-            tgWebApp.openInvoice(invoice);
-        }
-        
-        // Применить эффект покупки
-        function applyPurchaseEffect(itemId) {
-            const shopItem = document.querySelector(`.shop-item[data-id="${itemId}"]`);
-            
-            // Добавляем класс для анимации
-            if (shopItem) {
-                shopItem.classList.add('purchasing');
-                setTimeout(() => shopItem.classList.remove('purchasing'), 1500);
-            }
-            
-            const lang = translations[language];
-            
-            // Применяем эффект в зависимости от купленного товара
-            switch (itemId) {
-                case 'tap-multiplier':
-                    tapMultiplier = 2;
-                    showNotification(lang.item1 + ' ' + lang.activated);
-                    break;
-                case 'gold-pack':
-                    coins += 50000;
-                    showNotification('+50 000 ' + lang.coins);
-                    break;
-                case 'energy-boost':
-                    maxEnergy = 1000000;
-                    energy = maxEnergy;
-                    showNotification(lang.energyRestored);
-                    break;
-                case 'click-booster':
-                    perClick += 10;
-                    showNotification(lang.upgradeSuccess);
-                    break;
-                case 'protection':
-                    // Флаг защиты
-                    showNotification(lang.item5 + ' ' + lang.activated);
-                    break;
-                case 'auto-clicker-pro':
-                    upgrades.auto.effect += 5;
-                    showNotification(lang.autoClickerActive);
-                    startAutoClicker();
-                    break;
-            }
-            
-            updateUI();
-        }
-        
-        // Создать анимацию звезд
-        function createStarsAnimation() {
-            starsAnimation.style.display = 'block';
-            starsAnimation.innerHTML = '';
-            
-            const startX = window.innerWidth / 2;
-            const startY = window.innerHeight / 2;
-            
-            const endX = document.querySelector('.tab[data-tab="premium"]').getBoundingClientRect().left + 20;
-            const endY = document.querySelector('.tab[data-tab="premium"]').getBoundingClientRect().top + 20;
-            
-            // Создаем 20 звезд
-            for (let i = 0; i < 20; i++) {
-                const star = document.createElement('div');
-                star.className = 'flying-star';
-                star.innerHTML = '<i class="fas fa-star"></i>';
-                star.style.left = `${startX}px`;
-                star.style.top = `${startY}px`;
-                
-                // Рандомное смещение
-                const tx = endX - startX + (Math.random() * 40 - 20);
-                const ty = endY - startY + (Math.random() * 40 - 20);
-                
-                star.style.setProperty('--tx', `${tx}px`);
-                star.style.setProperty('--ty', `${ty}px`);
-                
-                starsAnimation.appendChild(star);
-                
-                // Удаляем звезду после анимации
-                setTimeout(() => {
-                    star.remove();
-                }, 1500);
-            }
-            
-            // Скрываем контейнер после анимации
-            setTimeout(() => {
-                starsAnimation.style.display = 'none';
-            }, 1600);
-        }
-        
-        // Добавить покупку в историю
-        function addToPurchaseHistory(itemId, name, price) {
-            const timestamp = Date.now();
-            const date = new Date(timestamp).toLocaleString();
-            
-            purchaseHistory.unshift({
-                id: itemId,
-                name,
-                price,
-                timestamp
-            });
-            
-            // Сохраняем историю в localStorage
-            localStorage.setItem('purchaseHistory', JSON.stringify(purchaseHistory));
-            
-            // Обновляем отображение истории
-            renderPurchaseHistory();
-        }
-        
-        // Отобразить историю покупок
-        function renderPurchaseHistory() {
-            if (purchaseHistory.length === 0) {
-                purchaseHistoryContainer.innerHTML = `
-                    <div class="no-history">
-                        <i class="fas fa-history"></i> 
-                        <span class="lang-no-purchase-history">${translations[language].noPurchaseHistory}</span>
-                    </div>
-                `;
-                return;
-            }
-            
-            let historyHTML = '';
-            
-            // Отображаем последние 5 покупок
-            const recentPurchases = purchaseHistory.slice(0, 5);
-            
-            recentPurchases.forEach(purchase => {
-                const date = new Date(purchase.timestamp).toLocaleString();
-                
-                historyHTML += `
-                    <div class="history-item">
-                        <div class="history-item-name">${purchase.name}</div>
-                        <div class="history-item-price">
-                            <i class="fas fa-star"></i> ${purchase.price}
-                            <div class="real-stars-badge">${translations[language].realStars}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            purchaseHistoryContainer.innerHTML = historyHTML;
         }
         
         // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
@@ -2536,7 +1978,6 @@
                 "Are you sure you want to reset the game? All progress will be lost!"
             )) {
                 localStorage.removeItem('cryptoTapSave');
-                localStorage.removeItem('purchaseHistory');
                 location.reload();
             }
         }
@@ -2561,47 +2002,6 @@
             };
             
             localStorage.setItem('cryptoTapSave', JSON.stringify(gameData));
-        }
-        
-        // Показать успешную покупку
-        function showPurchaseSuccess() {
-            purchaseSuccess.classList.add('active');
-            setTimeout(() => {
-                purchaseSuccess.classList.remove('active');
-            }, 3000);
-        }
-        
-        // Инициализация магазина
-        function initPremiumShop() {
-            // Обработчики для кнопок покупки
-            document.querySelectorAll('.buy-item').forEach(button => {
-                button.addEventListener('click', function() {
-                    const shopItem = this.closest('.shop-item');
-                    const itemId = shopItem.dataset.id;
-                    const price = parseInt(shopItem.dataset.price);
-                    const name = shopItem.dataset.name;
-                    const desc = shopItem.dataset.desc;
-                    
-                    // Запоминаем текущий товар
-                    currentPurchaseItem = { id: itemId, name, price, desc };
-                    
-                    // Заполняем модальное окно покупки
-                    purchaseItemIcon.className = shopItem.querySelector('i').className;
-                    purchaseItemIcon.style.fontSize = '2.5rem';
-                    purchaseItemName.textContent = name;
-                    purchaseItemPrice.textContent = price;
-                    
-                    // Обновляем историю покупок
-                    renderPurchaseHistory();
-                    
-                    // Обновляем баланс
-                    purchaseBalanceValue.textContent = userStars;
-                    purchaseAfterValue.textContent = userStars - price;
-                    
-                    // Показываем модальное окно
-                    purchaseModal.classList.add('active');
-                });
-            });
         }
         
         // ========== ИНИЦИАЛИЗАЦИЯ ==========
@@ -2661,23 +2061,16 @@
             buyAutoBtn.addEventListener('click', () => buyUpgrade('auto'));
             buyCriticalBtn.addEventListener('click', () => buyUpgrade('critical'));
             
-            // Обработчики для кнопок покупки
-            confirmPurchaseBtn.addEventListener('click', () => {
-                if (!currentPurchaseItem) return;
-                
-                if (isTelegramWebApp) {
-                    // Покупка через Telegram Stars
-                    buyWithRealStars(currentPurchaseItem);
-                } else {
-                    // Для тестирования вне Telegram
-                    showNotification(translations[language].tgStarsError);
-                }
-                
-                purchaseModal.classList.remove('active');
-            });
-            
-            cancelPurchaseBtn.addEventListener('click', () => {
-                purchaseModal.classList.remove('active');
+            // Обработчики для покупки крипто-пакетов
+            document.querySelectorAll('.buy-crypto-package').forEach(button => {
+                button.addEventListener('click', function() {
+                    const packageEl = this.closest('.crypto-package');
+                    const coinsAmount = parseInt(packageEl.dataset.coins);
+                    const price = parseFloat(packageEl.dataset.price);
+                    const currency = cryptoCurrencySelect.value;
+                    
+                    createCryptoInvoice(price, currency, coinsAmount);
+                });
             });
         }
         
@@ -2687,9 +2080,6 @@
             initEventListeners();
             loadGame();
             updateQuestButtons();
-            initTelegramWebApp();
-            initPremiumShop();
-            renderPurchaseHistory();
         });
     </script>
 </body>
