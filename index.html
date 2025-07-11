@@ -249,6 +249,10 @@
             margin-top: 5px;
         }
         
+        .energy-value {
+            font-size: 1.3rem;
+        }
+        
         #coin-container {
             position: relative;
             width: 260px;
@@ -985,6 +989,14 @@
                 padding: 8px;
             }
             
+            .stat-value {
+                font-size: 1.3rem;
+            }
+            
+            .energy-value {
+                font-size: 1.1rem;
+            }
+            
             h1 {
                 font-size: 1.5rem;
             }
@@ -1044,13 +1056,13 @@
         }
         
         @media (max-width: 480px) {
-            .tab span {
-                display: none;
+            .tab {
+                font-size: 0.7rem;
             }
             
             .tab i {
-                font-size: 1.5rem;
-                margin-bottom: 0;
+                font-size: 1.2rem;
+                margin-bottom: 3px;
             }
             
             .stat-card {
@@ -1060,7 +1072,11 @@
             }
             
             .stat-value {
-                font-size: 1.3rem;
+                font-size: 1.1rem;
+            }
+            
+            .energy-value {
+                font-size: 1.0rem;
             }
         }
     </style>
@@ -1094,7 +1110,7 @@
             </div>
             <div class="stat-card">
                 <div><i class="fas fa-bolt"></i> <span class="lang-energy">Энергия</span></div>
-                <div class="stat-value" id="energy">1000/1000</div>
+                <div class="energy-value" id="energy">1к/1к</div>
             </div>
         </div>
         
@@ -1140,6 +1156,94 @@
                             <i class="fas fa-coins"></i> <span>+1000 монет</span>
                         </div>
                     </div>
+                    <div class="card" id="use-energy-quest">
+                        <i class="fas fa-battery-empty"></i>
+                        <h3>Использовать всю энергию</h3>
+                        <p>Используйте всю энергию до 0</p>
+                        <button class="btn" id="use-energy-btn">
+                            <i class="fas fa-check"></i> Выполнить
+                        </button>
+                        <div class="reward">
+                            <i class="fas fa-coins"></i> <span>+500 монет</span>
+                        </div>
+                    </div>
+                    <div class="card" id="clicks-quest">
+                        <i class="fas fa-hand-pointer"></i>
+                        <h3>100 кликов</h3>
+                        <p>Сделайте 100 кликов по монете</p>
+                        <button class="btn" id="clicks-btn">
+                            <i class="fas fa-check"></i> Выполнить
+                        </button>
+                        <div class="reward">
+                            <i class="fas fa-coins"></i> <span>+200 монет</span>
+                        </div>
+                    </div>
+                    <div class="card" id="coins-quest">
+                        <i class="fas fa-coins"></i>
+                        <h3>Заработать 1000 монет</h3>
+                        <p>Заработайте 1000 монет</p>
+                        <button class="btn" id="coins-btn">
+                            <i class="fas fa-check"></i> Выполнить
+                        </button>
+                        <div class="reward">
+                            <i class="fas fa-coins"></i> <span>+300 монет</span>
+                        </div>
+                    </div>
+                    <div class="card" id="upgrade-quest">
+                        <i class="fas fa-arrow-up"></i>
+                        <h3>Купить улучшение</h3>
+                        <p>Приобретите любое улучшение</p>
+                        <button class="btn" id="upgrade-btn">
+                            <i class="fas fa-check"></i> Выполнить
+                        </button>
+                        <div class="reward">
+                            <i class="fas fa-coins"></i> <span>+500 монет</span>
+                        </div>
+                    </div>
+                    <div class="card" id="auto-quest">
+                        <i class="fas fa-robot"></i>
+                        <h3>Купить автокликер</h3>
+                        <p>Приобретите автокликер</p>
+                        <button class="btn" id="auto-btn">
+                            <i class="fas fa-check"></i> Выполнить
+                        </button>
+                        <div class="reward">
+                            <i class="fas fa-coins"></i> <span>+1000 монет</span>
+                        </div>
+                    </div>
+                    <div class="card" id="critical-quest">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Сделать критический удар</h3>
+                        <p>Сделайте критический удар</p>
+                        <button class="btn" id="critical-btn">
+                            <i class="fas fa-check"></i> Выполнить
+                        </button>
+                        <div class="reward">
+                            <i class="fas fa-coins"></i> <span>+200 монет</span>
+                        </div>
+                    </div>
+                    <div class="card" id="daily-quest">
+                        <i class="fas fa-gift"></i>
+                        <h3>Получить ежедневную награду</h3>
+                        <p>Получите ежедневную награду</p>
+                        <button class="btn" id="daily-quest-btn">
+                            <i class="fas fa-check"></i> Выполнить
+                        </button>
+                        <div class="reward">
+                            <i class="fas fa-coins"></i> <span>+300 монет</span>
+                        </div>
+                    </div>
+                    <div class="card" id="crypto-quest">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h3>Купить криптовалюту</h3>
+                        <p>Совершите покупку за криптовалюту</p>
+                        <button class="btn" id="crypto-btn">
+                            <i class="fas fa-check"></i> Выполнить
+                        </button>
+                        <div class="reward">
+                            <i class="fas fa-coins"></i> <span>+1000 монет</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1152,22 +1256,27 @@
                     <div class="reward-day" id="day1">
                         <i class="fas fa-coins"></i>
                         <div class="reward-amount">100</div>
+                        <div class="day-label">День 1</div>
                     </div>
                     <div class="reward-day" id="day2">
                         <i class="fas fa-coins"></i>
                         <div class="reward-amount">250</div>
+                        <div class="day-label">День 2</div>
                     </div>
                     <div class="reward-day" id="day3">
                         <i class="fas fa-coins"></i>
                         <div class="reward-amount">500</div>
+                        <div class="day-label">День 3</div>
                     </div>
                     <div class="reward-day" id="day4">
                         <i class="fas fa-coins"></i>
                         <div class="reward-amount">1000</div>
+                        <div class="day-label">День 4</div>
                     </div>
                     <div class="reward-day" id="day5">
                         <i class="fas fa-coins"></i>
                         <div class="reward-amount">2000</div>
+                        <div class="day-label">День 5</div>
                     </div>
                 </div>
                 <p id="daily-status" class="lang-daily-available">Сегодняшняя награда доступна!</p>
@@ -1227,6 +1336,42 @@
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy-upgrade">Купить улучшение</span>
                         </button>
                     </div>
+                    
+                    <div class="card" id="infinite-energy">
+                        <i class="fas fa-infinity"></i>
+                        <h3>Бесконечная энергия (1 день)</h3>
+                        <p>Энергия не тратится в течение 24 часов</p>
+                        <div class="reward">
+                            <i class="fas fa-coins"></i> <span>5000</span> монет
+                        </div>
+                        <button class="btn shop-btn" id="buy-infinite-energy">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
+                    
+                    <div class="card" id="double-click">
+                        <i class="fas fa-mouse"></i>
+                        <h3>Удвоитель кликов (1 час)</h3>
+                        <p>Удваивает количество монет за клик</p>
+                        <div class="reward">
+                            <i class="fas fa-coins"></i> <span>2000</span> монет
+                        </div>
+                        <button class="btn shop-btn" id="buy-double-click">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
+                    
+                    <div class="card" id="energy-boost">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Увеличение энергии</h3>
+                        <p>Увеличивает максимальный запас энергии</p>
+                        <div class="reward">
+                            <i class="fas fa-coins"></i> <span>3000</span> монет
+                        </div>
+                        <button class="btn shop-btn" id="buy-energy-boost">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1239,40 +1384,51 @@
                 <div class="package-grid">
                     <div class="card">
                         <h4>1000 монет</h4>
-                        <div class="price">Цена: 0.5 USDT</div>
-                        <button class="btn premium-btn buy-crypto-package" data-coins="1000" data-price="0.5">
+                        <div class="price">Цена: 0.3 USDT</div>
+                        <button class="btn premium-btn buy-crypto-package" data-coins="1000" data-price="0.3">
                             <i class="fas fa-shopping-cart"></i> Купить
                         </button>
                     </div>
                     
                     <div class="card">
                         <h4>5000 монет</h4>
-                        <div class="price">Цена: 2 USDT</div>
-                        <button class="btn premium-btn buy-crypto-package" data-coins="5000" data-price="2">
+                        <div class="price">Цена: 1.1 USDT</div>
+                        <button class="btn premium-btn buy-crypto-package" data-coins="5000" data-price="1.1">
                             <i class="fas fa-shopping-cart"></i> Купить
                         </button>
                     </div>
                     
                     <div class="card">
                         <h4>20000 монет</h4>
-                        <div class="price">Цена: 7 USDT</div>
-                        <button class="btn premium-btn buy-crypto-package" data-coins="20000" data-price="7">
+                        <div class="price">Цена: 4 USDT</div>
+                        <button class="btn premium-btn buy-crypto-package" data-coins="20000" data-price="4">
                             <i class="fas fa-shopping-cart"></i> Купить
                         </button>
                     </div>
                     
                     <div class="card">
-                        <h4>Бесконечная энергия (1 день)</h4>
-                        <div class="price">Цена: 5000 монет</div>
-                        <button class="btn shop-btn" id="buy-infinite-energy">
+                        <h4>Набор новичка</h4>
+                        <div class="price">Цена: 1.5 USDT</div>
+                        <p>5000 монет + 1 день энергии</p>
+                        <button class="btn premium-btn buy-crypto-package" data-coins="5000" data-price="1.5" data-effect="infiniteEnergy:24">
                             <i class="fas fa-shopping-cart"></i> Купить
                         </button>
                     </div>
                     
                     <div class="card">
-                        <h4>Удвоитель кликов (1 час)</h4>
-                        <div class="price">Цена: 2000 монет</div>
-                        <button class="btn shop-btn" id="buy-double-click">
+                        <h4>Продвинутый набор</h4>
+                        <div class="price">Цена: 5 USDT</div>
+                        <p>20000 монет + 3 дня энергии</p>
+                        <button class="btn premium-btn buy-crypto-package" data-coins="20000" data-price="5" data-effect="infiniteEnergy:72">
+                            <i class="fas fa-shopping-cart"></i> Купить
+                        </button>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>Премиум набор</h4>
+                        <div class="price">Цена: 20 USDT</div>
+                        <p>100000 монет + 7 дней энергии</p>
+                        <button class="btn premium-btn buy-crypto-package" data-coins="100000" data-price="20" data-effect="infiniteEnergy:168">
                             <i class="fas fa-shopping-cart"></i> Купить
                         </button>
                     </div>
@@ -1293,7 +1449,7 @@
                 <div class="invoice-container" id="invoice-container">
                     <div class="invoice-info">
                         <p><strong>Инвойс ID:</strong> <span id="invoice-id">-</span></p>
-                        <p><strong>Для оплаты переведите:</strong> <span id="invoice-amount">0.5</span> <span id="invoice-currency">USDT</span></p>
+                        <p><strong>Для оплаты переведите:</strong> <span id="invoice-amount">0.3</span> <span id="invoice-currency">USDT</span></p>
                         <p><strong>На адрес:</strong> <span id="invoice-address">TB9W...qX3v</span></p>
                         <p><strong>Сеть:</strong> <span id="invoice-network">TRC20</span></p>
                         <p><strong>Ссылка для оплаты:</strong> <a href="#" id="pay-link" target="_blank">Открыть в CryptoBot</a></p>
@@ -1397,10 +1553,10 @@
                 <i class="fas fa-arrow-up"></i> <span class="lang-tab-upgrades">Улучшения</span>
             </div>
             <div class="tab" data-tab="crypto">
-                <i class="fas fa-money-bill-wave"></i> <span>Магазин</span>
+                <i class="fas fa-money-bill-wave"></i> <span class="lang-tab-crypto">Магазин</span>
             </div>
             <div class="tab" data-tab="achievements">
-                <i class="fas fa-trophy"></i> <span>Достижения</span>
+                <i class="fas fa-trophy"></i> <span class="lang-tab-achievements">Достижения</span>
             </div>
         </div>
     </div>
@@ -1461,6 +1617,7 @@
         let infiniteEnergy = false;
         let doubleClick = false;
         let doubleClickExpire = 0;
+        let infiniteEnergyExpire = 0;
         
         // Токен CryptoBot
         const CRYPTO_BOT_TOKEN = '428290:AAW532c6iYZ0vr7zuBQtj4hi8UGBzofeKby';
@@ -1472,7 +1629,15 @@
         
         let quests = {
             telegram: { completed: false, reward: 500 },
-            chat: { completed: false, reward: 1000 }
+            chat: { completed: false, reward: 1000 },
+            useAllEnergy: { completed: false, reward: 500 },
+            make100Clicks: { completed: false, reward: 200 },
+            earn1000Coins: { completed: false, reward: 300 },
+            buyUpgrade: { completed: false, reward: 500 },
+            buyAutoClicker: { completed: false, reward: 1000 },
+            makeCriticalHit: { completed: false, reward: 200 },
+            claimDaily: { completed: false, reward: 300 },
+            buyCrypto: { completed: false, reward: 1000 }
         };
         
         // Улучшения
@@ -1491,6 +1656,7 @@
         
         let autoClickerInterval;
         let energyRestoreInterval;
+        let effectCheckInterval;
         
         // Промокоды
         const promoCodes = {
@@ -1519,8 +1685,9 @@
                 claimDaily: "Получить награду",
                 tabClicker: "Кликер",
                 tabQuests: "Задания",
-                tabUpgrades: "Улучшения",
                 tabBonuses: "Бонусы",
+                tabUpgrades: "Улучшения",
+                tabCrypto: "Магазин",
                 tabAchievements: "Достижения",
                 settingsTitle: "Настройки",
                 languageLabel: "Язык:",
@@ -1558,7 +1725,11 @@
                 invoiceCancelled: "Инвойс отменен",
                 invoiceError: "Ошибка при создании инвойса",
                 infiniteEnergyActive: "Бесконечная энергия активирована на 24 часа!",
-                doubleClickActive: "Удвоитель кликов активирован на 1 час!"
+                doubleClickActive: "Удвоитель кликов активирован на 1 час!",
+                effectEnded: "Эффект закончился!",
+                dailyAlreadyClaimed: "Вы уже получили сегодняшнюю награду!",
+                dailyRewardClaimed: "Ежедневная награда получена!",
+                questCompleted: "Задание выполнено!"
             },
             en: {
                 coins: "Coins",
@@ -1578,8 +1749,9 @@
                 claimDaily: "Claim Reward",
                 tabClicker: "Clicker",
                 tabQuests: "Quests",
-                tabUpgrades: "Upgrades",
                 tabBonuses: "Bonuses",
+                tabUpgrades: "Upgrades",
+                tabCrypto: "Shop",
                 tabAchievements: "Achievements",
                 settingsTitle: "Settings",
                 languageLabel: "Language:",
@@ -1617,7 +1789,11 @@
                 invoiceCancelled: "Invoice cancelled",
                 invoiceError: "Error creating invoice",
                 infiniteEnergyActive: "Infinite energy activated for 24 hours!",
-                doubleClickActive: "Double click activated for 1 hour!"
+                doubleClickActive: "Double click activated for 1 hour!",
+                effectEnded: "Effect ended!",
+                dailyAlreadyClaimed: "You've already claimed today's reward!",
+                dailyRewardClaimed: "Daily reward claimed!",
+                questCompleted: "Quest completed!"
             }
         };
         
@@ -1703,7 +1879,19 @@
             const percent = (energy / maxEnergy) * 100;
             energyFill.style.width = `${percent}%`;
             energyText.textContent = `${Math.floor(energy)}/${maxEnergy}`;
-            energyEl.textContent = `${Math.floor(energy)}/${maxEnergy}`;
+            
+            // Форматируем значения для отображения
+            const formattedEnergy = formatNumber(energy);
+            const formattedMaxEnergy = formatNumber(maxEnergy);
+            energyEl.textContent = `${formattedEnergy}/${formattedMaxEnergy}`;
+        }
+        
+        // Форматирование чисел (сокращение тысяч)
+        function formatNumber(num) {
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'к';
+            }
+            return num.toString();
         }
         
         // Загрузка игры
@@ -1722,15 +1910,25 @@
                 totalCoins = gameData.totalCoins || 0;
                 totalClicks = gameData.totalClicks || 0;
                 energy = gameData.energy || 1000;
+                maxEnergy = gameData.maxEnergy || 1000;
                 language = gameData.language || 'ru';
                 usedPromoCodes = gameData.usedPromoCodes || [];
                 tapMultiplier = gameData.tapMultiplier || 1;
                 infiniteEnergy = gameData.infiniteEnergy || false;
                 doubleClick = gameData.doubleClick || false;
                 doubleClickExpire = gameData.doubleClickExpire || 0;
+                infiniteEnergyExpire = gameData.infiniteEnergyExpire || 0;
                 quests = gameData.quests || {
                     telegram: { completed: false, reward: 500 },
-                    chat: { completed: false, reward: 1000 }
+                    chat: { completed: false, reward: 1000 },
+                    useAllEnergy: { completed: false, reward: 500 },
+                    make100Clicks: { completed: false, reward: 200 },
+                    earn1000Coins: { completed: false, reward: 300 },
+                    buyUpgrade: { completed: false, reward: 500 },
+                    buyAutoClicker: { completed: false, reward: 1000 },
+                    makeCriticalHit: { completed: false, reward: 200 },
+                    claimDaily: { completed: false, reward: 300 },
+                    buyCrypto: { completed: false, reward: 1000 }
                 };
                 upgrades = gameData.upgrades || {
                     click: { level: 0, cost: 1500, effect: 0 },
@@ -1754,7 +1952,7 @@
                 }
                 
                 startEnergyRestore();
-                checkDoubleClick();
+                startEffectCheck();
                 
                 updateUI();
                 checkDailyReward();
@@ -1786,6 +1984,11 @@
                 coinEl.classList.add('coin-spin');
                 setTimeout(() => coinEl.classList.remove('coin-spin'), 1000);
                 showNotification(translations[language].criticalHit);
+                
+                // Проверяем задание
+                if (!quests.makeCriticalHit.completed) {
+                    completeQuest('makeCriticalHit');
+                }
             }
             
             const coinsEarned = baseCoins * tapMultiplier;
@@ -1800,6 +2003,7 @@
             
             updateUI();
             updateAchievements();
+            updateQuestProgress();
             
             createClickAnimation(e, coinsEarned, isCritical);
             
@@ -1859,6 +2063,7 @@
                         upgrade.cost = Math.floor(upgrade.cost * 3);
                         startAutoClicker();
                         showNotification(translations[language].autoClickerActive);
+                        completeQuest('buyAutoClicker');
                         break;
                     case 'critical':
                         upgrade.level++;
@@ -1866,6 +2071,9 @@
                         upgrade.cost = Math.floor(upgrade.cost * 4);
                         break;
                 }
+                
+                // Проверяем задание
+                completeQuest('buyUpgrade');
                 
                 updateUI();
                 saveGame();
@@ -1884,8 +2092,15 @@
                     coins += (perClick + upgrades.click.effect) * upgrades.auto.effect * tapMultiplier;
                     totalCoins += (perClick + upgrades.click.effect) * upgrades.auto.effect * tapMultiplier;
                     totalClicks += upgrades.auto.effect;
+                    
+                    if (!infiniteEnergy) {
+                        energy -= upgrades.auto.effect;
+                        if (energy < 0) energy = 0;
+                    }
+                    
                     updateUI();
                     updateAchievements();
+                    updateQuestProgress();
                 }
             }, 1000);
         }
@@ -1895,11 +2110,21 @@
             if (energyRestoreInterval) clearInterval(energyRestoreInterval);
             
             energyRestoreInterval = setInterval(() => {
-                if (energy < maxEnergy) {
+                if (energy < maxEnergy && !infiniteEnergy) {
                     energy++;
                     updateEnergyBar();
                 }
             }, 1000);
+        }
+        
+        // Проверка эффектов
+        function startEffectCheck() {
+            if (effectCheckInterval) clearInterval(effectCheckInterval);
+            
+            effectCheckInterval = setInterval(() => {
+                checkDoubleClick();
+                checkInfiniteEnergy();
+            }, 10000); // Проверяем каждые 10 секунд
         }
         
         // Проверка ежедневной награды
@@ -1907,6 +2132,11 @@
             const now = Date.now();
             const lastRewardDate = new Date(lastDailyReward);
             const currentDate = new Date();
+            
+            // Если прошло больше 24 часов, сбрасываем день
+            if (lastDailyReward > 0 && now - lastDailyReward > 24 * 60 * 60 * 1000) {
+                currentDay = 0;
+            }
             
             if (lastDailyReward === 0 || 
                 currentDate.getDate() !== lastRewardDate.getDate() || 
@@ -1918,9 +2148,7 @@
                 dailyStatus.style.color = "#00f2fe";
             } else {
                 dailyBtn.disabled = true;
-                dailyStatus.textContent = language === 'ru' ? 
-                    "Сегодня вы уже получили награду. Завтра приходите снова!" : 
-                    "You've already claimed today's reward. Come back tomorrow!";
+                dailyStatus.textContent = translations[language].dailyAlreadyClaimed;
                 dailyStatus.style.color = "#ff6b6b";
             }
             
@@ -1956,6 +2184,9 @@
             
             lastDailyReward = Date.now();
             currentDay = Math.min(currentDay + 1, 4);
+            
+            // Проверяем задание
+            completeQuest('claimDaily');
             
             updateUI();
             saveGame();
@@ -2026,16 +2257,45 @@
         
         // Обновить кнопки заданий
         function updateQuestButtons() {
-            if (quests.telegram.completed) {
-                telegramBtn.disabled = true;
-                telegramBtn.innerHTML = `<i class="fas fa-check"></i> <span class="lang-claimed">${translations[language].claimed}</span>`;
-                document.getElementById('telegram-quest').classList.add('completed');
-            }
+            const lang = translations[language];
             
-            if (quests.chat.completed) {
-                chatBtn.disabled = true;
-                chatBtn.innerHTML = `<i class="fas fa-check"></i> <span class="lang-claimed">${translations[language].claimed}</span>`;
-                document.getElementById('chat-quest').classList.add('completed');
+            for (const quest in quests) {
+                const questEl = document.getElementById(`${quest}-quest`);
+                const btn = document.getElementById(`${quest}-btn`);
+                
+                if (questEl && btn) {
+                    if (quests[quest].completed) {
+                        btn.disabled = true;
+                        btn.innerHTML = `<i class="fas fa-check"></i> <span>${lang.claimed}</span>`;
+                        questEl.classList.add('completed');
+                    }
+                }
+            }
+        }
+        
+        // Обновить прогресс заданий
+        function updateQuestProgress() {
+            // Обновляем прогресс заданий
+            quests.useAllEnergy.progress = energy <= 0 ? 1 : 0;
+            quests.make100Clicks.progress = totalClicks;
+            quests.earn1000Coins.progress = totalCoins;
+            
+            // Проверяем выполнение
+            for (const key in quests) {
+                const quest = quests[key];
+                const btn = document.getElementById(`${key}-btn`);
+                
+                if (btn && !quest.completed) {
+                    if (key === 'useAllEnergy' && energy <= 0) {
+                        completeQuest(key);
+                    }
+                    else if (key === 'make100Clicks' && totalClicks >= 100) {
+                        completeQuest(key);
+                    }
+                    else if (key === 'earn1000Coins' && totalCoins >= 1000) {
+                        completeQuest(key);
+                    }
+                }
             }
         }
         
@@ -2066,18 +2326,21 @@
                 switch (type) {
                     case 'infiniteEnergy':
                         infiniteEnergy = true;
-                        setTimeout(() => {
-                            infiniteEnergy = false;
-                            showNotification(language === 'ru' ? 
-                                "Эффект бесконечной энергии закончился!" : 
-                                "Infinite energy effect ended!");
-                        }, duration * 60 * 60 * 1000);
-                        showNotification(translations[language].infiniteEnergyActive);
+                        infiniteEnergyExpire = Date.now() + duration * 60 * 60 * 1000;
+                        showNotification(
+                            language === 'ru' ? 
+                            `Бесконечная энергия активирована на ${duration} часов!` : 
+                            `Infinite energy activated for ${duration} hours!`
+                        );
                         break;
                     case 'doubleClick':
                         doubleClick = true;
                         doubleClickExpire = Date.now() + duration * 60 * 60 * 1000;
-                        showNotification(translations[language].doubleClickActive);
+                        showNotification(
+                            language === 'ru' ? 
+                            `Удвоитель кликов активирован на ${duration} часов!` : 
+                            `Double click activated for ${duration} hours!`
+                        );
                         break;
                 }
                 
@@ -2092,9 +2355,15 @@
         function checkDoubleClick() {
             if (doubleClick && doubleClickExpire < Date.now()) {
                 doubleClick = false;
-                showNotification(language === 'ru' ? 
-                    "Эффект удвоителя кликов закончился!" : 
-                    "Double click effect ended!");
+                showNotification(translations[language].effectEnded);
+            }
+        }
+        
+        // Проверка бесконечной энергии
+        function checkInfiniteEnergy() {
+            if (infiniteEnergy && infiniteEnergyExpire < Date.now()) {
+                infiniteEnergy = false;
+                showNotification(translations[language].effectEnded);
             }
         }
         
@@ -2136,7 +2405,7 @@
         // ========== CRYPTOBOT INTEGRATION ==========
         
         // Создание инвойса для CryptoBot
-        async function createCryptoInvoice(amount, currency, coinsAmount) {
+        async function createCryptoInvoice(amount, currency, coinsAmount, effect) {
             try {
                 // Показываем статус загрузки
                 showNotification(translations[language].creatingInvoice);
@@ -2177,12 +2446,16 @@
                     amount,
                     currency,
                     coinsAmount,
+                    effect,
                     address,
                     network,
                     payUrl: `https://t.me/CryptoBot?start=${Date.now()}`,
                     createdAt: Date.now(),
                     status: 'pending'
                 };
+                
+                // Проверяем задание
+                completeQuest('buyCrypto');
                 
                 // Показываем информацию об инвойсе
                 invoiceId.textContent = currentInvoice.id;
@@ -2270,6 +2543,15 @@
                     // Платеж получен
                     coins += currentInvoice.coinsAmount;
                     totalCoins += currentInvoice.coinsAmount;
+                    
+                    // Применяем эффекты
+                    if (currentInvoice.effect) {
+                        const [effectType, duration] = currentInvoice.effect.split(':');
+                        if (effectType === 'infiniteEnergy') {
+                            infiniteEnergy = true;
+                            infiniteEnergyExpire = Date.now() + parseInt(duration) * 60 * 60 * 1000;
+                        }
+                    }
                     
                     invoiceStatus.textContent = `${translations[language].cryptoPaymentSuccess} +${currentInvoice.coinsAmount} монет!`;
                     invoiceStatus.className = 'invoice-status status-paid';
@@ -2392,7 +2674,8 @@
                 achievements,
                 infiniteEnergy,
                 doubleClick,
-                doubleClickExpire
+                doubleClickExpire,
+                infiniteEnergyExpire
             };
             
             localStorage.setItem('cryptoTapSave', JSON.stringify(gameData));
@@ -2484,14 +2767,60 @@
             buyInfiniteEnergy.addEventListener('click', () => buyEffect('infiniteEnergy', 24, 5000));
             buyDoubleClick.addEventListener('click', () => buyEffect('doubleClick', 1, 2000));
             
+            // Обработчики для новых кнопок заданий
+            document.getElementById('use-energy-btn').addEventListener('click', () => {
+                if (energy <= 0) {
+                    completeQuest('useAllEnergy');
+                } else {
+                    showNotification(language === 'ru' ? "Сначала используйте всю энергию!" : "Use all energy first!");
+                }
+            });
+            
+            document.getElementById('clicks-btn').addEventListener('click', () => {
+                if (totalClicks >= 100) {
+                    completeQuest('make100Clicks');
+                } else {
+                    showNotification(language === 'ru' ? "Сделайте больше кликов!" : "Make more clicks!");
+                }
+            });
+            
+            document.getElementById('coins-btn').addEventListener('click', () => {
+                if (totalCoins >= 1000) {
+                    completeQuest('earn1000Coins');
+                } else {
+                    showNotification(language === 'ru' ? "Заработайте больше монет!" : "Earn more coins!");
+                }
+            });
+            
+            document.getElementById('upgrade-btn').addEventListener('click', () => {
+                showNotification(language === 'ru' ? "Купите любое улучшение!" : "Buy any upgrade!");
+            });
+            
+            document.getElementById('auto-btn').addEventListener('click', () => {
+                showNotification(language === 'ru' ? "Купите автокликер!" : "Buy auto clicker!");
+            });
+            
+            document.getElementById('critical-btn').addEventListener('click', () => {
+                showNotification(language === 'ru' ? "Сделайте критический удар!" : "Make critical hit!");
+            });
+            
+            document.getElementById('daily-quest-btn').addEventListener('click', () => {
+                showNotification(language === 'ru' ? "Получите ежедневную награду!" : "Claim daily reward!");
+            });
+            
+            document.getElementById('crypto-btn').addEventListener('click', () => {
+                showNotification(language === 'ru' ? "Купите криптовалюту!" : "Buy crypto!");
+            });
+            
             // Обработчики для покупки крипто-пакетов
             document.querySelectorAll('.buy-crypto-package').forEach(button => {
                 button.addEventListener('click', function() {
                     const coinsAmount = parseInt(this.dataset.coins);
                     const price = parseFloat(this.dataset.price);
+                    const effect = this.dataset.effect;
                     const currency = cryptoCurrencySelect.value;
                     
-                    createCryptoInvoice(price, currency, coinsAmount);
+                    createCryptoInvoice(price, currency, coinsAmount, effect);
                 });
             });
         }
@@ -2502,6 +2831,7 @@
             initEventListeners();
             loadGame();
             updateQuestButtons();
+            updateQuestProgress();
         });
     </script>
 </body>
