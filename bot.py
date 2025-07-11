@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Инициализация бота
-bot = Bot(token="8098501828:AAFNGBZIQ6KoIgihZRlB8HwGoDwmThZ9egI")  # Замените на реальный токен!
+bot = Bot(token="87780179544:AAGGaZB4dOZFPKaBKYQtC9NfpHv3uwrFMyE")  # Замените на реальный токен!
 dp = Dispatcher()
 
 # Подключение к SQLite
