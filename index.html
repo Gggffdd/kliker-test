@@ -820,10 +820,20 @@
         
         .invoice-container.active {
             display: block;
+            animation: fadeIn 0.5s;
         }
         
         .invoice-info {
             margin-bottom: 15px;
+            text-align: left;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+        
+        .invoice-info p {
+            margin: 8px 0;
+            font-size: 0.95rem;
         }
         
         .qr-code {
@@ -839,6 +849,11 @@
             justify-content: center;
             gap: 10px;
             margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .invoice-actions .btn {
+            min-width: 150px;
         }
         
         .invoice-status {
@@ -847,6 +862,7 @@
             border-radius: 8px;
             font-weight: bold;
             display: none;
+            text-align: center;
         }
         
         .status-paid {
@@ -895,6 +911,27 @@
             background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             font-size: 0.9rem;
+        }
+        
+        .timer {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #ffc107;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
         @media (max-width: 600px) {
@@ -1159,7 +1196,7 @@
             </div>
         </div>
         
-        <!-- Новая вкладка для пополнения через CryptoBot -->
+        <!-- Вкладка для пополнения через CryptoBot -->
         <div id="crypto" class="tab-content">
             <div class="crypto-shop">
                 <h3><i class="fas fa-money-bill-wave"></i> Пополнить баланс</h3>
@@ -1198,16 +1235,23 @@
                         <option value="TON">TON</option>
                         <option value="BTC">Bitcoin</option>
                         <option value="ETH">Ethereum</option>
+                        <option value="BNB">BNB</option>
+                        <option value="TRX">TRON</option>
                     </select>
                 </div>
                 
                 <div class="invoice-container" id="invoice-container">
                     <div class="invoice-info">
-                        <p>Для оплаты переведите <strong id="invoice-amount">0.5</strong> <strong id="invoice-currency">USDT</strong></p>
-                        <p>На адрес: <span id="invoice-address">TB9W...qX3v</span></p>
+                        <p><strong>Инвойс ID:</strong> <span id="invoice-id">-</span></p>
+                        <p><strong>Для оплаты переведите:</strong> <span id="invoice-amount">0.5</span> <span id="invoice-currency">USDT</span></p>
+                        <p><strong>На адрес:</strong> <span id="invoice-address">TB9W...qX3v</span></p>
+                        <p><strong>Сеть:</strong> <span id="invoice-network">TRC20</span></p>
+                        <p><strong>Ссылка для оплаты:</strong> <a href="#" id="pay-link" target="_blank">Открыть в CryptoBot</a></p>
                     </div>
                     
                     <div class="qr-code" id="qr-code"></div>
+                    
+                    <div class="timer" id="invoice-timer">Инвойс активен: <span id="timer-value">15:00</span></div>
                     
                     <div class="invoice-actions">
                         <button class="btn" id="copy-address-btn">
@@ -1216,13 +1260,16 @@
                         <button class="btn" id="check-payment-btn">
                             <i class="fas fa-sync-alt"></i> Проверить оплату
                         </button>
+                        <button class="btn" id="cancel-invoice-btn">
+                            <i class="fas fa-times"></i> Отменить
+                        </button>
                     </div>
                     
                     <div class="invoice-status" id="invoice-status"></div>
                 </div>
                 
                 <div class="crypto-balance">
-                    <p><i class="fas fa-info-circle"></i> После оплаты нажмите "Проверить оплату". Обычно платежи обрабатываются в течение 5-10 минут.</p>
+                    <p><i class="fas fa-info-circle"></i> После оплаты нажмите "Проверить оплату". Обычно платежи обрабатываются в течение 5-10 минут. Инвойс действителен 15 минут.</p>
                 </div>
             </div>
         </div>
@@ -1296,14 +1343,14 @@
         let language = 'ru';
         let usedPromoCodes = [];
         let tapMultiplier = 1;
-        let tgWebApp = null;
-        let isTelegramWebApp = false;
         
         // Токен CryptoBot
         const CRYPTO_BOT_TOKEN = '428290:AAW532c6iYZ0vr7zuBQtj4hi8UGBzofeKby';
         
         // Текущий инвойс
         let currentInvoice = null;
+        let invoiceTimer = null;
+        let invoiceTimeLeft = 900; // 15 минут в секундах
         
         let quests = {
             telegram: { completed: false, reward: 500 },
@@ -1378,7 +1425,14 @@
                 cryptoPaymentSuccess: "Платеж получен! Монеты начислены.",
                 cryptoPaymentPending: "Платеж не найден. Попробуйте позже.",
                 cryptoPaymentError: "Ошибка при обработке платежа.",
-                addressCopied: "Адрес скопирован!"
+                addressCopied: "Адрес скопирован!",
+                creatingInvoice: "Создание инвойса...",
+                invoiceCreated: "Инвойс создан!",
+                invoiceExpired: "Время инвойса истекло!",
+                paymentCheck: "Проверка платежа...",
+                paymentNotFound: "Платеж не найден",
+                invoiceCancelled: "Инвойс отменен",
+                invoiceError: "Ошибка при создании инвойса"
             },
             en: {
                 coins: "Coins",
@@ -1426,7 +1480,14 @@
                 cryptoPaymentSuccess: "Payment received! Coins added to your balance.",
                 cryptoPaymentPending: "Payment not found. Please try again later.",
                 cryptoPaymentError: "Error processing payment.",
-                addressCopied: "Address copied!"
+                addressCopied: "Address copied!",
+                creatingInvoice: "Creating invoice...",
+                invoiceCreated: "Invoice created!",
+                invoiceExpired: "Invoice expired!",
+                paymentCheck: "Checking payment...",
+                paymentNotFound: "Payment not found",
+                invoiceCancelled: "Invoice cancelled",
+                invoiceError: "Error creating invoice"
             }
         };
         
@@ -1457,14 +1518,20 @@
         const energyFill = document.getElementById('energy-fill');
         const energyText = document.getElementById('energy-text');
         const invoiceContainer = document.getElementById('invoice-container');
+        const invoiceId = document.getElementById('invoice-id');
         const invoiceAmount = document.getElementById('invoice-amount');
         const invoiceCurrency = document.getElementById('invoice-currency');
         const invoiceAddress = document.getElementById('invoice-address');
+        const invoiceNetwork = document.getElementById('invoice-network');
+        const payLink = document.getElementById('pay-link');
         const qrCodeEl = document.getElementById('qr-code');
         const copyAddressBtn = document.getElementById('copy-address-btn');
         const checkPaymentBtn = document.getElementById('check-payment-btn');
+        const cancelInvoiceBtn = document.getElementById('cancel-invoice-btn');
         const invoiceStatus = document.getElementById('invoice-status');
         const cryptoCurrencySelect = document.getElementById('crypto-currency');
+        const invoiceTimerEl = document.getElementById('invoice-timer');
+        const timerValue = document.getElementById('timer-value');
 
         // Создание крипто-частиц
         function createParticles() {
@@ -1823,15 +1890,34 @@
         // Создание инвойса для CryptoBot
         async function createCryptoInvoice(amount, currency, coinsAmount) {
             try {
+                // Показываем статус загрузки
+                showNotification(translations[language].creatingInvoice);
+                
+                // В реальном приложении здесь должен быть запрос к вашему серверу,
+                // который создаст инвойс через CryptoBot API
+                // Для демонстрации сгенерируем тестовые данные
+                
                 // Генерируем случайный адрес для демонстрации
                 const cryptoAddresses = {
                     'USDT': 'TB9WqX3vjY7zL8kGf5dR2sN6mH4pJ1K',
                     'TON': 'EQCDYJ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7',
                     'BTC': 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
-                    'ETH': '0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
+                    'ETH': '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+                    'BNB': 'bnb1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
+                    'TRX': 'TQZv1vXZv1vXZv1vXZv1vXZv1vXZv1vXZv1v'
+                };
+                
+                const networks = {
+                    'USDT': 'TRC20',
+                    'TON': 'TON',
+                    'BTC': 'Bitcoin',
+                    'ETH': 'ERC20',
+                    'BNB': 'BEP20',
+                    'TRX': 'TRC20'
                 };
                 
                 const address = cryptoAddresses[currency];
+                const network = networks[currency];
                 
                 // Создаем QR-код
                 qrCodeEl.innerHTML = '';
@@ -1843,20 +1929,29 @@
                 
                 // Сохраняем инвойс
                 currentInvoice = {
+                    id: `INV-${Date.now()}`,
                     amount,
                     currency,
                     coinsAmount,
                     address,
+                    network,
+                    payUrl: `https://t.me/CryptoBot?start=${Date.now()}`,
                     createdAt: Date.now(),
                     status: 'pending'
                 };
                 
                 // Показываем информацию об инвойсе
+                invoiceId.textContent = currentInvoice.id;
                 invoiceAmount.textContent = amount;
                 invoiceCurrency.textContent = currency;
                 invoiceAddress.textContent = address;
+                invoiceNetwork.textContent = network;
+                payLink.href = currentInvoice.payUrl;
                 invoiceContainer.classList.add('active');
                 invoiceStatus.style.display = 'none';
+                
+                // Запускаем таймер инвойса
+                startInvoiceTimer();
                 
                 // Копируем в буфер обмена при нажатии
                 copyAddressBtn.onclick = () => {
@@ -1867,11 +1962,52 @@
                 // Обработчик проверки платежа
                 checkPaymentBtn.onclick = checkCryptoPayment;
                 
+                // Обработчик отмены инвойса
+                cancelInvoiceBtn.onclick = cancelInvoice;
+                
+                showNotification(translations[language].invoiceCreated);
                 return true;
             } catch (error) {
                 console.error('Error creating invoice:', error);
-                showNotification('Ошибка создания инвойса');
+                showNotification(translations[language].invoiceError);
                 return false;
+            }
+        }
+        
+        // Таймер инвойса
+        function startInvoiceTimer() {
+            clearInterval(invoiceTimer);
+            invoiceTimeLeft = 900; // 15 минут
+            updateTimerDisplay();
+            
+            invoiceTimer = setInterval(() => {
+                invoiceTimeLeft--;
+                updateTimerDisplay();
+                
+                if (invoiceTimeLeft <= 0) {
+                    clearInterval(invoiceTimer);
+                    invoiceStatus.textContent = translations[language].invoiceExpired;
+                    invoiceStatus.className = 'invoice-status status-expired';
+                    invoiceStatus.style.display = 'block';
+                    currentInvoice.status = 'expired';
+                }
+            }, 1000);
+        }
+        
+        // Обновление отображения таймера
+        function updateTimerDisplay() {
+            const minutes = Math.floor(invoiceTimeLeft / 60);
+            const seconds = invoiceTimeLeft % 60;
+            timerValue.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Отмена инвойса
+        function cancelInvoice() {
+            if (currentInvoice) {
+                clearInterval(invoiceTimer);
+                invoiceContainer.classList.remove('active');
+                currentInvoice = null;
+                showNotification(translations[language].invoiceCancelled);
             }
         }
         
@@ -1880,6 +2016,13 @@
             if (!currentInvoice) return;
             
             try {
+                // Показываем статус проверки
+                showNotification(translations[language].paymentCheck);
+                
+                // В реальном приложении здесь должен быть запрос к вашему серверу,
+                // который проверит статус инвойса через CryptoBot API
+                // Для демонстрации сгенерируем тестовый ответ
+                
                 // Для демонстрации - 70% шанс что платеж прошел
                 const isPaid = Math.random() > 0.3;
                 
@@ -1888,13 +2031,16 @@
                     coins += currentInvoice.coinsAmount;
                     totalCoins += currentInvoice.coinsAmount;
                     
-                    invoiceStatus.textContent = translations[language].cryptoPaymentSuccess;
+                    invoiceStatus.textContent = `${translations[language].cryptoPaymentSuccess} +${currentInvoice.coinsAmount} монет!`;
                     invoiceStatus.className = 'invoice-status status-paid';
                     invoiceStatus.style.display = 'block';
                     
                     // Обновляем UI и сохраняем игру
                     updateUI();
                     saveGame();
+                    
+                    // Отключаем таймер
+                    clearInterval(invoiceTimer);
                     
                     // Показываем уведомление
                     showNotification(
@@ -1903,11 +2049,14 @@
                         `Received ${currentInvoice.coinsAmount} coins!`
                     );
                     
-                    // Сбрасываем текущий инвойс
-                    currentInvoice = null;
+                    // Через 5 секунд скрываем инвойс
+                    setTimeout(() => {
+                        invoiceContainer.classList.remove('active');
+                        currentInvoice = null;
+                    }, 5000);
                 } else {
                     // Платеж не найден
-                    invoiceStatus.textContent = translations[language].cryptoPaymentPending;
+                    invoiceStatus.textContent = translations[language].paymentNotFound;
                     invoiceStatus.className = 'invoice-status status-pending';
                     invoiceStatus.style.display = 'block';
                 }
@@ -2042,6 +2191,11 @@
                         statsContainer.style.display = 'flex';
                     } else {
                         statsContainer.style.display = 'none';
+                    }
+                    
+                    // Отменяем инвойс при переключении вкладок
+                    if (currentInvoice && tab.dataset.tab !== 'crypto') {
+                        cancelInvoice();
                     }
                 });
             });
