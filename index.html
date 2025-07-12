@@ -18,7 +18,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background: linear-gradient(135deg, #0c1927, #182a3a, #1d3c4f);
             color: #ffffff;
             text-align: center;
             min-height: 100vh;
@@ -50,12 +50,12 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.5;
+            opacity: 0.6;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(79, 172, 254, 0.2) 0%, transparent 20%),
-                radial-gradient(circle at 90% 70%, rgba(0, 242, 254, 0.2) 0%, transparent 20%),
-                radial-gradient(circle at 50% 40%, rgba(255, 107, 107, 0.2) 0%, transparent 30%);
-            animation: crypto-bg 30s linear infinite;
+                radial-gradient(circle at 10% 20%, rgba(79, 172, 254, 0.25) 0%, transparent 25%),
+                radial-gradient(circle at 90% 70%, rgba(0, 242, 254, 0.25) 0%, transparent 25%),
+                radial-gradient(circle at 50% 40%, rgba(255, 107, 107, 0.25) 0%, transparent 30%);
+            animation: crypto-bg 45s linear infinite;
         }
         
         @keyframes crypto-bg {
@@ -71,34 +71,57 @@
             height: 100%;
             z-index: -1;
             pointer-events: none;
+            overflow: hidden;
         }
         
         .particle {
             position: absolute;
-            background: rgba(79, 172, 254, 0.7);
+            background: radial-gradient(circle, rgba(79, 172, 254, 0.8), transparent 70%);
             border-radius: 50%;
-            animation: float 15s infinite linear;
+            animation: float 20s infinite linear;
+            filter: blur(1px);
         }
         
         @keyframes float {
-            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            0% { 
+                transform: translateY(100vh) translateX(0) scale(0.5); 
+                opacity: 0; 
+            }
             10% { opacity: 1; }
             90% { opacity: 0.5; }
-            100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
+            100% { 
+                transform: translateY(-100px) translateX(calc(100vw * var(--tx))) scale(0.8); 
+                opacity: 0; 
+            }
         }
         
         .container {
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
-            background: rgba(15, 23, 42, 0.9);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            min-height: calc(100vh - 120px);
+            background: rgba(15, 23, 42, 0.85);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.5),
+                0 0 0 2px rgba(79, 172, 254, 0.1),
+                inset 0 0 20px rgba(79, 172, 254, 0.2);
+            min-height: calc(100vh - 140px);
             position: relative;
-            backdrop-filter: blur(5px);
-            margin-bottom: 80px;
-            border: 1px solid rgba(79, 172, 254, 0.3);
+            backdrop-filter: blur(12px);
+            margin-bottom: 100px;
+            border: 1px solid rgba(79, 172, 254, 0.4);
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe, #ff6b6b);
+            border-radius: 4px 4px 0 0;
         }
         
         .bottom-nav {
@@ -106,58 +129,81 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(15, 23, 42, 0.95);
-            padding: 8px;
+            background: rgba(15, 23, 42, 0.97);
+            padding: 12px;
             z-index: 1000;
-            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 
+                0 -5px 25px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(79, 172, 254, 0.2);
             border-top: 1px solid rgba(79, 172, 254, 0.3);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
         }
         
         .tabs {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            gap: 3px;
-            max-width: 800px;
+            gap: 5px;
+            max-width: 850px;
             margin: 0 auto;
         }
         
         .tab {
             flex: 1;
-            padding: 10px 0;
+            padding: 12px 0;
             cursor: pointer;
-            border-radius: 12px;
+            border-radius: 14px;
             transition: all 0.3s ease;
             font-weight: 600;
-            min-width: 90px;
+            min-width: 95px;
             margin: 2px;
-            background: transparent;
+            background: rgba(25, 35, 60, 0.6);
             color: #a0a0ff;
             font-size: 0.8rem;
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(79, 172, 254, 0.2);
+        }
+        
+        .tab::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
         
         .tab.active {
             color: #ffffff;
-            background: rgba(79, 172, 254, 0.3);
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.3), rgba(0, 242, 254, 0.2));
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
+        }
+        
+        .tab.active::after {
+            transform: scaleX(1);
         }
         
         .tab:hover:not(.active) {
-            background: rgba(79, 172, 254, 0.2);
+            background: rgba(79, 172, 254, 0.25);
         }
         
         .tab i {
-            margin-bottom: 5px;
-            font-size: 1.1rem;
+            margin-bottom: 6px;
+            font-size: 1.3rem;
         }
         
         .tab-content {
             display: none;
             animation: fadeIn 0.5s;
-            padding-top: 15px;
+            padding-top: 20px;
         }
         
         .tab-content.active {
@@ -165,13 +211,13 @@
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         header {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
             border-bottom: 1px solid rgba(79, 172, 254, 0.3);
             position: relative;
             display: flex;
@@ -180,25 +226,27 @@
         }
         
         h1 {
-            font-size: 1.8rem;
+            font-size: 2.1rem;
             margin-bottom: 10px;
-            background: linear-gradient(to right, #4facfe, #00f2fe);
+            background: linear-gradient(to right, #4facfe, #00f2fe, #ff6b6b);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             flex: 1;
             text-align: center;
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 15px rgba(79, 172, 254, 0.5);
         }
         
         .settings-btn {
-            background: rgba(79, 172, 254, 0.2);
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.3), rgba(0, 242, 254, 0.2));
             border: none;
             color: #4facfe;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
@@ -207,111 +255,143 @@
             position: absolute;
             right: 0;
             top: 0;
+            box-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
         }
         
         .settings-btn:hover {
             transform: rotate(45deg);
-            background: rgba(79, 172, 254, 0.3);
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.4), rgba(0, 242, 254, 0.3));
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.4);
         }
         
         .stats {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            margin-bottom: 15px;
-            gap: 10px;
-            background: rgba(10, 15, 30, 0.6);
-            border-radius: 15px;
-            padding: 15px;
-            border: 1px solid rgba(79, 172, 254, 0.2);
+            margin-bottom: 20px;
+            gap: 15px;
+            background: rgba(10, 15, 30, 0.7);
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 
+                inset 0 0 15px rgba(0, 0, 0, 0.3),
+                0 5px 20px rgba(0, 0, 0, 0.2);
         }
         
         .stat-card {
-            background: rgba(20, 30, 50, 0.7);
-            border-radius: 15px;
-            padding: 12px;
-            min-width: 120px;
-            border: 1px solid rgba(79, 172, 254, 0.2);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, rgba(20, 30, 50, 0.8), rgba(15, 23, 42, 0.8));
+            border-radius: 18px;
+            padding: 15px;
+            min-width: 130px;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
             transition: all 0.3s;
             backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
         
         .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
         
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.7rem;
             font-weight: bold;
             color: #4facfe;
-            margin-top: 5px;
+            margin-top: 8px;
+            text-shadow: 0 0 8px rgba(79, 172, 254, 0.5);
         }
         
         .energy-value {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
         }
         
         #coin-container {
             position: relative;
-            width: 260px;
-            height: 260px;
+            width: 280px;
+            height: 280px;
             margin: 0 auto;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
+            perspective: 1000px;
         }
         
         #coin {
-            width: 220px;
-            height: 220px;
+            width: 240px;
+            height: 240px;
             border-radius: 50%;
             position: relative;
             transition: all 0.3s;
             transform: scale(1);
             z-index: 2;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(79, 172, 254, 0.4);
+            box-shadow: 
+                0 0 40px rgba(79, 172, 254, 0.6),
+                inset 0 0 30px rgba(255, 255, 255, 0.3);
             background: url('https://i.yapx.ru/Z0SaR.png') center/cover no-repeat;
-            border: 10px solid #daa520;
+            border: 12px solid #daa520;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3.5rem;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 3.8rem;
+            color: rgba(255, 255, 255, 0.9);
             font-weight: bold;
+            text-shadow: 0 0 15px rgba(218, 165, 32, 0.8);
+            transform-style: preserve-3d;
         }
 
         #coin:hover {
-            transform: scale(1.05) rotate(5deg);
-            box-shadow: 0 0 40px rgba(79, 172, 254, 0.6);
+            transform: scale(1.07) rotate(5deg);
+            box-shadow: 
+                0 0 50px rgba(79, 172, 254, 0.8),
+                inset 0 0 40px rgba(255, 255, 255, 0.4);
         }
         
         #coin:active {
-            transform: scale(0.95) rotate(15deg);
+            transform: scale(0.97) rotate(15deg);
         }
         
         @keyframes coin-pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.07); }
+            50% { transform: scale(1.08); }
             100% { transform: scale(1); }
         }
         
         #coin.pulse {
-            animation: coin-pulse 2s infinite;
+            animation: coin-pulse 2.5s infinite;
         }
         
         #coin-shadow {
             position: absolute;
             bottom: 10px;
-            width: 180px;
-            height: 40px;
-            background: rgba(0, 0, 0, 0.2);
+            width: 200px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 50%;
-            filter: blur(15px);
+            filter: blur(20px);
             z-index: 1;
             transition: all 0.3s;
         }
@@ -320,18 +400,19 @@
             position: absolute;
             color: #4facfe;
             font-weight: bold;
-            font-size: 1.8rem;
+            font-size: 2rem;
             pointer-events: none;
-            animation: float-up 1.5s forwards;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+            animation: float-up 1.8s forwards;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
             z-index: 1000;
             font-family: 'Poppins', sans-serif;
+            opacity: 0;
         }
         
         .critical {
             color: #ff6b6b;
-            text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
-            font-size: 2.2rem;
+            text-shadow: 0 0 15px rgba(255, 107, 107, 0.7);
+            font-size: 2.5rem;
         }
         
         @keyframes float-up {
@@ -340,136 +421,203 @@
                 opacity: 1; 
             }
             100% { 
-                transform: translate(-50%, -150px) scale(0.5); 
+                transform: translate(-50%, -180px) scale(0.6); 
                 opacity: 0; 
             }
         }
         
         .energy-container {
-            margin-top: 20px;
-            padding: 0 15px;
+            margin-top: 25px;
+            padding: 0 20px;
         }
         
         .energy-bar {
             width: 100%;
-            height: 20px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
+            height: 25px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
             overflow: hidden;
             position: relative;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(79, 172, 254, 0.3);
         }
         
         .energy-fill {
             height: 100%;
             background: linear-gradient(to right, #00f2fe, #4facfe);
-            border-radius: 10px;
-            transition: width 0.3s;
+            border-radius: 12px;
+            transition: width 0.4s;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.5);
         }
         
         .energy-text {
-            margin-top: 5px;
-            font-size: 0.9rem;
+            margin-top: 8px;
+            font-size: 1rem;
             color: #a0a0ff;
+            font-weight: 500;
         }
         
         .section {
-            padding: 20px;
-            background: rgba(15, 23, 42, 0.7);
-            border-radius: 15px;
-            margin-top: 20px;
+            padding: 25px;
+            background: rgba(15, 23, 42, 0.75);
+            border-radius: 20px;
+            margin-top: 25px;
             border: 1px solid rgba(79, 172, 254, 0.3);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.3),
+                0 5px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            border-radius: 4px 4px 0 0;
         }
         
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
         }
         
         .card {
-            background: rgba(25, 35, 60, 0.8);
-            border-radius: 12px;
-            padding: 20px;
+            background: linear-gradient(135deg, rgba(25, 35, 60, 0.85), rgba(20, 30, 50, 0.85));
+            border-radius: 16px;
+            padding: 25px;
             border: 2px solid #4a5fc1;
-            transition: all 0.3s;
+            transition: all 0.4s;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
         }
         
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(255, 179, 0, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(255, 179, 0, 0.4);
+        }
+        
+        .card:hover::before {
+            transform: scaleX(1);
         }
         
         .card.completed {
             border: 2px solid #00f2fe;
-            background: rgba(0, 242, 254, 0.1);
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(79, 172, 254, 0.1));
         }
         
         .card i {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             color: #4facfe;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
         }
         
         .card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
             color: #4facfe;
+            font-weight: 600;
         }
         
         .card p {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #a0a0ff;
-            margin-bottom: 15px;
-            min-height: 60px;
+            margin-bottom: 20px;
+            min-height: 70px;
+            line-height: 1.5;
         }
         
         .reward {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: bold;
             color: #00f2fe;
+            font-size: 1.1rem;
         }
         
         .reward i {
-            margin: 0 5px 0 0;
-            font-size: 1.2rem;
+            margin: 0 8px 0 0;
+            font-size: 1.3rem;
+            color: #ffd700;
         }
         
         .bonus-stats {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 15px;
+            margin: 25px 0;
         }
         
         .bonus-stat {
-            background: rgba(20, 30, 50, 0.8);
-            border-radius: 12px;
-            padding: 15px;
-            width: 120px;
+            background: linear-gradient(135deg, rgba(20, 30, 50, 0.85), rgba(15, 23, 42, 0.85));
+            border-radius: 16px;
+            padding: 20px;
+            width: 140px;
             border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bonus-stat::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        
+        .bonus-stat:hover::before {
+            transform: scaleX(1);
         }
         
         .bonus-stat i {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: #4facfe;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         
         .bonus-stat .value {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: #00f2fe;
+            text-shadow: 0 0 8px rgba(0, 242, 254, 0.5);
         }
         
         .bonus-stat .label {
-            font-size: 0.8rem;
-            margin-top: 5px;
+            font-size: 0.85rem;
+            margin-top: 8px;
             color: #a0a0ff;
         }
         
@@ -477,16 +625,16 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 25px;
         }
         
         .reward-day {
-            background: rgba(20, 30, 50, 0.8);
-            border-radius: 12px;
-            padding: 15px 10px;
-            width: 70px;
-            height: 100px;
+            background: linear-gradient(135deg, rgba(20, 30, 50, 0.85), rgba(15, 23, 42, 0.85));
+            border-radius: 16px;
+            padding: 18px 12px;
+            width: 80px;
+            height: 110px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -495,34 +643,55 @@
             margin: 5px;
             transition: all 0.3s;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .reward-day::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
         
         .reward-day.active {
             border-color: #4facfe;
-            background: rgba(79, 172, 254, 0.2);
-            transform: translateY(-5px);
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.25), rgba(0, 242, 254, 0.2));
+            transform: translateY(-8px);
+            box-shadow: 0 0 20px rgba(79, 172, 254, 0.4);
+        }
+        
+        .reward-day.active::before {
+            transform: scaleX(1);
         }
         
         .reward-day.claimed {
             border-color: #00f2fe;
-            background: rgba(0, 242, 254, 0.2);
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.25), rgba(79, 172, 254, 0.2));
         }
         
         .reward-day i {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            margin-bottom: 12px;
             color: #4facfe;
         }
         
         .reward-amount {
             font-weight: bold;
             color: #4facfe;
+            font-size: 1.1rem;
         }
         
         .reward-day.active:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4);
+            transform: translateY(-12px);
+            box-shadow: 0 0 25px rgba(79, 172, 254, 0.5);
         }
         
         @keyframes coin-spin {
@@ -531,7 +700,7 @@
         }
         
         .coin-spin {
-            animation: coin-spin 1s ease-in-out;
+            animation: coin-spin 1.2s ease-in-out;
         }
         
         .settings-modal {
@@ -541,13 +710,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.4s;
         }
         
         .settings-modal.active {
@@ -556,16 +725,27 @@
         }
         
         .settings-content {
-            background: rgba(15, 23, 42, 0.95);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.97), rgba(10, 15, 30, 0.97));
             width: 90%;
-            max-width: 500px;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+            max-width: 520px;
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
             position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s;
-            border: 1px solid rgba(79, 172, 254, 0.3);
+            transform: translateY(25px);
+            transition: transform 0.4s;
+            border: 1px solid rgba(79, 172, 254, 0.4);
+            overflow: hidden;
+        }
+        
+        .settings-content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
         }
         
         .settings-modal.active .settings-content {
@@ -574,14 +754,15 @@
         
         .close-btn {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 25px;
+            right: 25px;
             background: transparent;
             border: none;
             color: #a0a0ff;
-            font-size: 1.5rem;
+            font-size: 1.7rem;
             cursor: pointer;
             transition: all 0.3s;
+            z-index: 2;
         }
         
         .close-btn:hover {
@@ -591,15 +772,16 @@
         
         .settings-title {
             color: #4facfe;
-            margin-bottom: 25px;
-            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
             text-align: center;
-            font-weight: 600;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
         }
         
         .setting-group {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
             border-bottom: 1px solid rgba(79, 172, 254, 0.3);
         }
         
@@ -609,162 +791,203 @@
         
         .setting-label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-weight: 600;
             color: #ffffff;
             text-align: left;
+            font-size: 1.1rem;
         }
         
         .language-select {
             width: 100%;
-            padding: 12px;
-            background: rgba(20, 30, 50, 0.8);
+            padding: 14px;
+            background: rgba(20, 30, 50, 0.85);
             border: 1px solid #4a5fc1;
-            border-radius: 10px;
+            border-radius: 12px;
             color: #ffffff;
-            font-size: 1rem;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .language-select:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.5);
         }
         
         .promo-input {
             width: 100%;
-            padding: 12px;
-            background: rgba(20, 30, 50, 0.8);
+            padding: 14px;
+            background: rgba(20, 30, 50, 0.85);
             border: 1px solid #4a5fc1;
-            border-radius: 10px;
+            border-radius: 12px;
             color: #ffffff;
-            font-size: 1rem;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .promo-input:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.5);
         }
         
         .promo-btn {
             background: linear-gradient(45deg, #4facfe, #3a86ff);
             color: #1a2a6c;
             border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
+            padding: 15px 25px;
+            border-radius: 12px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
             width: 100%;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+            box-shadow: 0 5px 20px rgba(79, 172, 254, 0.5);
+            font-size: 1.1rem;
         }
         
         .promo-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.7);
         }
         
         .reset-btn {
             background: linear-gradient(45deg, #ff6b6b, #ff4757);
             color: white;
             border: none;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 16px;
+            border-radius: 12px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
             width: 100%;
             transition: all 0.3s;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            margin-top: 15px;
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.5);
+            font-size: 1.1rem;
         }
         
         .reset-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.7);
         }
         
         .promo-result {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 8px;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
             display: none;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            text-align: center;
         }
         
         .promo-success {
-            background: rgba(0, 242, 254, 0.2);
+            background: rgba(0, 242, 254, 0.25);
             border: 1px solid #00f2fe;
             color: #00f2fe;
         }
         
         .promo-error {
-            background: rgba(255, 107, 107, 0.2);
+            background: rgba(255, 107, 107, 0.25);
             border: 1px solid #ff6b6b;
             color: #ff6b6b;
         }
         
         .notification {
             position: fixed;
-            top: 20px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(20, 30, 50, 0.9);
+            background: rgba(20, 30, 50, 0.95);
             color: #4facfe;
-            padding: 15px 25px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            padding: 18px 30px;
+            border-radius: 60px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
             z-index: 1000;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.4s;
             font-weight: 600;
-            border: 1px solid rgba(79, 172, 254, 0.3);
-            backdrop-filter: blur(5px);
+            border: 1px solid rgba(79, 172, 254, 0.4);
+            backdrop-filter: blur(10px);
+            font-size: 1.1rem;
+            min-width: 300px;
+            text-align: center;
         }
         
         .save-notice {
             position: fixed;
-            bottom: 100px;
+            bottom: 120px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(20, 30, 50, 0.9);
+            background: rgba(20, 30, 50, 0.95);
             color: #00f2fe;
-            padding: 10px 20px;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            padding: 12px 25px;
+            border-radius: 60px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
             z-index: 1000;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.4s;
             font-weight: 600;
             border: 1px solid rgba(79, 172, 254, 0.3);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
         }
         
         .btn {
             background: linear-gradient(45deg, #4facfe, #00f2fe);
             border: none;
             color: #1a2a6c;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-weight: 600;
+            padding: 14px 30px;
+            border-radius: 60px;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
-            margin: 5px;
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
-            font-size: 1rem;
+            margin: 8px;
+            box-shadow: 0 5px 20px rgba(79, 172, 254, 0.5);
+            font-size: 1.1rem;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
         }
         
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.7);
+        }
+        
+        .btn:hover::after {
+            opacity: 1;
         }
         
         .btn:active {
-            transform: translateY(1px);
+            transform: translateY(2px);
         }
         
         .btn:disabled {
-            background: rgba(100, 100, 100, 0.5);
+            background: rgba(100, 100, 100, 0.6);
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
         
         .btn i {
-            margin-right: 8px;
+            margin-right: 10px;
         }
         
         .telegram-btn {
@@ -788,123 +1011,135 @@
         }
         
         .invoice-container {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(20, 30, 50, 0.8);
-            border-radius: 12px;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(20, 30, 50, 0.85);
+            border-radius: 16px;
             display: none;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 
+                inset 0 0 15px rgba(0, 0, 0, 0.3),
+                0 5px 20px rgba(0, 0, 0, 0.2);
         }
         
         .invoice-container.active {
             display: block;
-            animation: fadeIn 0.5s;
+            animation: fadeIn 0.6s;
         }
         
         .invoice-info {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: left;
-            padding: 10px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 8px;
+            padding: 15px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(79, 172, 254, 0.2);
         }
         
         .invoice-info p {
-            margin: 8px 0;
-            font-size: 0.95rem;
+            margin: 10px 0;
+            font-size: 1rem;
+            line-height: 1.6;
         }
         
         .qr-code {
-            margin: 15px auto;
-            padding: 10px;
+            margin: 20px auto;
+            padding: 15px;
             background: white;
-            border-radius: 8px;
+            border-radius: 12px;
             display: inline-block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid #4facfe;
         }
         
         .invoice-actions {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 15px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
         
         .invoice-actions .btn {
-            min-width: 150px;
+            min-width: 170px;
         }
         
         .invoice-status {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 8px;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
             font-weight: bold;
             display: none;
             text-align: center;
+            font-size: 1.1rem;
         }
         
         .status-paid {
-            background: rgba(0, 200, 83, 0.2);
+            background: rgba(0, 200, 83, 0.25);
             border: 1px solid #00c853;
             color: #00c853;
         }
         
         .status-pending {
-            background: rgba(255, 193, 7, 0.2);
+            background: rgba(255, 193, 7, 0.25);
             border: 1px solid #ffc107;
             color: #ffc107;
         }
         
         .status-expired {
-            background: rgba(244, 67, 54, 0.2);
+            background: rgba(244, 67, 54, 0.25);
             border: 1px solid #f44336;
             color: #f44336;
         }
         
         .package-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
         }
         
         .crypto-currency {
-            margin-top: 15px;
+            margin-top: 20px;
         }
         
         .currency-select {
             width: 100%;
-            padding: 10px;
-            background: rgba(20, 30, 50, 0.8);
+            padding: 12px;
+            background: rgba(20, 30, 50, 0.85);
             border: 1px solid #4a5fc1;
-            border-radius: 10px;
+            border-radius: 12px;
             color: #ffffff;
-            font-size: 1rem;
-            margin-top: 5px;
+            font-size: 1.1rem;
+            margin-top: 8px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
         }
         
         .crypto-balance {
-            margin-top: 15px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            font-size: 0.9rem;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            border: 1px solid rgba(79, 172, 254, 0.2);
         }
         
         .timer {
-            margin-top: 10px;
-            font-size: 0.9rem;
+            margin-top: 15px;
+            font-size: 1rem;
             color: #ffc107;
+            font-weight: 500;
         }
         
         .loading {
             display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border: 3px solid rgba(255,255,255,.3);
             border-radius: 50%;
             border-top-color: #fff;
             animation: spin 1s ease-in-out infinite;
-            margin-right: 10px;
+            margin-right: 12px;
         }
         
         @keyframes spin {
@@ -913,30 +1148,53 @@
         
         .effect-tag {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 107, 107, 0.2);
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 107, 107, 0.25);
             color: #ff6b6b;
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             font-weight: bold;
+            border: 1px solid rgba(255, 107, 107, 0.4);
         }
         
         .achievement {
             display: flex;
             align-items: center;
-            background: rgba(25, 35, 60, 0.8);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 10px;
+            background: linear-gradient(135deg, rgba(25, 35, 60, 0.85), rgba(20, 30, 50, 0.85));
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
             border: 2px solid #4a5fc1;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .achievement::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        
+        .achievement:hover::before {
+            transform: scaleX(1);
         }
         
         .achievement-icon {
-            font-size: 2rem;
-            margin-right: 15px;
+            font-size: 2.3rem;
+            margin-right: 20px;
             color: #4facfe;
+            min-width: 50px;
+            text-align: center;
         }
         
         .achievement-details {
@@ -945,60 +1203,177 @@
         }
         
         .achievement-progress {
-            height: 5px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 5px;
-            margin-top: 5px;
+            height: 6px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 6px;
+            margin-top: 10px;
             overflow: hidden;
         }
         
         .achievement-progress-bar {
             height: 100%;
             background: linear-gradient(to right, #00f2fe, #4facfe);
-            border-radius: 5px;
+            border-radius: 6px;
         }
         
         .achievement-reward {
-            margin-left: 15px;
+            margin-left: 20px;
             font-weight: bold;
-            color: #ffb300;
+            color: #ffd700;
+            font-size: 1.2rem;
+            min-width: 80px;
+            text-align: center;
         }
         
         .achievement.completed {
             border-color: #00f2fe;
-            background: rgba(0, 242, 254, 0.1);
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.15));
         }
         
-        @media (max-width: 600px) {
+        .invoice-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+        
+        .invoice-loading .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(79, 172, 254, 0.3);
+            border-radius: 50%;
+            border-top-color: #4facfe;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        .invoice-loading p {
+            color: #4facfe;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        .invoice-error {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            color: #ff6b6b;
+            text-align: center;
+        }
+        
+        .invoice-error i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .invoice-error button {
+            margin-top: 15px;
+        }
+        
+        .payment-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .status-paid {
+            background: rgba(0, 200, 83, 0.25);
+            border: 1px solid #00c853;
+            color: #00c853;
+        }
+        
+        .status-pending {
+            background: rgba(255, 193, 7, 0.25);
+            border: 1px solid #ffc107;
+            color: #ffc107;
+        }
+        
+        .status-expired {
+            background: rgba(244, 67, 54, 0.25);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+        
+        .payment-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .payment-info-card {
+            background: rgba(20, 30, 50, 0.85);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+        }
+        
+        .payment-info-card h4 {
+            color: #a0a0ff;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        
+        .payment-info-card p {
+            font-size: 1.1rem;
+            font-weight: 500;
+            word-break: break-all;
+        }
+        
+        .copy-btn {
+            background: rgba(79, 172, 254, 0.15);
+            border: 1px solid rgba(79, 172, 254, 0.4);
+            color: #4facfe;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(79, 172, 254, 0.25);
+        }
+        
+        @media (max-width: 650px) {
             .container {
-                padding: 15px;
-                border-radius: 15px;
-                margin-bottom: 100px;
+                padding: 18px;
+                border-radius: 20px;
+                margin-bottom: 120px;
             }
             
             .stats {
                 flex-direction: row;
                 align-items: center;
-                padding: 10px;
-                gap: 5px;
+                padding: 15px;
+                gap: 8px;
             }
             
             .stat-card {
-                width: 30%;
+                width: 32%;
                 min-width: auto;
-                padding: 8px;
+                padding: 12px;
             }
             
             .stat-value {
-                font-size: 1.3rem;
+                font-size: 1.4rem;
             }
             
             .energy-value {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
             }
             
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.7rem;
             }
             
             .tabs {
@@ -1006,11 +1381,11 @@
             }
             
             .tab {
-                flex: 0 0 30%;
+                flex: 0 0 32%;
                 margin-bottom: 5px;
-                min-width: 70px;
-                padding: 8px 0;
-                font-size: 0.7rem;
+                min-width: 75px;
+                padding: 10px 0;
+                font-size: 0.75rem;
             }
             
             .grid {
@@ -1018,23 +1393,23 @@
             }
             
             .bottom-nav {
-                padding: 5px;
+                padding: 8px;
             }
             
             #coin {
-                width: 180px;
-                height: 180px;
-                font-size: 2.8rem;
+                width: 200px;
+                height: 200px;
+                font-size: 3.2rem;
             }
             
             .daily-rewards {
-                gap: 5px;
+                gap: 8px;
             }
             
             .reward-day {
-                width: 60px;
-                height: 90px;
-                padding: 10px 5px;
+                width: 70px;
+                height: 100px;
+                padding: 15px 8px;
             }
             
             .package-grid {
@@ -1046,12 +1421,16 @@
             }
             
             .card {
-                padding: 15px;
+                padding: 20px;
             }
             
             .bonus-stat {
-                width: 100px;
-                padding: 12px;
+                width: 110px;
+                padding: 15px;
+            }
+            
+            .payment-info-grid {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -1062,25 +1441,29 @@
             
             .tab i {
                 font-size: 1.2rem;
-                margin-bottom: 3px;
+                margin-bottom: 4px;
             }
             
             .stat-card {
-                width: 28%;
+                width: 31%;
                 min-width: 0;
-                padding: 8px 5px;
+                padding: 10px 6px;
             }
             
             .stat-value {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
             }
             
             .energy-value {
-                font-size: 1.0rem;
+                font-size: 1.1rem;
+            }
+            
+            .section {
+                padding: 20px 15px;
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="desktop-block">
@@ -1447,13 +1830,7 @@
                 </div>
                 
                 <div class="invoice-container" id="invoice-container">
-                    <div class="invoice-info">
-                        <p><strong>Инвойс ID:</strong> <span id="invoice-id">-</span></p>
-                        <p><strong>Для оплаты переведите:</strong> <span id="invoice-amount">0.3</span> <span id="invoice-currency">USDT</span></p>
-                        <p><strong>На адрес:</strong> <span id="invoice-address">TB9W...qX3v</span></p>
-                        <p><strong>Сеть:</strong> <span id="invoice-network">TRC20</span></p>
-                        <p><strong>Ссылка для оплаты:</strong> <a href="#" id="pay-link" target="_blank">Открыть в CryptoBot</a></p>
-                    </div>
+                    <div class="invoice-info" id="invoice-info"></div>
                     
                     <div class="qr-code" id="qr-code"></div>
                     
@@ -1471,7 +1848,7 @@
                         </button>
                     </div>
                     
-                    <div class="invoice-status" id="invoice-status"></div>
+                    <div class="payment-status" id="payment-status"></div>
                 </div>
                 
                 <div class="crypto-balance">
@@ -1595,6 +1972,12 @@
     <div class="save-notice" id="save-notice"><span class="lang-game-saved">Игра сохранена!</span></div>
 
     <script>
+        // ========== КОНСТАНТЫ И НАСТРОЙКИ ==========
+        const CRYPTO_BOT_TOKEN = "428290:AAW532c6iYZ0vr7zuBQtj4hi8UGBzofeKby";
+        const CRYPTO_BOT_API = "https://pay.crypt.bot/api";
+        const CRYPTO_BOT_TESTNET_API = "https://testnet-pay.crypt.bot/api";
+        const USE_TESTNET = false; // Переключить на false для основной сети
+        
         // ========== ИНИЦИАЛИЗАЦИЯ ИГРЫ ==========
         
         // Состояние игры
@@ -1618,9 +2001,6 @@
         let doubleClick = false;
         let doubleClickExpire = 0;
         let infiniteEnergyExpire = 0;
-        
-        // Токен CryptoBot
-        const CRYPTO_BOT_TOKEN = '428290:AAW532c6iYZ0vr7zuBQtj4hi8UGBzofeKby';
         
         // Текущий инвойс
         let currentInvoice = null;
@@ -1729,7 +2109,19 @@
                 effectEnded: "Эффект закончился!",
                 dailyAlreadyClaimed: "Вы уже получили сегодняшнюю награду!",
                 dailyRewardClaimed: "Ежедневная награда получена!",
-                questCompleted: "Задание выполнено!"
+                questCompleted: "Задание выполнено!",
+                invoiceId: "ID инвойса",
+                amountToPay: "Сумма к оплате",
+                paymentMethod: "Метод оплаты",
+                receivedCoins: "Полученные монеты",
+                payWithCryptoBot: "Оплатить через CryptoBot",
+                statusActive: "Ожидает оплаты",
+                statusPaid: "Оплачено",
+                statusExpired: "Истек срок действия",
+                invoiceNotFound: "Инвойс не найден",
+                close: "Закрыть",
+                checkingPayment: "Проверка оплаты...",
+                paymentError: "Ошибка при проверке платежа"
             },
             en: {
                 coins: "Coins",
@@ -1793,7 +2185,19 @@
                 effectEnded: "Effect ended!",
                 dailyAlreadyClaimed: "You've already claimed today's reward!",
                 dailyRewardClaimed: "Daily reward claimed!",
-                questCompleted: "Quest completed!"
+                questCompleted: "Quest completed!",
+                invoiceId: "Invoice ID",
+                amountToPay: "Amount to pay",
+                paymentMethod: "Payment method",
+                receivedCoins: "Coins to receive",
+                payWithCryptoBot: "Pay with CryptoBot",
+                statusActive: "Waiting for payment",
+                statusPaid: "Paid",
+                statusExpired: "Expired",
+                invoiceNotFound: "Invoice not found",
+                close: "Close",
+                checkingPayment: "Checking payment...",
+                paymentError: "Payment check error"
             }
         };
         
@@ -1837,24 +2241,26 @@
         const copyAddressBtn = document.getElementById('copy-address-btn');
         const checkPaymentBtn = document.getElementById('check-payment-btn');
         const cancelInvoiceBtn = document.getElementById('cancel-invoice-btn');
-        const invoiceStatus = document.getElementById('invoice-status');
+        const paymentStatus = document.getElementById('payment-status');
         const cryptoCurrencySelect = document.getElementById('crypto-currency');
         const invoiceTimerEl = document.getElementById('invoice-timer');
         const timerValue = document.getElementById('timer-value');
         const achievementsList = document.getElementById('achievements-list');
+        const invoiceInfo = document.getElementById('invoice-info');
 
         // Создание крипто-частиц
         function createParticles() {
             cryptoParticles.innerHTML = '';
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 30; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
-                particle.style.width = `${Math.random() * 10 + 5}px`;
-                particle.style.height = particle.style.width;
+                const size = Math.random() * 100 + 50;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
                 particle.style.left = `${Math.random() * 100}%`;
-                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
-                particle.style.animationDelay = `${Math.random() * 5}s`;
-                particle.style.backgroundColor = `rgba(${Math.floor(Math.random() * 100) + 100}, ${Math.floor(Math.random() * 200)}, 255, ${Math.random() * 0.5 + 0.3})`;
+                particle.style.animationDuration = `${Math.random() * 20 + 20}s`;
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                particle.style.setProperty('--tx', Math.random() * 2 - 1);
                 cryptoParticles.appendChild(particle);
             }
         }
@@ -2041,7 +2447,7 @@
             
             setTimeout(() => {
                 anim.remove();
-            }, 1500);
+            }, 1800);
         }
         
         // Покупка улучшения
@@ -2404,97 +2810,206 @@
         
         // ========== CRYPTOBOT INTEGRATION ==========
         
-        // Создание инвойса для CryptoBot
+        // Создание инвойса через CryptoBot API
         async function createCryptoInvoice(amount, currency, coinsAmount, effect) {
             try {
                 // Показываем статус загрузки
                 showNotification(translations[language].creatingInvoice);
                 
-                // Генерируем случайный адрес для демонстрации
-                const cryptoAddresses = {
-                    'USDT': 'TB9WqX3vjY7zL8kGf5dR2sN6mH4pJ1K',
-                    'TON': 'EQCDYJ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7Z7TZ7',
-                    'BTC': 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
-                    'ETH': '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
-                    'BNB': 'bnb1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
-                    'TRX': 'TQZv1vXZv1vXZv1vXZv1vXZv1vXZv1vXZv1v'
-                };
-                
-                const networks = {
-                    'USDT': 'TRC20',
-                    'TON': 'TON',
-                    'BTC': 'Bitcoin',
-                    'ETH': 'ERC20',
-                    'BNB': 'BEP20',
-                    'TRX': 'TRC20'
-                };
-                
-                const address = cryptoAddresses[currency];
-                const network = networks[currency];
-                
-                // Создаем QR-код
+                // Скрываем старые данные, показываем загрузчик
                 qrCodeEl.innerHTML = '';
-                new QRCode(qrCodeEl, {
-                    text: `${currency}:${address}?amount=${amount}`,
-                    width: 150,
-                    height: 150
+                paymentStatus.style.display = 'none';
+                invoiceInfo.innerHTML = `
+                    <div class="invoice-loading">
+                        <div class="spinner"></div>
+                        <p>${translations[language].creatingInvoice}</p>
+                    </div>
+                `;
+                invoiceContainer.classList.add('active');
+                
+                // Определяем API URL в зависимости от сети
+                const apiUrl = USE_TESTNET ? CRYPTO_BOT_TESTNET_API : CRYPTO_BOT_API;
+                
+                // Создаем тело запроса
+                const requestBody = {
+                    asset: currency,
+                    amount: amount.toString(),
+                    description: `Покупка ${coinsAmount} монет в FG Bot`
+                };
+                
+                // Отправляем запрос на создание инвойса
+                const response = await fetch(`${apiUrl}/createInvoice`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN
+                    },
+                    body: JSON.stringify(requestBody)
                 });
+                
+                const data = await response.json();
+                
+                if (!data.ok) {
+                    throw new Error(data.error || translations[language].invoiceError);
+                }
+                
+                const invoice = data.result;
                 
                 // Сохраняем инвойс
                 currentInvoice = {
-                    id: `INV-${Date.now()}`,
-                    amount,
-                    currency,
-                    coinsAmount,
-                    effect,
-                    address,
-                    network,
-                    payUrl: `https://t.me/CryptoBot?start=${Date.now()}`,
-                    createdAt: Date.now(),
-                    status: 'pending'
+                    id: invoice.invoice_id,
+                    amount: invoice.amount,
+                    currency: invoice.asset,
+                    coinsAmount: coinsAmount,
+                    effect: effect,
+                    payUrl: invoice.pay_url,
+                    status: invoice.status,
+                    createdAt: new Date(invoice.created_at).getTime(),
+                    expiration: new Date(invoice.expiration_date).getTime(),
+                    deepLink: invoice.deep_link,
+                    hash: invoice.hash
                 };
                 
-                // Проверяем задание
-                completeQuest('buyCrypto');
-                
-                // Показываем информацию об инвойсе
-                invoiceId.textContent = currentInvoice.id;
-                invoiceAmount.textContent = amount;
-                invoiceCurrency.textContent = currency;
-                invoiceAddress.textContent = address;
-                invoiceNetwork.textContent = network;
-                payLink.href = currentInvoice.payUrl;
-                invoiceContainer.classList.add('active');
-                invoiceStatus.style.display = 'none';
+                // Обновляем интерфейс с данными инвойса
+                updateInvoiceUI();
                 
                 // Запускаем таймер инвойса
                 startInvoiceTimer();
                 
-                // Копируем в буфер обмена при нажатии
-                copyAddressBtn.onclick = () => {
-                    navigator.clipboard.writeText(address);
-                    showNotification(translations[language].addressCopied);
-                };
-                
-                // Обработчик проверки платежа
-                checkPaymentBtn.onclick = checkCryptoPayment;
-                
-                // Обработчик отмены инвойса
-                cancelInvoiceBtn.onclick = cancelInvoice;
+                // Проверяем задание
+                completeQuest('buyCrypto');
                 
                 showNotification(translations[language].invoiceCreated);
                 return true;
             } catch (error) {
                 console.error('Error creating invoice:', error);
-                showNotification(translations[language].invoiceError);
+                showInvoiceError(error.message);
                 return false;
             }
         }
         
+        // Обновление UI с данными инвойса
+        function updateInvoiceUI() {
+            if (!currentInvoice) return;
+            
+            const lang = translations[language];
+            
+            // Обновляем информацию
+            invoiceInfo.innerHTML = `
+                <div class="payment-info-grid">
+                    <div class="payment-info-card">
+                        <h4>${lang.invoiceId}</h4>
+                        <p>${currentInvoice.id}</p>
+                    </div>
+                    
+                    <div class="payment-info-card">
+                        <h4>${lang.amountToPay}</h4>
+                        <p>${currentInvoice.amount} ${currentInvoice.currency}</p>
+                    </div>
+                    
+                    <div class="payment-info-card">
+                        <h4>${lang.paymentMethod}</h4>
+                        <p>${currentInvoice.currency} ${getCurrencyNetwork(currentInvoice.currency)}</p>
+                    </div>
+                    
+                    <div class="payment-info-card">
+                        <h4>${lang.receivedCoins}</h4>
+                        <p>${currentInvoice.coinsAmount} монет</p>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="${currentInvoice.payUrl}" target="_blank" class="btn" style="display: inline-flex; align-items: center;">
+                        <i class="fab fa-telegram" style="margin-right: 10px;"></i> 
+                        ${lang.payWithCryptoBot}
+                    </a>
+                </div>
+            `;
+            
+            // Создаем QR-код
+            qrCodeEl.innerHTML = '';
+            new QRCode(qrCodeEl, {
+                text: currentInvoice.deepLink,
+                width: 180,
+                height: 180,
+                colorDark: "#1a2a6c",
+                colorLight: "#0f172a",
+            });
+            
+            // Обновляем таймер
+            updateTimerDisplay();
+            
+            // Показываем статус
+            updateInvoiceStatus(currentInvoice.status);
+        }
+        
+        // Получение сети для валюты
+        function getCurrencyNetwork(currency) {
+            const networks = {
+                'USDT': 'TRC20',
+                'TON': 'TON',
+                'BTC': 'Bitcoin',
+                'ETH': 'ERC20',
+                'BNB': 'BEP20',
+                'TRX': 'TRC20'
+            };
+            return networks[currency] || '';
+        }
+        
+        // Обновление статуса инвойса
+        function updateInvoiceStatus(status) {
+            paymentStatus.style.display = 'block';
+            
+            switch (status) {
+                case 'active':
+                    paymentStatus.textContent = translations[language].statusActive;
+                    paymentStatus.className = 'payment-status status-pending';
+                    break;
+                case 'paid':
+                    paymentStatus.textContent = translations[language].statusPaid;
+                    paymentStatus.className = 'payment-status status-paid';
+                    break;
+                case 'expired':
+                    paymentStatus.textContent = translations[language].statusExpired;
+                    paymentStatus.className = 'payment-status status-expired';
+                    break;
+                default:
+                    paymentStatus.textContent = status;
+                    paymentStatus.className = 'payment-status status-pending';
+            }
+        }
+        
+        // Показать ошибку при создании инвойса
+        function showInvoiceError(message) {
+            invoiceInfo.innerHTML = `
+                <div class="invoice-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>${translations[language].invoiceError}</h3>
+                    <p>${message}</p>
+                    <button class="btn" onclick="cancelInvoice()">
+                        <i class="fas fa-times"></i> ${translations[language].close}
+                    </button>
+                </div>
+            `;
+        }
+        
         // Таймер инвойса
         function startInvoiceTimer() {
+            if (!currentInvoice) return;
+            
             clearInterval(invoiceTimer);
-            invoiceTimeLeft = 900; // 15 минут
+            
+            // Рассчитываем оставшееся время
+            const now = Date.now();
+            invoiceTimeLeft = Math.floor((currentInvoice.expiration - now) / 1000);
+            
+            // Если время уже истекло
+            if (invoiceTimeLeft <= 0) {
+                currentInvoice.status = 'expired';
+                updateInvoiceStatus(currentInvoice.status);
+                return;
+            }
+            
             updateTimerDisplay();
             
             invoiceTimer = setInterval(() => {
@@ -2503,28 +3018,25 @@
                 
                 if (invoiceTimeLeft <= 0) {
                     clearInterval(invoiceTimer);
-                    invoiceStatus.textContent = translations[language].invoiceExpired;
-                    invoiceStatus.className = 'invoice-status status-expired';
-                    invoiceStatus.style.display = 'block';
                     currentInvoice.status = 'expired';
+                    updateInvoiceStatus(currentInvoice.status);
                 }
             }, 1000);
         }
         
         // Обновление отображения таймера
         function updateTimerDisplay() {
+            if (!currentInvoice) return;
+            
             const minutes = Math.floor(invoiceTimeLeft / 60);
             const seconds = invoiceTimeLeft % 60;
             timerValue.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        // Отмена инвойса
-        function cancelInvoice() {
-            if (currentInvoice) {
-                clearInterval(invoiceTimer);
-                invoiceContainer.classList.remove('active');
-                currentInvoice = null;
-                showNotification(translations[language].invoiceCancelled);
+            
+            // Изменяем цвет при малом времени
+            if (invoiceTimeLeft < 60) {
+                timerValue.style.color = "#ff6b6b";
+            } else {
+                timerValue.style.color = "#ffc107";
             }
         }
         
@@ -2535,12 +3047,38 @@
             try {
                 // Показываем статус проверки
                 showNotification(translations[language].paymentCheck);
+                checkPaymentBtn.innerHTML = `<span class="loading"></span> ${translations[language].checkingPayment}`;
+                checkPaymentBtn.disabled = true;
                 
-                // Для демо - 70% шанс что платеж прошел
-                const isPaid = Math.random() > 0.3;
+                // Определяем API URL
+                const apiUrl = USE_TESTNET ? CRYPTO_BOT_TESTNET_API : CRYPTO_BOT_API;
                 
-                if (isPaid) {
-                    // Платеж получен
+                // Запрашиваем статус инвойса
+                const response = await fetch(`${apiUrl}/getInvoices?invoice_ids=${currentInvoice.id}`, {
+                    headers: {
+                        'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (!data.ok) {
+                    throw new Error(data.error || translations[language].paymentError);
+                }
+                
+                // Получаем первый инвойс из списка
+                const invoice = data.result.items[0];
+                
+                if (!invoice) {
+                    throw new Error(translations[language].invoiceNotFound);
+                }
+                
+                // Обновляем статус
+                currentInvoice.status = invoice.status;
+                updateInvoiceStatus(currentInvoice.status);
+                
+                // Если оплачено, начисляем средства
+                if (invoice.status === 'paid') {
                     coins += currentInvoice.coinsAmount;
                     totalCoins += currentInvoice.coinsAmount;
                     
@@ -2552,10 +3090,6 @@
                             infiniteEnergyExpire = Date.now() + parseInt(duration) * 60 * 60 * 1000;
                         }
                     }
-                    
-                    invoiceStatus.textContent = `${translations[language].cryptoPaymentSuccess} +${currentInvoice.coinsAmount} монет!`;
-                    invoiceStatus.className = 'invoice-status status-paid';
-                    invoiceStatus.style.display = 'block';
                     
                     // Отключаем таймер
                     clearInterval(invoiceTimer);
@@ -2572,19 +3106,26 @@
                         invoiceContainer.classList.remove('active');
                         currentInvoice = null;
                     }, 5000);
-                } else {
-                    // Платеж не найден
-                    invoiceStatus.textContent = translations[language].paymentNotFound;
-                    invoiceStatus.className = 'invoice-status status-pending';
-                    invoiceStatus.style.display = 'block';
+                    
+                    saveGame();
                 }
                 
-                saveGame();
             } catch (error) {
                 console.error('Error checking payment:', error);
-                invoiceStatus.textContent = translations[language].cryptoPaymentError;
-                invoiceStatus.className = 'invoice-status status-expired';
-                invoiceStatus.style.display = 'block';
+                showNotification(translations[language].paymentError);
+            } finally {
+                checkPaymentBtn.innerHTML = `<i class="fas fa-sync-alt"></i> ${translations[language].checkPayment}`;
+                checkPaymentBtn.disabled = false;
+            }
+        }
+        
+        // Отмена инвойса
+        function cancelInvoice() {
+            if (currentInvoice) {
+                clearInterval(invoiceTimer);
+                invoiceContainer.classList.remove('active');
+                currentInvoice = null;
+                showNotification(translations[language].invoiceCancelled);
             }
         }
         
@@ -2823,6 +3364,16 @@
                     createCryptoInvoice(price, currency, coinsAmount, effect);
                 });
             });
+            
+            // Обработчики кнопок инвойса
+            copyAddressBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(currentInvoice.address);
+                showNotification(translations[language].addressCopied);
+            });
+            
+            checkPaymentBtn.addEventListener('click', checkCryptoPayment);
+            
+            cancelInvoiceBtn.addEventListener('click', cancelInvoice);
         }
         
         // Загрузка игры при старте
