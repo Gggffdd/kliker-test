@@ -120,7 +120,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(to right, #4facfe, #00f2fe, #ff6b6b);
+            background: linear-gradient(to right, #4facfe, #00f2fe);
             border-radius: 4px 4px 0 0;
         }
         
@@ -2294,6 +2294,9 @@
         
         // Обновить шкалу энергии
         function updateEnergyBar() {
+            // Защита от выхода за пределы
+            energy = Math.max(0, Math.min(energy, maxEnergy));
+            
             const percent = (energy / maxEnergy) * 100;
             energyFill.style.width = `${percent}%`;
             energyText.textContent = `${Math.floor(energy)}/${maxEnergy}`;
@@ -2358,6 +2361,28 @@
                     coins1000: { completed: false, progress: 0, max: 1000, reward: 500 },
                     energyEmpty: { completed: false, progress: 0, max: 1, reward: 300 }
                 };
+                
+                // Восстановление энергии за время отсутствия
+                if (gameData.lastSave) {
+                    const now = Date.now();
+                    const timePassed = Math.floor((now - gameData.lastSave) / 1000); // в секундах
+                    
+                    // Восстанавливаем энергию только если не активна бесконечная энергия
+                    if (!infiniteEnergy) {
+                        energy = Math.min(maxEnergy, energy + timePassed);
+                    }
+                    
+                    // Корректируем таймеры эффектов
+                    if (doubleClickExpire > 0) {
+                        doubleClickExpire = Math.max(0, doubleClickExpire - timePassed * 1000);
+                        if (doubleClickExpire === 0) doubleClick = false;
+                    }
+                    
+                    if (infiniteEnergyExpire > 0) {
+                        infiniteEnergyExpire = Math.max(0, infiniteEnergyExpire - timePassed * 1000);
+                        if (infiniteEnergyExpire === 0) infiniteEnergy = false;
+                    }
+                }
                 
                 updateQuestButtons();
                 updateAchievements();
@@ -3238,7 +3263,8 @@
                 infiniteEnergy,
                 doubleClick,
                 doubleClickExpire,
-                infiniteEnergyExpire
+                infiniteEnergyExpire,
+                lastSave: Date.now() // Ключевое изменение: сохраняем время сохранения
             };
             
             localStorage.setItem('cryptoTapSave', JSON.stringify(gameData));
