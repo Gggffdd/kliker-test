@@ -1781,7 +1781,7 @@
                 
                 <div class="package-grid">
                     <div class="card">
-                        <h4>1000 монет</h4>
+                        <h4 class="lang-package-basic">1000 монет</h4>
                         <div class="price lang-price">Цена: <span>0.3 USDT</span></div>
                         <button class="btn premium-btn buy-crypto-package" data-coins="1000" data-price="0.3">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy-package">Купить</span>
@@ -1789,7 +1789,7 @@
                     </div>
                     
                     <div class="card">
-                        <h4>5000 монет</h4>
+                        <h4 class="lang-package-basic">5000 монет</h4>
                         <div class="price lang-price">Цена: <span>1.1 USDT</span></div>
                         <button class="btn premium-btn buy-crypto-package" data-coins="5000" data-price="1.1">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy-package">Купить</span>
@@ -1797,7 +1797,7 @@
                     </div>
                     
                     <div class="card">
-                        <h4>20000 монет</h4>
+                        <h4 class="lang-package-basic">20000 монет</h4>
                         <div class="price lang-price">Цена: <span>4 USDT</span></div>
                         <button class="btn premium-btn buy-crypto-package" data-coins="20000" data-price="4">
                             <i class="fas fa-shopping-cart"></i> <span class="lang-buy-package">Купить</span>
@@ -2064,7 +2064,7 @@
             "CRYPTO": { coins: 5000, message: {ru: "Крипто бонус: +5000 монет!", en: "Crypto bonus: +5000 coins!"} }
         };
         
-        // Локализация (ДОБАВЛЕНЫ НЕДОСТАЮЩИЕ ПЕРЕВОДЫ)
+        // Локализация (ПОЛНЫЙ ПЕРЕВОД)
         const translations = {
             ru: {
                 coins: "Монеты",
@@ -2187,7 +2187,8 @@
                 package3: "Премиум набор",
                 package3Desc: "100000 монет + 7 дней энергии",
                 price: "Цена:",
-                buyPackage: "Купить"
+                buyPackage: "Купить",
+                packageBasic: "Базовый набор"
             },
             en: {
                 coins: "Coins",
@@ -2310,7 +2311,8 @@
                 package3: "Premium Pack",
                 package3Desc: "100000 coins + 7 days energy",
                 price: "Price:",
-                buyPackage: "Buy"
+                buyPackage: "Buy",
+                packageBasic: "Basic Pack"
             }
         };
         
@@ -2373,7 +2375,7 @@
         
         // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
         
-        // Обновить язык интерфейса (ПЕРЕРАБОТАНА)
+        // Обновить язык интерфейса
         function updateLanguage() {
             const lang = translations[language];
             
@@ -2426,7 +2428,6 @@
                         btn.innerHTML = `<i class="fas fa-check"></i> <span>${lang.claimed}</span>`;
                         questEl.classList.add('completed');
                     } else {
-                        // ОБНОВЛЯЕМ ТЕКСТ ДЛЯ НЕВЫПОЛНЕННЫХ ЗАДАНИЙ
                         const icon = btn.querySelector('i') ? btn.querySelector('i').outerHTML : '';
                         btn.innerHTML = `${icon} ${lang.completeQuest}`;
                     }
@@ -2452,7 +2453,7 @@
         // Форматирование чисел (сокращение тысяч)
         function formatNumber(num) {
             if (num >= 1000) {
-                return (num / 1000).toFixed(1) + 'к';
+                return (num / 1000).toFixed(1) + 'k';
             }
             return num.toString();
         }
@@ -2530,7 +2531,7 @@
                 updateAchievements();
                 
                 languageSelect.value = language;
-                updateLanguage(); // ОБНОВЛЯЕМ ЯЗЫК ПОСЛЕ ЗАГРУЗКИ
+                updateLanguage();
                 
                 if (upgrades.auto.level > 0) {
                     startAutoClicker();
@@ -2690,7 +2691,7 @@
             }, 1000);
         }
         
-        // Запустить восстановление энергии
+        // Запустить восстановление энергии (ИСПРАВЛЕНО)
         function startEnergyRestore() {
             if (energyRestoreInterval) clearInterval(energyRestoreInterval);
             
@@ -2699,7 +2700,7 @@
                     energy++;
                     updateEnergyBar();
                 }
-            }, 1000);
+            }, 1000); // Восстанавливаем 1 единицу энергии каждую секунду
         }
         
         // Проверка эффектов
@@ -2831,7 +2832,7 @@
         function changeLanguage() {
             language = languageSelect.value;
             saveGame();
-            updateLanguage(); // ВЫЗЫВАЕМ ОБНОВЛЕНИЕ ИНТЕРФЕЙСА
+            updateLanguage();
             
             showNotification(
                 language === 'ru' ? 
@@ -3395,7 +3396,7 @@
                 doubleClick,
                 doubleClickExpire,
                 infiniteEnergyExpire,
-                lastSave: Date.now() // Ключевое изменение: сохраняем время сохранения
+                lastSave: Date.now()
             };
             
             localStorage.setItem('cryptoTapSave', JSON.stringify(gameData));
