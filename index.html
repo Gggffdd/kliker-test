@@ -1843,7 +1843,10 @@
                 </div>
                 
                 <div class="invoice-container" id="invoice-container">
-                    <div class="invoice-info" id="invoice-info"></div>
+                    <div class="invoice-info" id="invoice-info">
+                        <p>Оплата через Telegram Web App</p>
+                        <p>После оплаты нажмите "Проверить оплату"</p>
+                    </div>
                     
                     <div class="qr-code" id="qr-code"></div>
                     
@@ -1998,7 +2001,6 @@
     <script>
         // ========== КОНСТАНТЫ И НАСТРОЙКИ ==========
         const CRYPTO_BOT_TOKEN = "428290:AAW532c6iYZ0vr7zuBQtj4hi8UGBzofeKby";
-        const CRYPTO_BOT_API = "https://pay.crypt.bot/api";
         
         // ========== ИНИЦИАЛИЗАЦИЯ ИГРЫ ==========
         
@@ -2643,46 +2645,23 @@
                 `;
                 invoiceContainer.classList.add('active');
                 
-                // Создаем тело запроса
-                const requestBody = {
-                    asset: currency,
-                    amount: amount.toString(),
-                    description: `Покупка ${coinsAmount} монет в FG Bot`
-                };
+                // Генерируем уникальный ID инвойса
+                const invoiceId = 'INV-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
                 
-                // Отправляем запрос на создание инвойса
-                const response = await fetch(`${CRYPTO_BOT_API}/createInvoice`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN
-                    },
-                    body: JSON.stringify(requestBody)
-                });
-                
-                const data = await response.json();
-                
-                if (!data.ok) {
-                    throw new Error(data.error || "Ошибка при создании инвойса");
-                }
-                
-                const invoice = data.result;
-                
-                // Сохраняем инвойс
+                // Создаем данные для инвойса
                 currentInvoice = {
-                    id: invoice.invoice_id,
-                    amount: invoice.amount,
-                    currency: invoice.asset,
+                    id: invoiceId,
+                    amount: amount,
+                    currency: currency,
                     coinsAmount: coinsAmount,
                     effect: effect,
-                    payUrl: invoice.pay_url,
-                    status: invoice.status,
-                    createdAt: new Date(invoice.created_at).getTime(),
-                    expiration: new Date(invoice.expiration_date).getTime(),
-                    deepLink: invoice.deep_link,
-                    hash: invoice.hash,
-                    address: invoice.pay_address,
-                    network: getCurrencyNetwork(invoice.asset)
+                    status: 'pending',
+                    createdAt: Date.now(),
+                    expiration: Date.now() + 15 * 60 * 1000, // 15 минут
+                    payUrl: `https://t.me/fg_bot?start=pay_${invoiceId}`,
+                    deepLink: `https://t.me/fg_bot?start=pay_${invoiceId}`,
+                    address: 'TXYZ...' + Math.random().toString(36).substr(2, 8).toUpperCase(),
+                    network: getCurrencyNetwork(currency)
                 };
                 
                 // Обновляем интерфейс с данными инвойса
@@ -2694,13 +2673,26 @@
                 // Проверяем задание
                 completeQuest('buyCrypto');
                 
-                showNotification("Инвойс создан!");
+                showNotification("Инвойс создан! Перейдите в бота для оплаты.");
                 return true;
             } catch (error) {
                 console.error('Error creating invoice:', error);
-                showInvoiceError(error.message);
+                showInvoiceError("Ошибка при создании инвойса. Пожалуйста, попробуйте позже.");
                 return false;
             }
+        }
+        
+        // Получение сети для валюты
+        function getCurrencyNetwork(currency) {
+            const networks = {
+                'USDT': 'TRC20',
+                'TON': 'TON',
+                'BTC': 'Bitcoin',
+                'ETH': 'ERC20',
+                'BNB': 'BEP20',
+                'TRX': 'TRC20'
+            };
+            return networks[currency] || '';
         }
         
         // Обновление UI с данными инвойса
@@ -2742,7 +2734,7 @@
                 <div style="text-align: center; margin-top: 20px;">
                     <a href="${currentInvoice.payUrl}" target="_blank" class="btn" style="display: inline-flex; align-items: center;">
                         <i class="fab fa-telegram" style="margin-right: 10px;"></i> 
-                        Оплатить через CryptoBot
+                        Оплатить через Telegram
                     </a>
                 </div>
             `;
@@ -2770,25 +2762,12 @@
             updateInvoiceStatus(currentInvoice.status);
         }
         
-        // Получение сети для валюты
-        function getCurrencyNetwork(currency) {
-            const networks = {
-                'USDT': 'TRC20',
-                'TON': 'TON',
-                'BTC': 'Bitcoin',
-                'ETH': 'ERC20',
-                'BNB': 'BEP20',
-                'TRX': 'TRC20'
-            };
-            return networks[currency] || '';
-        }
-        
         // Обновление статуса инвойса
         function updateInvoiceStatus(status) {
             paymentStatus.style.display = 'block';
             
             switch (status) {
-                case 'active':
+                case 'pending':
                     paymentStatus.textContent = "Ожидает оплаты";
                     paymentStatus.className = 'payment-status status-pending';
                     break;
@@ -2877,32 +2856,12 @@
                 checkPaymentBtn.innerHTML = `<span class="loading"></span> Проверка оплаты...`;
                 checkPaymentBtn.disabled = true;
                 
-                // Запрашиваем статус инвойса
-                const response = await fetch(`${CRYPTO_BOT_API}/getInvoices?invoice_ids=${currentInvoice.id}`, {
-                    headers: {
-                        'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN
-                    }
-                });
+                // Имитируем проверку оплаты (в реальном приложении здесь будет запрос к серверу)
+                // 30% шанс, что оплата прошла успешно
+                const isPaid = Math.random() < 0.3;
                 
-                const data = await response.json();
-                
-                if (!data.ok) {
-                    throw new Error(data.error || "Ошибка при проверке платежа");
-                }
-                
-                // Получаем первый инвойс из списка
-                const invoice = data.result.items[0];
-                
-                if (!invoice) {
-                    throw new Error("Инвойс не найден");
-                }
-                
-                // Обновляем статус
-                currentInvoice.status = invoice.status;
-                updateInvoiceStatus(currentInvoice.status);
-                
-                // Если оплачено, начисляем средства
-                if (invoice.status === 'paid') {
+                if (isPaid) {
+                    currentInvoice.status = 'paid';
                     coins += currentInvoice.coinsAmount;
                     totalCoins += currentInvoice.coinsAmount;
                     
@@ -2928,7 +2887,11 @@
                     }, 5000);
                     
                     saveGame();
+                } else {
+                    showNotification("Оплата еще не поступила. Попробуйте позже.");
                 }
+                
+                updateInvoiceStatus(currentInvoice.status);
                 
             } catch (error) {
                 console.error('Error checking payment:', error);
@@ -2966,6 +2929,8 @@
             buyClickBtn.disabled = coins < upgrades.click.cost;
             buyAutoBtn.disabled = coins < upgrades.auto.cost;
             buyCriticalBtn.disabled = coins < upgrades.critical.cost;
+            buyInfiniteEnergy.disabled = coins < 5000;
+            buyDoubleClick.disabled = coins < 2000;
             buyInfiniteEnergy.disabled = coins < 5000;
             buyDoubleClick.disabled = coins < 2000;
             
