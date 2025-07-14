@@ -1844,8 +1844,10 @@
                 
                 <div class="invoice-container" id="invoice-container">
                     <div class="invoice-info" id="invoice-info">
-                        <p>Оплата через Telegram Web App</p>
-                        <p>После оплаты нажмите "Проверить оплату"</p>
+                        <div class="invoice-loading">
+                            <div class="spinner"></div>
+                            <p>Создание инвойса...</p>
+                        </div>
                     </div>
                     
                     <div class="qr-code" id="qr-code"></div>
@@ -2672,6 +2674,38 @@
                 
                 // Проверяем задание
                 completeQuest('buyCrypto');
+                
+                // Имитация callback от CryptoBot через 10 секунд
+                setTimeout(() => {
+                    if (currentInvoice && currentInvoice.id === invoiceId) {
+                        // 30% шанс, что оплата прошла
+                        if (Math.random() < 0.3) {
+                            currentInvoice.status = 'paid';
+                            updateInvoiceStatus(currentInvoice.status);
+                            
+                            coins += currentInvoice.coinsAmount;
+                            totalCoins += currentInvoice.coinsAmount;
+                            
+                            // Применяем эффекты
+                            if (currentInvoice.effect) {
+                                const [effectType, duration] = currentInvoice.effect.split(':');
+                                if (effectType === 'infiniteEnergy') {
+                                    infiniteEnergy = true;
+                                    infiniteEnergyExpire = Date.now() + parseInt(duration) * 60 * 60 * 1000;
+                                }
+                            }
+                            
+                            showNotification(`Получено ${currentInvoice.coinsAmount} монет!`);
+                            saveGame();
+                            
+                            // Автоматическое закрытие через 5 секунд
+                            setTimeout(() => {
+                                invoiceContainer.classList.remove('active');
+                                currentInvoice = null;
+                            }, 5000);
+                        }
+                    }
+                }, 10000);
                 
                 showNotification("Инвойс создан! Перейдите в бота для оплаты.");
                 return true;
