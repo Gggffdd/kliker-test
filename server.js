@@ -9,11 +9,13 @@ const crypto = require('crypto');
 const PORT = process.env.PORT || 3000;
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const CRYPTOPAY_TOKEN = process.env.CRYPTOPAY_TOKEN;
-const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || 'your_webhook_secret';
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+const SERVER_URL = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
 
 app.use(bodyParser.json());
+app.use(express.static('public')); // Обслуживаем статические файлы
 
-// Хранилище платежей (временное, для продакшена использовать БД)
+// Хранилище платежей
 const payments = {};
 
 // Создание платежной сессии
@@ -28,7 +30,7 @@ app.post('/create-payment', (req, res) => {
     };
     
     // Ссылка на бота с paymentId
-    const botLink = `https://t.me/CryptoPaymentDemoBot?start=${paymentId}`;
+    const botLink = `https://t.me/${process.env.BOT_USERNAME}?start=${paymentId}`;
     res.json({ 
         success: true, 
         botLink,
@@ -36,28 +38,25 @@ app.post('/create-payment', (req, res) => {
     });
 });
 
-// Верификация подписи CryptoPay вебхука
+// Верификация подписи вебхука
 function verifySignature(body, signature) {
     const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
     hmac.update(JSON.stringify(body));
-    const calculatedSignature = hmac.digest('hex');
-    return calculatedSignature === signature;
+    return hmac.digest('hex') === signature;
 }
 
 // Обработчик вебхуков от CryptoPay
 app.post('/cryptobot-webhook', (req, res) => {
     const signature = req.headers['crypto-pay-api-signature'];
     
-    // Проверка подписи
     if (!verifySignature(req.body, signature)) {
-        console.error('Invalid webhook signature');
+        console.error('⚠️ Invalid webhook signature');
         return res.status(401).send('Invalid signature');
     }
     
     const event = req.body;
-    console.log('Received CryptoPay event:', event.event_type);
+    console.log('🔔 Received CryptoPay event:', event.event_type);
     
-    // Обработка оплаченного инвойса
     if (event.event_type === 'invoice_paid') {
         const invoice = event.payload.invoice;
         
@@ -72,11 +71,9 @@ app.post('/cryptobot-webhook', (req, res) => {
             paymentData.paidAt = new Date();
             
             console.log(`✅ Payment completed: ${paymentId}`);
-            console.log(`User: ${paymentData.chatId}, Amount: ${invoice.amount} ${invoice.asset}`);
+            console.log(`💳 User: ${paymentData.chatId}, Amount: ${invoice.amount} ${invoice.asset}`);
             
-            // Здесь: активация премиум-доступа для пользователя
-            
-            // Уведомление пользователя в Telegram
+            // Уведомление пользователя
             sendTelegramMessage(
                 paymentData.chatId, 
                 `🎉 Оплата прошла успешно!\n` +
@@ -97,18 +94,15 @@ async function sendTelegramMessage(chatId, text) {
         await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: chatId,
-                text: text
-            })
+            body: JSON.stringify({ chat_id: chatId, text })
         });
     } catch (error) {
-        console.error('Error sending Telegram message:', error);
+        console.error('❌ Error sending Telegram message:', error);
     }
 }
 
-// Запуск сервера
+// Старт сервера
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`CryptoPay Webhook URL: http://yourdomain.com/cryptobot-webhook`);
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌐 CryptoPay Webhook URL: ${SERVER_URL}/cryptobot-webhook`);
 });
