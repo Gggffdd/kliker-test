@@ -5,51 +5,58 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-const CRYPTO_BOT_TOKEN = '428290:AAW532c6iYZ0vr7zuBQtj4hi8UGBzofeKby'; // Замените на ваш API-ключ
-const CRYPTO_BOT_API = 'https://pay.crypt.bot/api';
+const CRYPTOBOT_TOKEN = '428290:AAW532c6iYZ0vr7zuBQtj4hi8UGBzofeKby';
+const MERCHANT_TOKEN = 'ВАШ_MERCHANT_TOKEN'; // Из настроек CryptoBot
+const BOT_TOKEN = '7780179544:AAGGaZB4dOZFPKaBKYQtC9NfpHv3uwrFMyE'; // От @BotFather
 
 // Создание инвойса
 app.post('/createInvoice', async (req, res) => {
-    const { amount, currency, coinsAmount } = req.body;
+  try {
+    const response = await axios.post(
+      `https://pay.crypt.bot/api/createInvoice`,
+      {
+        asset: req.body.currency,
+        amount: req.body.amount,
+        description: `Покупка ${req.body.coinsAmount} монет`,
+        hidden_message: `USER_ID:${req.body.userId}`,
+        payload: JSON.stringify({
+          coins: req.body.coinsAmount,
+          effect: req.body.effect
+        })
+      },
+      {
+        headers: {
+          'Crypto-Pay-API-Token': CRYPTOBOT_TOKEN
+        }
+      }
+    );
 
-    try {
-        const response = await axios.post(`${CRYPTO_BOT_API}/createInvoice`, {
-            asset: currency,
-            amount: amount.toString(),
-            description: `Пополнение на ${coinsAmount} монет`,
-        }, {
-            headers: { 'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN }
-        });
-
-        res.json({
-            success: true,
-            invoiceId: response.data.result.invoice_id,
-            payUrl: response.data.result.pay_url,
-            address: response.data.result.address,
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
+    res.json(response.data.result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Ошибка создания инвойса');
+  }
 });
 
-// Проверка статуса платежа
-app.get('/checkInvoice/:invoiceId', async (req, res) => {
-    const { invoiceId } = req.params;
-
-    try {
-        const response = await axios.get(`${CRYPTO_BOT_API}/getInvoices?invoice_ids=${invoiceId}`, {
-            headers: { 'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN }
-        });
-
-        const invoice = response.data.result.items[0];
-        res.json({
-            status: invoice.status, // "active", "paid" или "expired"
-            amount: invoice.amount,
-            currency: invoice.asset,
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
+// Обработка вебхука
+app.post('/crypto-webhook', async (req, res) => {
+  const event = req.body;
+  
+  if (event.invoice && event.invoice.status === 'paid') {
+    const payload = JSON.parse(event.invoice.payload);
+    const userId = event.invoice.hidden_message.split(':')[1];
+    
+    // Зачислить средства пользователю
+    // Здесь ваша логика зачисления монет
+    
+    // Уведомить пользователя
+    await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      chat_id: userId,
+      text: `Оплата получена! Зачислено ${payload.coins} монет!`
+    });
+  }
+  
+  res.sendStatus(200);
 });
 
 app.listen(3000, () => console.log('Сервер запущен на порту 3000'));
