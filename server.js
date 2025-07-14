@@ -1,62 +1,89 @@
 const express = require('express');
-const axios = require('axios');
-const bodyParser = require('body-parser');
-
 const app = express();
-app.use(bodyParser.json());
+const TelegramBot = require('node-telegram-bot-api');
+const fetch = require('node-fetch');
 
-const CRYPTOBOT_TOKEN = '428290:AAW532c6iYZ0vr7zuBQtj4hi8UGBzofeKby';
-const MERCHANT_TOKEN = 'ВАШ_MERCHANT_TOKEN'; // Из настроек CryptoBot
-const BOT_TOKEN = '7780179544:AAGGaZB4dOZFPKaBKYQtC9NfpHv3uwrFMyE'; // От @BotFather
+// Конфигурация
+const TELEGRAM_TOKEN = '7780179544:AAGGaZB4dOZFPKaBKYQtC9NfpHv3uwrFMyE';
+const CRYPTOPAY_TOKEN = '428290:AAW532c6iYZ0vr7zuBQtj4hi8UGBzofeKby';
+const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
-// Создание инвойса
-app.post('/createInvoice', async (req, res) => {
-  try {
-    const response = await axios.post(
-      `https://pay.crypt.bot/api/createInvoice`,
-      {
-        asset: req.body.currency,
-        amount: req.body.amount,
-        description: `Покупка ${req.body.coinsAmount} монет`,
-        hidden_message: `USER_ID:${req.body.userId}`,
-        payload: JSON.stringify({
-          coins: req.body.coinsAmount,
-          effect: req.body.effect
-        })
-      },
-      {
-        headers: {
-          'Crypto-Pay-API-Token': CRYPTOBOT_TOKEN
+// Middleware
+app.use(express.json());
+
+// Хранилище платежей (временное, для примера)
+const payments = {};
+
+// Команда /pay
+bot.onText(/\/pay/, (msg) => {
+  const chatId = msg.chat.id;
+  const userId = msg.from.id;
+  
+  // Создаем инвойс
+  createCryptoInvoice(userId, 10.00, 'USD', 'Premium подписка')
+    .then(invoice => {
+      payments[invoice.invoice_id] = { chatId, status: 'pending' };
+      
+      // Отправляем кнопку оплаты
+      bot.sendMessage(chatId, 'Оплатите подписку:', {
+        reply_markup: {
+          inline_keyboard: [[
+            { text: "💳 Оплатить", url: invoice.pay_url }
+          ]]
         }
-      }
-    );
-
-    res.json(response.data.result);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Ошибка создания инвойса');
-  }
+      });
+    })
+    .catch(error => {
+      console.error('Ошибка создания инвойса:', error);
+      bot.sendMessage(chatId, '❌ Ошибка при создании платежа');
+    });
 });
 
-// Обработка вебхука
-app.post('/crypto-webhook', async (req, res) => {
-  const event = req.body;
+// Создание инвойса в CryptoPay
+async function createCryptoInvoice(userId, amount, asset, description) {
+  const response = await fetch('https://pay.crypt.bot/api/createInvoice', {
+    method: 'POST',
+    headers: {
+      'Crypto-Pay-API-Token': CRYPTOPAY_TOKEN,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      asset: asset,
+      amount: amount,
+      description: description,
+      paid_btn_name: 'return',
+      payload: JSON.stringify({ userId }), // Важные метаданные
+      allow_anonymous: false
+    })
+  });
+
+  const data = await response.json();
+  if (!data.ok) throw new Error(data.error);
+  return data.result;
+}
+
+// Webhook для CryptoPay
+app.post('/cryptobot-webhook', (req, res) => {
+  const { invoice } = req.body;
   
-  if (event.invoice && event.invoice.status === 'paid') {
-    const payload = JSON.parse(event.invoice.payload);
-    const userId = event.invoice.hidden_message.split(':')[1];
+  // Проверяем статус оплаты
+  if (invoice.status === 'paid') {
+    const meta = JSON.parse(invoice.payload);
+    const payment = payments[invoice.invoice_id];
     
-    // Зачислить средства пользователю
-    // Здесь ваша логика зачисления монет
-    
-    // Уведомить пользователя
-    await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-      chat_id: userId,
-      text: `Оплата получена! Зачислено ${payload.coins} монет!`
-    });
+    if (payment) {
+      // Обновляем статус
+      payments[invoice.invoice_id].status = 'paid';
+      
+      // Уведомляем пользователя
+      bot.sendMessage(payment.chatId, `✅ Оплата прошла успешно!`);
+      
+      // Здесь логика выдачи доступа/товара
+    }
   }
   
   res.sendStatus(200);
 });
 
-app.listen(3000, () => console.log('Сервер запущен на порту 3000'));
+// Запуск сервера
+app.listen(3000, () => console.log('Server started on port 3000'));
