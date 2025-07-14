@@ -1,6 +1,15 @@
-__pycache__/
-*.py[cod]
-*.db
-*.sqlite3
+# Node.js
+node_modules/
+npm-debug.log
 .env
-venv/
+
+# Python
+__pycache__/
+*.pyc
+.env
+bot.log
+
+# Общие
+.DS_Store
+.idea/
+.vscode/
