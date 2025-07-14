@@ -1,108 +1,122 @@
 require('dotenv').config();
 const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const fetch = require('node-fetch');
+const cors = require('cors');
+const axios = require('axios');
 const crypto = require('crypto');
+const bodyParser = require('body-parser');
 
-// Конфигурация
-const PORT = process.env.PORT || 3000;
-const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
-const CRYPTOPAY_TOKEN = process.env.CRYPTOPAY_TOKEN;
-const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
-const SERVER_URL = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
-
+const app = express();
+app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static('public')); // Обслуживаем статические файлы
 
-// Хранилище платежей
-const payments = {};
+const PORT = process.env.PORT || 3000;
+const BOT_API_URL = process.env.BOT_API_URL || 'http://localhost:5000';
+const API_SECRET = process.env.API_SECRET;
 
-// Создание платежной сессии
-app.post('/create-payment', (req, res) => {
-    const paymentId = `pay-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
-    payments[paymentId] = {
-        status: 'pending',
-        createdAt: new Date(),
-        product: 'Premium Subscription',
-        amount: 10.00,
-        currency: 'USD'
+// Mock database
+const ordersDB = new Map();
+
+// Middleware for API authentication
+const authenticate = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  if (authHeader && authHeader === `Bearer ${API_SECRET}`) {
+    next();
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+};
+
+// Generate unique order ID
+function generateOrderId() {
+  return `order_${crypto.randomBytes(8).toString('hex')}`;
+}
+
+// Create order endpoint
+app.post('/api/orders', async (req, res) => {
+  try {
+    const { productId, amount, currency = 'USD' } = req.body;
+    
+    if (!productId || !amount) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    const orderId = generateOrderId();
+    const orderData = {
+      id: orderId,
+      productId,
+      amount,
+      currency,
+      status: 'pending',
+      createdAt: new Date().toISOString()
     };
-    
-    // Ссылка на бота с paymentId
-    const botLink = `https://t.me/${process.env.BOT_USERNAME}?start=${paymentId}`;
-    res.json({ 
-        success: true, 
-        botLink,
-        paymentId
+
+    // Save to "database"
+    ordersDB.set(orderId, orderData);
+
+    // Request payment link from bot
+    const botResponse = await axios.post(`${BOT_API_URL}/api/payments`, {
+      orderId,
+      amount,
+      currency
+    }, {
+      headers: { Authorization: `Bearer ${API_SECRET}` }
     });
+
+    if (!botResponse.data.success) {
+      throw new Error('Failed to create payment');
+    }
+
+    // Update order with payment info
+    orderData.paymentLink = botResponse.data.paymentLink;
+    orderData.invoiceId = botResponse.data.invoiceId;
+    ordersDB.set(orderId, orderData);
+
+    res.json({
+      success: true,
+      orderId,
+      paymentLink: botResponse.data.paymentLink
+    });
+  } catch (error) {
+    console.error('Order creation error:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to create order' 
+    });
+  }
 });
 
-// Верификация подписи вебхука
-function verifySignature(body, signature) {
-    const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
-    hmac.update(JSON.stringify(body));
-    return hmac.digest('hex') === signature;
-}
+// Payment confirmation endpoint
+app.post('/api/payments/confirm', authenticate, (req, res) => {
+  const { orderId, invoiceId } = req.body;
+  
+  if (!ordersDB.has(orderId)) {
+    return res.status(404).json({ success: false, error: 'Order not found' });
+  }
 
-// Обработчик вебхуков от CryptoPay
-app.post('/cryptobot-webhook', (req, res) => {
-    const signature = req.headers['crypto-pay-api-signature'];
-    
-    if (!verifySignature(req.body, signature)) {
-        console.error('⚠️ Invalid webhook signature');
-        return res.status(401).send('Invalid signature');
-    }
-    
-    const event = req.body;
-    console.log('🔔 Received CryptoPay event:', event.event_type);
-    
-    if (event.event_type === 'invoice_paid') {
-        const invoice = event.payload.invoice;
-        
-        // Поиск платежа по invoice_id
-        const paymentEntry = Object.entries(payments).find(
-            ([, data]) => data.invoiceId === invoice.id
-        );
-        
-        if (paymentEntry) {
-            const [paymentId, paymentData] = paymentEntry;
-            paymentData.status = 'paid';
-            paymentData.paidAt = new Date();
-            
-            console.log(`✅ Payment completed: ${paymentId}`);
-            console.log(`💳 User: ${paymentData.chatId}, Amount: ${invoice.amount} ${invoice.asset}`);
-            
-            // Уведомление пользователя
-            sendTelegramMessage(
-                paymentData.chatId, 
-                `🎉 Оплата прошла успешно!\n` +
-                `Ваш премиум доступ активирован.\n` +
-                `Сумма: ${invoice.amount} ${invoice.asset}\n` +
-                `ID транзакции: ${invoice.hash}`
-            );
-        }
-    }
-    
-    res.sendStatus(200);
+  const order = ordersDB.get(orderId);
+  order.status = 'paid';
+  order.paidAt = new Date().toISOString();
+  order.invoiceId = invoiceId;
+
+  // Here you would typically:
+  // 1. Fulfill the order (send product, etc.)
+  // 2. Notify the user
+  // 3. Update other systems
+
+  res.json({ success: true, order });
 });
 
-// Отправка сообщения через Telegram API
-async function sendTelegramMessage(chatId, text) {
-    const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
-    try {
-        await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: chatId, text })
-        });
-    } catch (error) {
-        console.error('❌ Error sending Telegram message:', error);
-    }
-}
+// Get order status
+app.get('/api/orders/:orderId', (req, res) => {
+  const orderId = req.params.orderId;
+  
+  if (!ordersDB.has(orderId)) {
+    return res.status(404).json({ error: 'Order not found' });
+  }
 
-// Старт сервера
+  res.json(ordersDB.get(orderId));
+});
+
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`🌐 CryptoPay Webhook URL: ${SERVER_URL}/cryptobot-webhook`);
+  console.log(`Server running on port ${PORT}`);
 });
