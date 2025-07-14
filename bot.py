@@ -1,174 +1,153 @@
 import os
-import logging
-import telebot
-import requests
-import json
-from datetime import datetime, timedelta
+from flask import Flask, request, jsonify
+from cryptopay import CryptoPay
+from telegram import Bot, Update
+from telegram.ext import Dispatcher, MessageHandler, Filters, CallbackContext
 import threading
-from dotenv import load_dotenv
+import logging
 
-# Загрузка переменных окружения
-load_dotenv()
-
-# Настройка логгера
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler('bot.log')
-    ]
-)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Конфигурация
-TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-CRYPTOPAY_TOKEN = os.getenv('CRYPTOPAY_TOKEN')
-SERVER_URL = os.getenv('SERVER_URL')
-BOT_USERNAME = os.getenv('BOT_USERNAME')  # Без @
+app = Flask(__name__)
 
-bot = telebot.TeleBot(TELEGRAM_TOKEN)
-
-# Временное хранилище платежей
-payments = {}
-
-@bot.message_handler(commands=['start'])
-def handle_start(message):
-    try:
-        # Проверяем наличие paymentId в команде
-        if len(message.text.split()) > 1:
-            payment_id = message.text.split()[1]
-            logger.info(f"🚀 Payment session started: {payment_id}")
-            
-            # Сохраняем информацию о чате
-            payments[payment_id] = {
-                'chat_id': message.chat.id,
-                'status': 'processing',
-                'created_at': datetime.now()
-            }
-            
-            # Создаем инвойс в CryptoPay
-            response = create_crypto_invoice(
-                amount=10.00,
-                asset='USDT',
-                description=f"Premium Subscription - {payment_id}",
-                payload=json.dumps({
-                    'payment_id': payment_id,
-                    'user_id': message.from_user.id
-                })
-            )
-            
-            if response and 'result' in response:
-                invoice = response['result']
-                payments[payment_id]['invoice_id'] = invoice['id']
-                
-                # Отправляем кнопку оплаты
-                markup = telebot.types.InlineKeyboardMarkup()
-                btn = telebot.types.InlineKeyboardButton(
-                    text="💳 Оплатить сейчас", 
-                    url=invoice['pay_url']
-                )
-                markup.add(btn)
-                
-                bot.send_message(
-                    message.chat.id,
-                    "🔐 Оплатите премиум подписку:\n\n"
-                    f"Сумма: 10.00 USDT\n"
-                    "Ссылка действительна 15 минут\n\n"
-                    "После оплаты доступ будет активирован автоматически",
-                    reply_markup=markup
-                )
-                
-                # Инструкция
-                bot.send_message(
-                    message.chat.id,
-                    "ℹ️ Если возникли проблемы:\n"
-                    "1. Убедитесь, что у вас достаточно средств\n"
-                    "2. Используйте кошелек, поддерживающий TRC-20\n"
-                    "3. Для помощи: @your_support"
-                )
-            else:
-                bot.send_message(
-                    message.chat.id,
-                    "❌ Ошибка при создании платежа. Попробуйте позже."
-                )
-        else:
-            bot.send_message(
-                message.chat.id,
-                "👋 Привет! Для оплаты перейдите по ссылке с сайта."
-            )
-            
-    except Exception as e:
-        logger.error(f"🔥 Error in start handler: {str(e)}")
-        bot.send_message(
-            message.chat.id,
-            "⚠️ Произошла ошибка. Пожалуйста, попробуйте позже."
-        )
-
-def create_crypto_invoice(amount, asset, description, payload):
-    url = "https://pay.crypt.bot/api/createInvoice"
-    headers = {
-        "Crypto-Pay-API-Token": CRYPTOPAY_TOKEN,
-        "Content-Type": "application/json"
-    }
-    data = {
-        "asset": asset,
-        "amount": str(amount),
-        "description": description,
-        "payload": payload,
-        "paid_btn_name": "open_bot",
-        "paid_btn_url": f"https://t.me/{BOT_USERNAME}",
-        "allow_anonymous": False,
-        "expires_in": 900  # 15 минут
-    }
-    
-    try:
-        response = requests.post(url, headers=headers, json=data, timeout=10)
-        response.raise_for_status()
-        result = response.json()
-        logger.info(f"CryptoPay response: {result}")
+class PaymentBot:
+    def __init__(self):
+        self.token = os.getenv('TELEGRAM_BOT_TOKEN')
+        self.crypto_token = os.getenv('CRYPTOPAY_TOKEN')
+        self.api_secret = os.getenv('API_SECRET')
         
-        if result.get('ok'):
-            return result
-        else:
-            logger.error(f"❌ CryptoPay error: {result.get('error')}")
-            return None
-            
-    except Exception as e:
-        logger.error(f"🔥 Error creating invoice: {str(e)}")
-        return None
-
-def check_expired_payments():
-    """Проверка просроченных платежей"""
-    now = datetime.now()
+        self.bot = Bot(token=self.token)
+        self.dispatcher = Dispatcher(self.bot, None, use_context=True)
+        
+        self.cryptopay = CryptoPay(
+            token=self.crypto_token,
+            api_url="https://pay.crypt.bot/api"
+        )
+        
+        self.setup_handlers()
     
-    for payment_id, payment in list(payments.items()):
-        if payment['status'] == 'processing':
-            created = payment['created_at']
-            if now > created + timedelta(minutes=16):  # +1 минута к сроку
-                try:
-                    chat_id = payment['chat_id']
-                    bot.send_message(
-                        chat_id,
-                        "⌛ Время оплаты истекло. Пожалуйста, создайте новый заказ."
-                    )
-                    payments[payment_id]['status'] = 'expired'
-                    logger.info(f"⏳ Payment expired: {payment_id}")
-                except Exception as e:
-                    logger.error(f"🔥 Error handling expired payment: {str(e)}")
+    def setup_handlers(self):
+        self.dispatcher.add_handler(
+            MessageHandler(Filters.text & ~Filters.command, self.handle_message)
+        )
+    
+    def handle_message(self, update: Update, context: CallbackContext):
+        chat_id = update.effective_chat.id
+        text = update.message.text
+        
+        if text.lower() == '/start':
+            self.bot.send_message(
+                chat_id=chat_id,
+                text="Welcome to the payment bot! Send /pay to create a payment."
+            )
+    
+    def create_payment_link(self, order_id, amount, currency='USD'):
+        try:
+            asset = currency.upper()
+            amount_str = str(amount)
+            
+            invoice = self.cryptopay.create_invoice(
+                asset=asset,
+                amount=amount_str,
+                description=f"Payment for order #{order_id}",
+                hidden_message="Thank you for your purchase!",
+                payload=order_id,
+                expires_in=3600  # 1 hour expiration
+            )
+            
+            return {
+                'success': True,
+                'paymentLink': invoice.bot_invoice_url,
+                'invoiceId': invoice.invoice_id
+            }
+        except Exception as e:
+            logger.error(f"Payment creation error: {str(e)}")
+            return {
+                'success': False,
+                'error': str(e)
+            }
+    
+    def verify_payment(self, invoice_id):
+        try:
+            invoice = self.cryptopay.get_invoices(invoice_ids=invoice_id)
+            if invoice and invoice.status == 'paid':
+                return True
+            return False
+        except Exception as e:
+            logger.error(f"Payment verification error: {str(e)}")
+            return False
 
-# Запуск проверки просроченных платежей
-def run_payment_checker():
-    while True:
-        check_expired_payments()
-        threading.Event().wait(300)  # Проверка каждые 5 минут
+bot = PaymentBot()
+
+@app.route('/api/payments', methods=['POST'])
+def create_payment():
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or auth_header != f'Bearer {bot.api_secret}':
+        return jsonify({'success': False, 'error': 'Unauthorized'}), 401
+    
+    data = request.get_json()
+    order_id = data.get('orderId')
+    amount = data.get('amount')
+    currency = data.get('currency', 'USD')
+    
+    if not all([order_id, amount]):
+        return jsonify({'success': False, 'error': 'Missing required fields'}), 400
+    
+    result = bot.create_payment_link(order_id, amount, currency)
+    return jsonify(result)
+
+@app.route('/api/webhook/cryptopay', methods=['POST'])
+def cryptopay_webhook():
+    try:
+        update = request.get_json()
+        if not update:
+            return jsonify({'status': 'error', 'message': 'Empty data'}), 400
+        
+        # Verify webhook signature (important for security)
+        # Implementation depends on CryptoPay library version
+        
+        if update.get('status') == 'paid':
+            order_id = update.get('payload')
+            invoice_id = update.get('invoice_id')
+            
+            # Verify payment
+            if bot.verify_payment(invoice_id):
+                # Notify main server
+                # In production, use async task queue
+                import requests
+                requests.post(
+                    'http://localhost:3000/api/payments/confirm',
+                    json={'orderId': order_id, 'invoiceId': invoice_id},
+                    headers={'Authorization': f'Bearer {bot.api_secret}'}
+                )
+                
+                # Notify user
+                user_chat_id = update.get('user_chat_id')
+                if user_chat_id:
+                    bot.bot.send_message(
+                        chat_id=user_chat_id,
+                        text=f"✅ Payment confirmed! Order #{order_id} is completed."
+                    )
+                
+                return jsonify({'status': 'success'})
+        
+        return jsonify({'status': 'ignored'})
+    except Exception as e:
+        logger.error(f"Webhook error: {str(e)}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/api/health')
+def health_check():
+    return jsonify({'status': 'ok'})
+
+def run_bot():
+    bot.dispatcher.start_polling()
 
 if __name__ == '__main__':
-    logger.info("🚀 Starting Crypto Payment Bot...")
-    logger.info(f"🌐 Using SERVER_URL: {SERVER_URL}")
+    # Start bot polling in a separate thread
+    bot_thread = threading.Thread(target=run_bot)
+    bot_thread.start()
     
-    # Запуск проверки платежей в фоне
-    threading.Thread(target=run_payment_checker, daemon=True).start()
-    
-    # Запуск бота
-    bot.infinity_polling()
+    # Start Flask server
+    app.run(host='0.0.0.0', port=5000, debug=False)
