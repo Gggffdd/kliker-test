@@ -1,15 +1,21 @@
-# Node.js
+# Node
 node_modules/
-npm-debug.log
 .env
+npm-debug.log
 
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 .env
-bot.log
+venv/
 
-# Общие
+# General
 .DS_Store
 .idea/
 .vscode/
+*.log
+*.tmp
+*.bak
+*.swp
