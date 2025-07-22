@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 # Инициализация Flask и бота
 app = Flask(__name__)
-bot = telebot.TeleBot(os.getenv('TELEGRAM_TOKEN'))
+bot = telebot.TeleBot(os.getenv('7523520150:AAGMPibPAl8D0I0E6ZeNR3zuIp0qKcshXN0'))
 
 # Конфигурация
 CONFIG = {
