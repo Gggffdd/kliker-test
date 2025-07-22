@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # ======== КОНФИГУРАЦИЯ ======== (ЗАМЕНИТЕ ЭТИ ЗНАЧЕНИЯ!)
-TELEGRAM_TOKEN = '6789012345:AAE1vzBE8x5T5w5fX0w1X5w5fX0w1X5w5fX0'
+TELEGRAM_TOKEN = '7523520150:AAGMPibPAl8D0I0E6ZeNR3zuIp0qKcshXN0'
 WEBHOOK_SECRET = 'd0gH0us3_S3cr3t_K3Y_2023_v2'  # Свой секретный ключ
 VERCEL_URL = 'https://kliker-test.vercel.app'  # Ваш домен
 # ==============================
