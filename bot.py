@@ -8,7 +8,7 @@ from telebot import types
 # ======================
 # КОНФИГУРАЦИЯ
 # ======================
-TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN', 'ВАШ_ТОКЕН_БОТА')  # Замените на реальный токен
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN', '7523520150:AAGMPibPAl8D0I0E6ZeNR3zuIp0qKcshXN0')  # Замените на реальный токен
 WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'ваш_секретный_ключ')  # Любая случайная строка
 VERCEL_URL = os.getenv('VERCEL_URL', 'https://kliker-test.vercel.app')  # Ваш домен
 
