@@ -1,21 +1,19 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "bot.py",
-      "use": "@vercel/python"
-    }
-  ],
+  "builds": [{
+    "src": "bot.py",
+    "use": "@vercel/python"
+  }],
   "routes": [
-    {
-      "src": "/webhook",
-      "dest": "bot.py",
-      "methods": ["POST"]
-    },
     {
       "src": "/",
       "dest": "bot.py",
       "methods": ["GET"]
+    },
+    {
+      "src": "/webhook",
+      "dest": "bot.py",
+      "methods": ["POST"]
     }
   ]
 }
