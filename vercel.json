@@ -6,14 +6,14 @@
   }],
   "routes": [
     {
-      "src": "/",
-      "dest": "bot.py",
-      "methods": ["GET"]
-    },
-    {
       "src": "/webhook",
       "dest": "bot.py",
       "methods": ["POST"]
+    },
+    {
+      "src": "/",
+      "dest": "bot.py",
+      "methods": ["GET"]
     }
   ]
 }
